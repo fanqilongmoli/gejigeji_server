@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gejigeji
+  data:
+    mongodb:
+      uri: mongodb://172.16.122.128:27017/fanqilong
+logging.level.org.springframework.data.mongodb.core: DEBUG
