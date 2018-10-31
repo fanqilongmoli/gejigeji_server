@@ -43,6 +43,12 @@ public class RegService {
                 User user = new User();
                 user.setPhone(regParam.getPhone());
                 user.setPassword(regParam.getPassword());
+                user.setLikeValue(0);
+                user.setJewel(0);
+                user.setCoin(0);
+                user.setAward(false);
+                user.setSkinID(0);
+                user.setEggCount(0);
                 userRepository.save(user);
 
 

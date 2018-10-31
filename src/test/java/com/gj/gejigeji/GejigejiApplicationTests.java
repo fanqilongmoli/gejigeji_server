@@ -16,11 +16,6 @@ import java.util.Optional;
 @SpringBootTest
 public class GejigejiApplicationTests {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    MongoTemplate mongoTemplate;
 
     @Test
     public void contextLoads() {
@@ -28,11 +23,7 @@ public class GejigejiApplicationTests {
 
     @Test
     public void delAll() {
-        User ex = new User();
-        ex.setPhone("18170036523");
-        Optional<User> one = userRepository.findOne(Example.of(ex));
-        final User user = one.get();
-        String id = user.getId();
+
 
     }
 
