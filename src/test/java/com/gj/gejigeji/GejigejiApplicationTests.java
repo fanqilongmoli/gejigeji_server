@@ -1,6 +1,10 @@
 package com.gj.gejigeji;
 
+import com.gj.gejigeji.model.Feed;
+import com.gj.gejigeji.model.Theme;
 import com.gj.gejigeji.model.User;
+import com.gj.gejigeji.repository.FeedRepository;
+import com.gj.gejigeji.repository.ThemeRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +20,8 @@ import java.util.Optional;
 @SpringBootTest
 public class GejigejiApplicationTests {
 
+    @Autowired
+    ThemeRepository feedRepository;
 
     @Test
     public void contextLoads() {
@@ -23,8 +29,11 @@ public class GejigejiApplicationTests {
 
     @Test
     public void delAll() {
-
+        Theme entity = new Theme(null,"www.主题3.com","主题3","主题3" +
+                "",10f);
+        feedRepository.save(entity);
 
     }
+
 
 }
