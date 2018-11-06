@@ -9,4 +9,10 @@ public class ConstUtil {
     public static final Byte Delete_Flag_No = 0;
 
     public static final int SMS_CODE_REG = 1;
+
+    // 邮件通知类型
+    public static final int MAIL_TYPE_TZ = 1;
+    // 邮件奖励类型
+    public static final int MAIL_TYPE_JL = 2;
+
 }

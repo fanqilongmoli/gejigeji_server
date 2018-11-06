@@ -23,8 +23,20 @@ public class User {
     private Boolean award;
     // 当前使用的皮肤ID
     private Integer skinID;
-
+    //平台ID
     private String platformID;
+    // 小游戏打地鼠的次数
+    private Integer miniGameCount1;
+    // 小游戏大转盘次数
+    private Integer miniGameCount2;
+    // 小游戏老虎机次数
+    private Integer miniGameCount3;
+    // 小游戏大怪兽次数
+    private Integer miniGameCount4;
+    // 用户名
+    private String userName;
+    // 配送地址
+    private String site;
 
     public String getId() {
         return id;
@@ -104,5 +116,53 @@ public class User {
 
     public void setPlatformID(String platformID) {
         this.platformID = platformID;
+    }
+
+    public Integer getMiniGameCount1() {
+        return miniGameCount1;
+    }
+
+    public void setMiniGameCount1(Integer miniGameCount1) {
+        this.miniGameCount1 = miniGameCount1;
+    }
+
+    public Integer getMiniGameCount2() {
+        return miniGameCount2;
+    }
+
+    public void setMiniGameCount2(Integer miniGameCount2) {
+        this.miniGameCount2 = miniGameCount2;
+    }
+
+    public Integer getMiniGameCount3() {
+        return miniGameCount3;
+    }
+
+    public void setMiniGameCount3(Integer miniGameCount3) {
+        this.miniGameCount3 = miniGameCount3;
+    }
+
+    public Integer getMiniGameCount4() {
+        return miniGameCount4;
+    }
+
+    public void setMiniGameCount4(Integer miniGameCount4) {
+        this.miniGameCount4 = miniGameCount4;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
     }
 }
