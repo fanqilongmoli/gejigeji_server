@@ -25,6 +25,12 @@ public class RegService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    PropService propService;
+
     public OkResult register(RegParam regParam){
         SmsCode ex = new SmsCode();
         ex.setDelete_flag(ConstUtil.Delete_Flag_No);
@@ -55,7 +61,12 @@ public class RegService {
                 user.setMiniGameCount4(10);
 
 
-                userRepository.save(user);
+                User save = userRepository.save(user);
+
+                //挂载用户邮件 道具
+                mailService.mailTest(save.getId());
+                propService.propTest(save.getId());
+
 
 
                 return new OkResult(true);

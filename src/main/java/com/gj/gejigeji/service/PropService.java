@@ -7,7 +7,6 @@ import com.gj.gejigeji.repository.UserPropRepository;
 import com.gj.gejigeji.vo.OkResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

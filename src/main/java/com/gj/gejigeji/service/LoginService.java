@@ -51,7 +51,6 @@ public class LoginService {
         mailEx.setUserId(user.getId());
         List<Mail> mailList = mailRepository.findAll(Example.of(mailEx));
 
-        //==============
         UserProp upex = new UserProp();
         upex.setUserId(user.getId());
         List<UserProp> propList = userPropRepository.findAll(Example.of(upex));
