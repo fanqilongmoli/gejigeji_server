@@ -16,9 +16,9 @@ public class MailContent {
 
     private String mailId;
     //道具ID
-    private int itemId;
+    private Integer itemId;
     //道具数量
-    private int itemCount;
+    private Integer itemCount;
 
     public String getId() {
         return Id;
@@ -36,19 +36,19 @@ public class MailContent {
         this.mailId = mailId;
     }
 
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 
-    public int getItemCount() {
+    public Integer getItemCount() {
         return itemCount;
     }
 
-    public void setItemCount(int itemCount) {
+    public void setItemCount(Integer itemCount) {
         this.itemCount = itemCount;
     }
 }

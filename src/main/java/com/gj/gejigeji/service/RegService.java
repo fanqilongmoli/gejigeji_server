@@ -49,6 +49,12 @@ public class RegService {
                 user.setAward(false);
                 user.setSkinID(0);
                 user.setEggCount(0);
+                user.setMiniGameCount1(10);
+                user.setMiniGameCount2(10);
+                user.setMiniGameCount3(10);
+                user.setMiniGameCount4(10);
+
+
                 userRepository.save(user);
 
 

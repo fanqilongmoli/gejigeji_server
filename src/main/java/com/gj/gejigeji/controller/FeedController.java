@@ -2,11 +2,11 @@ package com.gj.gejigeji.controller;
 
 import com.gj.gejigeji.model.Feed;
 import com.gj.gejigeji.service.FeedService;
+import com.gj.gejigeji.vo.FeedBuyParam;
+import com.gj.gejigeji.vo.OkResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +21,11 @@ public class FeedController {
     @GetMapping("getAll")
     public List<Feed> getAll(){
         return feedService.getAll();
+    }
+
+    @ApiOperation(value = "购买饲料")
+    @PostMapping("buy")
+    public OkResult buy(@RequestBody FeedBuyParam feedBuyParam){
+        return feedService.buy(feedBuyParam);
     }
 }

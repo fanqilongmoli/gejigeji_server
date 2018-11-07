@@ -16,11 +16,11 @@ public class Mail {
     // 用户id
     private String userId;
     // 邮件类型
-    private Integer type;
+    private Integer mailType;
     // 是否已读
     private Boolean read;
     // 时间
-    private Date createTime;
+    private Date mailTime;
     // 邮件图标
     private String logo;
     // 邮件标题
@@ -45,12 +45,20 @@ public class Mail {
         this.userId = userId;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getMailType() {
+        return mailType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setMailType(Integer mailType) {
+        this.mailType = mailType;
+    }
+
+    public Date getMailTime() {
+        return mailTime;
+    }
+
+    public void setMailTime(Date mailTime) {
+        this.mailTime = mailTime;
     }
 
     public Boolean getRead() {
@@ -59,14 +67,6 @@ public class Mail {
 
     public void setRead(Boolean read) {
         this.read = read;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public String getLogo() {

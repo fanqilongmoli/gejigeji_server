@@ -4,10 +4,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * 饲料 Document
+ * 道具
  */
-@Document(collection = "feed")
-public class Feed {
+@Document(collection = "prop")
+public class Prop {
 
     @Id
     private String Id;
@@ -24,19 +24,16 @@ public class Feed {
     // 价格
     private Float price;
 
-    //最小购买数
-    private Integer min;
 
-
-    public Feed() {
-    }
-
-    public Feed(String id, String url, String name, String desc, Float price) {
+    public Prop(String id, String url, String name, String desc, Float price) {
         Id = id;
         this.url = url;
         this.name = name;
         this.desc = desc;
         this.price = price;
+    }
+
+    public Prop() {
     }
 
     public String getId() {

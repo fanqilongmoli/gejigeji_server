@@ -27,6 +27,9 @@ public class GejigejiApplicationTests {
     @Autowired
     MailRepository mailRepository;
 
+    @Autowired
+    PropRepository propRepository;
+
 
     @Test
     public void contextLoads() {
@@ -34,8 +37,8 @@ public class GejigejiApplicationTests {
 
     @Test
     public void delAll() {
-        Theme entity = new Theme(null,"www.主题3.com","主题3","主题3" ,10f);
-        feedRepository.save(entity);
+        Prop entity = new Prop(null,"www.道具3.com","道具3","道具3" ,10f);
+        propRepository.save(entity);
 
     }
     @Test
@@ -44,9 +47,9 @@ public class GejigejiApplicationTests {
         Mail entity = new Mail();
         entity.setUserId("5bd875d6d270a94ca1cadbee");
         entity.setTitle("测试邮件包含奖励");
-        entity.setCreateTime(new Date());
+        entity.setMailTime(new Date());
         entity.setLogo("testlogo");
-        entity.setType(ConstUtil.MAIL_TYPE_JL);
+        entity.setMailType(ConstUtil.MAIL_TYPE_JL);
         entity.setRead(false);
         entity.setMessage("message消息");
         Mail save = mailRepository.save(entity);

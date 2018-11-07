@@ -1,6 +1,10 @@
 package com.gj.gejigeji.vo;
 
+import com.gj.gejigeji.model.Mail;
+import com.gj.gejigeji.model.UserProp;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.List;
 
 public class LoginVo {
     private String accountID;
@@ -10,7 +14,7 @@ public class LoginVo {
     private int likeValue;
     private Boolean award;
     private int skinID;
-    private String mailInfo;
+    private List<Mail> mailInfo;
     @ApiModelProperty(value = "是否需要绑定手机号")
     private boolean bindPhone = false;
     private String phone;
@@ -25,11 +29,12 @@ public class LoginVo {
     private Integer miniGameCount4;
     // 用户名
     private String userName;
+    private List<UserProp> itemInfos;
 
     public LoginVo() {
     }
 
-    public LoginVo(String accountID, int eggCount, int coin, int jewel, int likeValue, Boolean award, int skinID, String mailInfo, boolean bindPhone) {
+    public LoginVo(String accountID, int eggCount, int coin, int jewel, int likeValue, Boolean award, int skinID, List<Mail> mailInfo, boolean bindPhone) {
         this.accountID = accountID;
         this.eggCount = eggCount;
         this.coin = coin;
@@ -97,12 +102,20 @@ public class LoginVo {
         this.skinID = skinID;
     }
 
-    public String getMailInfo() {
+    public List<Mail> getMailInfo() {
         return mailInfo;
     }
 
-    public void setMailInfo(String mailInfo) {
+    public void setMailInfo(List<Mail> mailInfo) {
         this.mailInfo = mailInfo;
+    }
+
+    public List<UserProp> getItemInfos() {
+        return itemInfos;
+    }
+
+    public void setItemInfos(List<UserProp> itemInfos) {
+        this.itemInfos = itemInfos;
     }
 
     public boolean isBindPhone() {
