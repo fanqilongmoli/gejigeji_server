@@ -31,12 +31,13 @@ public class Feed {
     public Feed() {
     }
 
-    public Feed(String id, String url, String name, String desc, Float price) {
+    public Feed(String id, String url, String name, String desc, Float price,Integer min) {
         Id = id;
         this.url = url;
         this.name = name;
         this.desc = desc;
         this.price = price;
+        this.min = min;
     }
 
     public String getId() {
@@ -77,5 +78,13 @@ public class Feed {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
     }
 }

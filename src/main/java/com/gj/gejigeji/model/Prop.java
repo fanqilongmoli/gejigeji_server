@@ -24,13 +24,16 @@ public class Prop {
     // 价格
     private Float price;
 
+    private Integer min;
 
-    public Prop(String id, String url, String name, String desc, Float price) {
+
+    public Prop(String id, String url, String name, String desc, Float price,Integer min) {
         Id = id;
         this.url = url;
         this.name = name;
         this.desc = desc;
         this.price = price;
+        this.min = min;
     }
 
     public Prop() {
@@ -74,5 +77,13 @@ public class Prop {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
     }
 }

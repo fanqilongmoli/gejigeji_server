@@ -37,8 +37,8 @@ public class GejigejiApplicationTests {
 
     @Test
     public void delAll() {
-        Prop entity = new Prop(null,"www.道具3.com","道具3","道具3" ,10f);
-        propRepository.save(entity);
+
+
 
     }
     @Test
