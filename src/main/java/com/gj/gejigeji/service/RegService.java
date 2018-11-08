@@ -31,6 +31,9 @@ public class RegService {
     @Autowired
     PropService propService;
 
+    @Autowired
+    FeedService feedService;
+
     public OkResult register(RegParam regParam){
         SmsCode ex = new SmsCode();
         ex.setDelete_flag(ConstUtil.Delete_Flag_No);
@@ -63,9 +66,10 @@ public class RegService {
 
                 User save = userRepository.save(user);
 
-                //挂载用户邮件 道具
+                //挂载用户邮件 道具 饲料
                 mailService.mailTest(save.getId());
                 propService.propTest(save.getId());
+                feedService.feedTest(save.getId());
 
 
 

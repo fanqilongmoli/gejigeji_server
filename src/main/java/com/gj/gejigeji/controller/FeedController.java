@@ -3,6 +3,8 @@ package com.gj.gejigeji.controller;
 import com.gj.gejigeji.model.Feed;
 import com.gj.gejigeji.service.FeedService;
 import com.gj.gejigeji.vo.FeedBuyParam;
+import com.gj.gejigeji.vo.FeedingParam;
+import com.gj.gejigeji.vo.FeedingVo;
 import com.gj.gejigeji.vo.OkResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +30,17 @@ public class FeedController {
     public OkResult buy(@RequestBody FeedBuyParam feedBuyParam){
         return feedService.buy(feedBuyParam);
     }
+
+    @ApiOperation(value = "饲料添加测试")
+    @GetMapping("feedTest")
+    public OkResult feedTest(@RequestParam String userId){
+        return feedService.feedTest(userId);
+    }
+
+    @ApiOperation(value = "喂食-->feedType(饲料类型) 1:富硒 2:有机 3:特质")
+    @PostMapping("feeding")
+    public FeedingVo feeding(@RequestBody FeedingParam feedingParam){
+        return feedService.feeding(feedingParam);
+    }
+
 }

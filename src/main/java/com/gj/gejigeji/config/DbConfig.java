@@ -1,9 +1,11 @@
 package com.gj.gejigeji.config;
 
 import com.gj.gejigeji.model.Feed;
+import com.gj.gejigeji.model.Henhouse;
 import com.gj.gejigeji.model.Prop;
 import com.gj.gejigeji.model.Theme;
 import com.gj.gejigeji.repository.FeedRepository;
+import com.gj.gejigeji.repository.HenhouseRepository;
 import com.gj.gejigeji.repository.PropRepository;
 import com.gj.gejigeji.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class DbConfig implements CommandLineRunner {
     @Autowired
     ThemeRepository themeRepository;
 
+    @Autowired
+    HenhouseRepository henhouseRepository;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,6 +45,16 @@ public class DbConfig implements CommandLineRunner {
             feedRepository.save(feed1);
             feedRepository.save(feed2);
             feedRepository.save(feed3);
+        }
+
+        // 初始化鸡舍
+        if (henhouseRepository.findAll().size() == 0) {
+            Henhouse henhouse = new Henhouse();
+            henhouse.setPrice(1000f);
+            henhouse.setUrl("www.jishe1.com");
+            henhouse.setDesc("鸡舍1desc");
+            henhouse.setName("鸡舍1");
+            henhouseRepository.save(henhouse);
         }
 
         //初始化道具

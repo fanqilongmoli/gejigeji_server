@@ -19,7 +19,7 @@ public class ThemeController {
     ThemeService themeService;
 
 
-    @ApiOperation(value = "获取所有的饲料种类")
+    @ApiOperation(value = "获取所有的主题")
     @GetMapping("getAll")
     public List<Theme> getAll(){
         return themeService.getAll();
