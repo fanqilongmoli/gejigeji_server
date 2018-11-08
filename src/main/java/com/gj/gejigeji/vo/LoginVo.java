@@ -9,7 +9,7 @@ import java.util.List;
 public class LoginVo {
     private String accountID;
     private int eggCount;
-    private int coin;
+    private Float coin;
     private int jewel;
     private int likeValue;
     private Boolean award;
@@ -34,7 +34,7 @@ public class LoginVo {
     public LoginVo() {
     }
 
-    public LoginVo(String accountID, int eggCount, int coin, int jewel, int likeValue, Boolean award, int skinID, List<Mail> mailInfo, boolean bindPhone) {
+    public LoginVo(String accountID, int eggCount, Float coin, int jewel, int likeValue, Boolean award, int skinID, List<Mail> mailInfo, boolean bindPhone) {
         this.accountID = accountID;
         this.eggCount = eggCount;
         this.coin = coin;
@@ -62,11 +62,11 @@ public class LoginVo {
         this.eggCount = eggCount;
     }
 
-    public int getCoin() {
+    public Float getCoin() {
         return coin;
     }
 
-    public void setCoin(int coin) {
+    public void setCoin(Float coin) {
         this.coin = coin;
     }
 

@@ -14,7 +14,7 @@ public class User {
     //鸡蛋数量
     private Integer eggCount;
     // 金币数量
-    private Integer coin;
+    private Float coin;
     // 钻石数量
     private Integer jewel;
     // 好感度
@@ -70,11 +70,11 @@ public class User {
         this.eggCount = eggCount;
     }
 
-    public Integer getCoin() {
+    public Float getCoin() {
         return coin;
     }
 
-    public void setCoin(Integer coin) {
+    public void setCoin(Float coin) {
         this.coin = coin;
     }
 

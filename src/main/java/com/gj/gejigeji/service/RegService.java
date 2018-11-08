@@ -54,7 +54,7 @@ public class RegService {
                 user.setPassword(regParam.getPassword());
                 user.setLikeValue(0);
                 user.setJewel(0);
-                user.setCoin(0);
+                user.setCoin(1000f);
                 user.setAward(false);
                 user.setSkinID(0);
                 user.setEggCount(0);
