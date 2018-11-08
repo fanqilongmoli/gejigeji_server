@@ -34,6 +34,13 @@ public class ThemeService {
 
     public OkResult buy(ThemeBuyParam themeBuyParam) {
 
+        User userEx = new User();
+        userEx.setId(themeBuyParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null){
+            throw new BaseRuntimeException("login.user.null");
+        }
+
         // 检查是否已经购买过主题
         UserTheme ex = new UserTheme();
         ex.setThemeId(themeBuyParam.getThemeId());
@@ -53,12 +60,7 @@ public class ThemeService {
         }
 
 
-        User userEx = new User();
-        userEx.setId(themeBuyParam.getAccountID());
-        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
-            throw new BaseRuntimeException("login.user.null");
-        }
+
 
         // 检查金币是否充足
         Float resultCoin = user.getCoin() - theme.getPrice();
