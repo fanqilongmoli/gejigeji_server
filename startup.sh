@@ -1,0 +1,2 @@
+APPDIR=`pwd`
+echo $APPDIR

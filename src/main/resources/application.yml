@@ -3,8 +3,8 @@ spring:
     name: gejigeji
   data:
     mongodb:
-      #uri: mongodb://172.16.122.128:27017/fanqilong
-      uri: mongodb://172.17.85.173:27017/gejigeji
+      uri: mongodb://172.16.122.128:27017/fanqilong
+      #uri: mongodb://172.17.85.173:27017/gejigeji
 logging.level.org.springframework.data.mongodb.core: DEBUG
 server:
-  port: 80
+  port: 8080

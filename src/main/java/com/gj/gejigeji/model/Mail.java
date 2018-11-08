@@ -1,5 +1,6 @@
 package com.gj.gejigeji.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,18 +15,25 @@ public class Mail {
     @Id
     private String id;
     // 用户id
+    @ApiModelProperty(value = "用户id")
     private String userId;
     // 邮件类型
+    @ApiModelProperty(value = "邮件类型")
     private Integer mailType;
     // 是否已读
+    @ApiModelProperty(value = "是否已读")
     private Boolean read;
     // 时间
+    @ApiModelProperty(value = "时间")
     private Date mailTime;
     // 邮件图标
+    @ApiModelProperty(value = "邮件图标")
     private String logo;
     // 邮件标题
+    @ApiModelProperty(value = "邮件标题")
     private String title;
     // 邮件详细内容
+    @ApiModelProperty(value = "邮件详细内容")
     private String message;
 
 

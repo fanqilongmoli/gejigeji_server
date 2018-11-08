@@ -1,5 +1,6 @@
 package com.gj.gejigeji.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,11 +14,13 @@ public class MailContent {
 
     @Id
     private String Id;
-
+    @ApiModelProperty(value = "邮件ID")
     private String mailId;
     //道具ID
+    @ApiModelProperty(value = "道具ID")
     private Integer itemId;
     //道具数量
+    @ApiModelProperty(value = "道具数量")
     private Integer itemCount;
 
     public String getId() {

@@ -1,6 +1,7 @@
 package com.gj.gejigeji.model;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,15 +12,19 @@ public class Henhouse {
     private String Id;
 
     // 图片
+    @ApiModelProperty(value = "图片的url")
     private String url;
 
     //价格
+    @ApiModelProperty(value = "价格")
     private Float price;
 
     // 鸡舍的名字
+    @ApiModelProperty(value = "名字")
     private String name;
 
     //描述
+    @ApiModelProperty(value = "描述")
     private String desc;
 
     public String getId() {
