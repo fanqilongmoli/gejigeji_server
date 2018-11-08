@@ -44,21 +44,21 @@ public class GejigejiApplicationTests {
     @Test
     public void  testMail(){
 
-        Mail entity = new Mail();
-        entity.setUserId("5bd875d6d270a94ca1cadbee");
-        entity.setTitle("测试邮件包含奖励");
-        entity.setMailTime(new Date());
-        entity.setLogo("testlogo");
-        entity.setMailType(ConstUtil.MAIL_TYPE_JL);
-        entity.setRead(false);
-        entity.setMessage("message消息");
-        Mail save = mailRepository.save(entity);
-
-        final MailContent entity1 = new MailContent();
-        entity1.setItemCount(10);
-        entity1.setMailId(save.getId());
-        entity1.setItemId(1);
-        mailContentRepository.save(entity1);
+//        Mail entity = new Mail();
+//        entity.setUserId("5bd875d6d270a94ca1cadbee");
+//        entity.setTitle("测试邮件包含奖励");
+//        entity.setMailTime(new Date());
+//        entity.setLogo("testlogo");
+//        entity.setMailType(ConstUtil.MAIL_TYPE_JL);
+//        entity.setRead(false);
+//        entity.setMessage("message消息");
+//        Mail save = mailRepository.save(entity);
+//
+//        final MailContent entity1 = new MailContent();
+//        entity1.setItemCount(10);
+//        entity1.setMailId(save.getId());
+//        entity1.setItemId(1);
+//        mailContentRepository.save(entity1);
 
 
     }
