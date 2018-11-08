@@ -1,5 +1,7 @@
 package com.gj.gejigeji.model;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,16 +15,23 @@ public class Theme {
     private String Id;
 
     // 图片
+    @ApiModelProperty("图片")
     private String url;
 
     // 名字
+    @ApiModelProperty("名字")
     private String name;
 
     // 描述
+    @ApiModelProperty("描述")
     private String desc;
 
     // 价格
+    @ApiModelProperty("价格")
     private Float price;
+
+    @ApiModelProperty("是否已经拥有")
+    private Boolean have;
 
     public Theme(String id, String url, String name, String desc, Float price) {
         Id = id;
@@ -73,5 +82,13 @@ public class Theme {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Boolean getHave() {
+        return have;
+    }
+
+    public void setHave(Boolean have) {
+        this.have = have;
     }
 }

@@ -2,6 +2,7 @@ package com.gj.gejigeji.controller;
 
 import com.gj.gejigeji.model.Theme;
 import com.gj.gejigeji.service.ThemeService;
+import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.OkResult;
 import com.gj.gejigeji.vo.ThemeBuyParam;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +20,9 @@ public class ThemeController {
 
 
     @ApiOperation(value = "获取所有的主题(鸡舍就是主题)")
-    @GetMapping("getAll")
-    public List<Theme> getAll(){
-        return themeService.getAll();
+    @PostMapping("getAll")
+    public List<Theme> getAll(@RequestBody ActionParam actionParam){
+        return themeService.getAll(actionParam);
     }
 
 

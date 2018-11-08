@@ -35,4 +35,6 @@ public class PropController {
     public OkResult buy(@RequestBody PropBuyParam propBuyParam){
         return propService.buy(propBuyParam);
     }
+
+
 }

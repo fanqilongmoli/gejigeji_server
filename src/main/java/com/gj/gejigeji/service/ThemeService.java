@@ -1,12 +1,11 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
-import com.gj.gejigeji.model.Theme;
-import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserTheme;
+import com.gj.gejigeji.model.*;
 import com.gj.gejigeji.repository.ThemeRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.repository.UserThemeRepository;
+import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.OkResult;
 import com.gj.gejigeji.vo.ThemeBuyParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,27 @@ public class ThemeService {
     @Autowired
     UserRepository userRepository;
 
-    public List<Theme> getAll() {
-        return themeRepository.findAll();
+    public List<Theme> getAll(ActionParam actionParam) {
+
+        // 获取所有道具
+        List<Theme> allTheme = themeRepository.findAll();
+        for (Theme theme : allTheme) {
+            theme.setHave(false);
+        }
+
+        // 判断出已拥有的道具
+        UserTheme userThemeEx = new UserTheme();
+        userThemeEx.setUserId(actionParam.getAccountID());
+        List<UserTheme> UserProps = userThemeRepository.findAll(Example.of(userThemeEx));
+        for (UserTheme userProp : UserProps) {
+            for (Theme prop : allTheme) {
+                if (prop.getId().equals(userProp.getThemeId())) {
+                    prop.setHave(true);
+                }
+            }
+        }
+
+        return allTheme;
     }
 
     public OkResult buy(ThemeBuyParam themeBuyParam) {
