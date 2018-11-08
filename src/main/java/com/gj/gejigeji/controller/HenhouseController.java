@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("henhouse")
-@Api("鸡舍")
+
 public class HenhouseController {
 
     @Autowired

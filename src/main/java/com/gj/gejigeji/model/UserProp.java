@@ -14,17 +14,8 @@ public class UserProp {
 
     private String userId;
 
-    private String itemId;
+    private String propId;
 
-    private Integer itemCount;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getId() {
         return id;
@@ -34,19 +25,19 @@ public class UserProp {
         this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public Integer getItemCount() {
-        return itemCount;
+    public String getPropId() {
+        return propId;
     }
 
-    public void setItemCount(Integer itemCount) {
-        this.itemCount = itemCount;
+    public void setPropId(String propId) {
+        this.propId = propId;
     }
 }

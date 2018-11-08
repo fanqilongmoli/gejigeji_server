@@ -18,7 +18,7 @@ public class ThemeController {
     ThemeService themeService;
 
 
-    @ApiOperation(value = "获取所有的主题")
+    @ApiOperation(value = "获取所有的主题(鸡舍就是主题)")
     @GetMapping("getAll")
     public List<Theme> getAll(){
         return themeService.getAll();

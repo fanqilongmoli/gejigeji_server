@@ -2,10 +2,7 @@ package com.gj.gejigeji.controller;
 
 import com.gj.gejigeji.model.Feed;
 import com.gj.gejigeji.service.FeedService;
-import com.gj.gejigeji.vo.FeedBuyParam;
-import com.gj.gejigeji.vo.FeedingParam;
-import com.gj.gejigeji.vo.FeedingVo;
-import com.gj.gejigeji.vo.OkResult;
+import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +26,12 @@ public class FeedController {
     @PostMapping("buy")
     public OkResult buy(@RequestBody FeedBuyParam feedBuyParam){
         return feedService.buy(feedBuyParam);
+    }
+
+    @ApiOperation("获取用户自己购买的饲料")
+    @PostMapping("get")
+    public List<FeedListVo> get(@RequestBody ActionParam actionParam){
+        return feedService.get(actionParam);
     }
 
     @ApiOperation(value = "饲料添加测试")

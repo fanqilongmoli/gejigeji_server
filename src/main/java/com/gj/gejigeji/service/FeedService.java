@@ -7,14 +7,12 @@ import com.gj.gejigeji.model.UserFeed;
 import com.gj.gejigeji.repository.FeedRepository;
 import com.gj.gejigeji.repository.UserFeedRepository;
 import com.gj.gejigeji.repository.UserRepository;
-import com.gj.gejigeji.vo.FeedBuyParam;
-import com.gj.gejigeji.vo.FeedingParam;
-import com.gj.gejigeji.vo.FeedingVo;
-import com.gj.gejigeji.vo.OkResult;
+import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -116,5 +114,33 @@ public class FeedService {
 
         return feedingVo;
 
+    }
+
+    public List<FeedListVo> get(ActionParam actionParam) {
+
+        List<FeedListVo> feedListVos = new ArrayList<>();
+        UserFeed ex = new UserFeed();
+        ex.setUserId(actionParam.getAccountID());
+
+        List<UserFeed> all = userFeedRepository.findAll(Example.of(ex));
+        FeedListVo feedListVo;
+        for (UserFeed userFeed : all) {
+            Feed feedEx = new Feed();
+            feedEx.setId(userFeed.getFeedId());
+            Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+            if (feed != null){
+                feedListVo = new FeedListVo();
+                feedListVo.setUrl(feed.getUrl());
+                feedListVo.setAmount(userFeed.getAmount());
+                feedListVo.setDesc(feed.getDesc());
+                feedListVo.setFeedId(feed.getId());
+                feedListVo.setName(feed.getName());
+                feedListVo.setPrice(feed.getPrice());
+
+                feedListVos.add(feedListVo);
+            }
+        }
+
+        return feedListVos;
     }
 }
