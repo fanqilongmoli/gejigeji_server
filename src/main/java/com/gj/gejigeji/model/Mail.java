@@ -23,6 +23,8 @@ public class Mail {
     // 是否已读
     @ApiModelProperty(value = "是否已读")
     private Boolean read;
+    @ApiModelProperty(value = "是否已经领取奖励(邮件类型为奖励类型)")
+    private Boolean get;
     // 时间
     @ApiModelProperty(value = "时间")
     private Date mailTime;
@@ -99,5 +101,13 @@ public class Mail {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Boolean getGet() {
+        return get;
+    }
+
+    public void setGet(Boolean get) {
+        this.get = get;
     }
 }

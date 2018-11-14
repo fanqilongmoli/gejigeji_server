@@ -24,6 +24,13 @@ public class MailController {
         return mailService.mailDetail(mailDetailParam);
     }
 
+    @PostMapping("mailGet")
+    @ApiOperation("获取邮件奖励---参数和返回暂定")
+    public OkResult mailGet(@RequestBody MailDetailParam mailDetailParam){
+        return mailService.mailGet(mailDetailParam);
+    }
+
+
     @PostMapping("mailAll")
     @ApiOperation(value = "获取用户的全部邮件")
     public List<Mail> mailAll(@RequestBody MailReadParam mailReadParam){

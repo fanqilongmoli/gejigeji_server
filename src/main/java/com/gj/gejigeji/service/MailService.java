@@ -66,7 +66,7 @@ public class MailService {
 
         Mail mail = mailRepository.findOne(Example.of(mailEx)).orElse(null);
 
-        if (mail == null){
+        if (mail == null) {
             throw new BaseRuntimeException();
         }
         //设置已读
@@ -80,7 +80,7 @@ public class MailService {
         if (mail.getMailType() == ConstUtil.MAIL_TYPE_TZ) {
             // 通知类型
 
-        }else {
+        } else {
             // 奖励类型
             MailContent mailContentEx = new MailContent();
             mailContentEx.setMailId(mailDetailParam.getMailId());
@@ -115,5 +115,25 @@ public class MailService {
         mailEx.setUserId(accountID);
         List<Mail> all = mailRepository.findAll(Example.of(mailEx));
         return all;
+    }
+
+    /**
+     * 获取邮件奖励
+     *
+     * @param mailDetailParam
+     * @return
+     */
+    public OkResult mailGet(MailDetailParam mailDetailParam) {
+        Mail mailEx = new Mail();
+        mailEx.setUserId(mailDetailParam.getAccountID());
+        mailEx.setId(mailDetailParam.getMailId());
+
+        Mail mail = mailRepository.findOne(Example.of(mailEx)).orElse(null);
+        if (mail == null) {
+            return new OkResult(false);
+        }
+        mail.setGet(true);
+        mailRepository.save(mail);
+        return new OkResult(true);
     }
 }
