@@ -1,10 +1,12 @@
 package com.gj.gejigeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class FeedingParam {
-    //用户id
+    @ApiModelProperty("用户ID")
     private String accountID;
-    // 饲料的类型
-    private Integer feedType;
+    @ApiModelProperty("饲料ID")
+    private String feedID;
 
     public String getAccountID() {
         return accountID;
@@ -14,11 +16,11 @@ public class FeedingParam {
         this.accountID = accountID;
     }
 
-    public Integer getFeedType() {
-        return feedType;
+    public String getFeedID() {
+        return feedID;
     }
 
-    public void setFeedType(Integer feedType) {
-        this.feedType = feedType;
+    public void setFeedID(String feedID) {
+        this.feedID = feedID;
     }
 }

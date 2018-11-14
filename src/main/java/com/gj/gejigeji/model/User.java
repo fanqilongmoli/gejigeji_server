@@ -17,8 +17,6 @@ public class User {
     private Float coin;
     // 钻石数量
     private Integer jewel;
-    // 好感度
-    private Integer likeValue;
     // true可以领取奖励 false不能领取奖励
     private Boolean award;
     // 当前使用的皮肤ID
@@ -84,14 +82,6 @@ public class User {
 
     public void setJewel(Integer jewel) {
         this.jewel = jewel;
-    }
-
-    public Integer getLikeValue() {
-        return likeValue;
-    }
-
-    public void setLikeValue(Integer likeValue) {
-        this.likeValue = likeValue;
     }
 
     public Boolean getAward() {

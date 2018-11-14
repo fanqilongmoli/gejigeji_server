@@ -15,4 +15,8 @@ public class ConstUtil {
     // 邮件奖励类型
     public static final int MAIL_TYPE_JL = 2;
 
+
+    //时间格式
+    public static final String yyyyMMddHHmm = "yyyy-MM-dd HH:mm";
+
 }

@@ -52,7 +52,6 @@ public class RegService {
                 User user = new User();
                 user.setPhone(regParam.getPhone());
                 user.setPassword(regParam.getPassword());
-                user.setLikeValue(0);
                 user.setJewel(0);
                 user.setCoin(1000f);
                 user.setAward(false);

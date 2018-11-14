@@ -52,7 +52,7 @@ public class GameController {
         return gameService.dgsStart(actionParam);
     }
 
-    @ApiOperation(value = "打怪兽进入(允许时扣除次数)")
+    @ApiOperation(value = "打怪兽结束")
     @PostMapping("dgsEnd")
     public GameResultVo dgsEnd(@RequestBody DGSEndParam dgsEndParam){
         return gameService.dgsEnd(dgsEndParam);

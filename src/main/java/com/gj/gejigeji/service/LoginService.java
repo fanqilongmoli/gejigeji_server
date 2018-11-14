@@ -1,15 +1,8 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
-import com.gj.gejigeji.model.Mail;
-import com.gj.gejigeji.model.MailContent;
-import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserProp;
-import com.gj.gejigeji.repository.MailContentRepository;
-import com.gj.gejigeji.repository.MailRepository;
-import com.gj.gejigeji.repository.UserPropRepository;
-import com.gj.gejigeji.repository.UserRepository;
-import com.gj.gejigeji.util.ConstUtil;
+import com.gj.gejigeji.model.*;
+import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.vo.BindPhoneParam;
 import com.gj.gejigeji.vo.Login3rdParam;
 import com.gj.gejigeji.vo.LoginParam;
@@ -18,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+
 import java.util.List;
 
 @Service
@@ -35,7 +28,14 @@ public class LoginService {
     @Autowired
     UserPropRepository userPropRepository;
 
+    @Autowired
+    UserLikeValueRepository userLikeValueRepository;
 
+    /**
+     * 登录
+     * @param loginParam
+     * @return
+     */
     public LoginVo login(LoginParam loginParam) {
         User ex = new User();
         ex.setPhone(loginParam.getPhone());
@@ -45,7 +45,50 @@ public class LoginService {
             throw new BaseRuntimeException("login.user.null");
         }
 
+        return ret(user);
+    }
 
+    /**
+     * 第三方登录
+     * @param login3rdParam
+     * @return
+     */
+    public LoginVo login3rd(Login3rdParam login3rdParam) {
+        User ex = new User();
+        ex.setPhone(login3rdParam.getPlatformID());
+
+        User user = userRepository.findOne(Example.of(ex)).orElse(null);
+
+
+        if (user == null) {
+            LoginVo loginVo = new LoginVo();
+            loginVo.setBindPhone(true);
+            return loginVo;
+
+        } else {
+
+            return ret(user);
+
+        }
+
+    }
+
+    /**
+     * 绑定手机
+     * @param bindPhoneParam
+     * @return
+     */
+    public LoginVo bindPhone(BindPhoneParam bindPhoneParam) {
+        User user = new User();
+        user.setPlatformID(bindPhoneParam.getPlatformID());
+        user.setPhone(bindPhoneParam.getPhone());
+        User save = userRepository.save(user);
+
+        return ret(save);
+    }
+
+
+    private LoginVo ret(User user){
         //====拼装返回的vo====
         Mail mailEx = new Mail();
         mailEx.setUserId(user.getId());
@@ -62,7 +105,15 @@ public class LoginService {
         loginVo.setEggCount(user.getEggCount());
         loginVo.setJewel(user.getJewel());
         loginVo.setPhone(user.getPhone());
-        loginVo.setLikeValue(user.getLikeValue());
+        // 获取好感度
+        UserLikeValue userLikeValueEx = new UserLikeValue();
+        userLikeValueEx.setUserId(user.getId());
+        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        if (userLikeValue != null) {
+            int likeValue = userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv();
+            loginVo.setLikeValue(likeValue);
+        }
+
         loginVo.setSkinID(user.getSkinID());
         loginVo.setUserName(user.getUserName());
         loginVo.setMiniGameCount1(user.getMiniGameCount1());
@@ -74,32 +125,5 @@ public class LoginService {
 
 
         return loginVo;
-    }
-
-    public LoginVo login3rd(Login3rdParam login3rdParam) {
-        User ex = new User();
-        ex.setPhone(login3rdParam.getPlatformID());
-
-        User user = userRepository.findOne(Example.of(ex)).orElse(null);
-
-
-        if (user == null) {
-            LoginVo loginVo = new LoginVo();
-            loginVo.setBindPhone(true);
-            return loginVo;
-
-        } else {
-            return new LoginVo(user.getId(), user.getEggCount(), user.getCoin(), user.getJewel(), user.getLikeValue(), user.getAward(), user.getSkinID(), null, false);
-
-        }
-
-    }
-
-    public LoginVo bindPhone(BindPhoneParam bindPhoneParam) {
-        User user = new User();
-        user.setPlatformID(bindPhoneParam.getPlatformID());
-        user.setPhone(bindPhoneParam.getPhone());
-        User save = userRepository.save(user);
-        return new LoginVo(save.getId(), save.getEggCount(), save.getCoin(), save.getJewel(), save.getLikeValue(), save.getAward(), save.getSkinID(), null, false);
     }
 }
