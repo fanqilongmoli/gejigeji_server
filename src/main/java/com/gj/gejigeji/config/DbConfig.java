@@ -65,7 +65,6 @@ public class DbConfig implements CommandLineRunner {
             Prop prop3 = new Prop(null,"www.test.url","道具3","道具3desc",10f,1);
             Prop prop4 = new Prop(null,"www.test.url","道具4","道具4desc",10f,1);
             Prop prop5 = new Prop(null,"www.test.url","道具5","道具5desc",10f,1);
-
             propRepository.save(prop1);
             propRepository.save(prop2);
             propRepository.save(prop3);
