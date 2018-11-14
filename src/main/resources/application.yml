@@ -8,4 +8,4 @@ spring:
       uri: mongodb://172.17.85.173:27017/gejigeji
 logging.level.org.springframework.data.mongodb.core: DEBUG
 server:
-  port: 8080
+  port: 80
