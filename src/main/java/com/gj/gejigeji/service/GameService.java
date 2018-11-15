@@ -2,17 +2,24 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.User;
+import com.gj.gejigeji.model.UserLikeValue;
+import com.gj.gejigeji.repository.UserLikeValueRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class GameService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserLikeValueRepository userLikeValueRepository;
 
 
     public GameCountVo gameCount(ActionParam actionParam) {
@@ -49,6 +56,10 @@ public class GameService {
         if (miniGameCount1>0){
             user.setMiniGameCount1(miniGameCount1-1);
             userRepository.save(user);
+
+            // 添加游戏的好感度
+            updateGameLikeValue(actionParam.getAccountID());
+
             return new OkResult(true);
         }
         return new OkResult(false);
@@ -83,6 +94,10 @@ public class GameService {
         if (miniGameCount3>0){
             user.setMiniGameCount3(miniGameCount3-1);
             userRepository.save(user);
+
+            // 添加游戏的好感度
+            updateGameLikeValue(actionParam.getAccountID());
+
             OkResult okResult = new OkResult(true);
             okResult.setAwardId("23123123");
             return okResult;
@@ -109,6 +124,9 @@ public class GameService {
         if (miniGameCount2>0){
             user.setMiniGameCount2(miniGameCount2-1);
             userRepository.save(user);
+
+            // 添加游戏的好感度
+            updateGameLikeValue(actionParam.getAccountID());
 
             GameResultVo gameResultVo = new GameResultVo();
             gameResultVo.setAllow(true);
@@ -139,6 +157,10 @@ public class GameService {
         if (miniGameCount4>0){
             user.setMiniGameCount4(miniGameCount4-1);
             userRepository.save(user);
+
+            // 添加游戏的好感度
+            updateGameLikeValue(actionParam.getAccountID());
+
             return new OkResult(true);
 
         }
@@ -155,5 +177,25 @@ public class GameService {
         gameResultVo.setAllow(true);
         gameResultVo.setCount(123);
         return gameResultVo;
+    }
+
+
+    /**
+     * 跟新好感度
+     * @param accountID
+     */
+    private void updateGameLikeValue(String accountID){
+        UserLikeValue userLikeValueEx = new UserLikeValue();
+        userLikeValueEx.setUserId(accountID);
+        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        ActionVo actionVo = new ActionVo();
+        if (userLikeValue != null) {
+            Date lastTime = new Date();
+            userLikeValue.setStroke(userLikeValue.getGame() + 3);
+            userLikeValue.setGameLastTime(lastTime);
+            userLikeValueRepository.save(userLikeValue);
+            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+
+        }
     }
 }
