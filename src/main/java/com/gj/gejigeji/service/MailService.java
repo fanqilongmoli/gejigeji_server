@@ -37,6 +37,7 @@ public class MailService {
         entity.setLogo("testlogo");
         entity.setMailType(ConstUtil.MAIL_TYPE_JL);
         entity.setRead(false);
+        entity.setGet(false);
         entity.setMessage("message消息");
         Mail save = mailRepository.save(entity);
 
@@ -53,6 +54,7 @@ public class MailService {
         entity2.setLogo("testlogo");
         entity2.setMailType(ConstUtil.MAIL_TYPE_TZ);
         entity2.setRead(false);
+        entity.setGet(false);
         entity2.setMessage("message消息");
         mailRepository.save(entity2);
 
