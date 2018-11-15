@@ -37,6 +37,11 @@ public class FeedService {
         return feedRepository.findAll();
     }
 
+    /**
+     * 购买
+     * @param feedBuyParam
+     * @return
+     */
     public OkResult buy(FeedBuyParam feedBuyParam) {
 
         User userEx = new User();
@@ -111,6 +116,11 @@ public class FeedService {
 
     }
 
+    /**
+     * 喂食
+     * @param feedingParam
+     * @return
+     */
     public FeedingVo feeding(FeedingParam feedingParam) {
 
         //查询用户饲料表
@@ -155,6 +165,11 @@ public class FeedService {
 
     }
 
+    /**
+     * 获取饲料
+     * @param actionParam
+     * @return
+     */
     public List<FeedListVo> get(ActionParam actionParam) {
 
         List<FeedListVo> feedListVos = new ArrayList<>();
