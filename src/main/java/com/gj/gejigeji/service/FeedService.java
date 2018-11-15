@@ -4,8 +4,10 @@ import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.Feed;
 import com.gj.gejigeji.model.User;
 import com.gj.gejigeji.model.UserFeed;
+import com.gj.gejigeji.model.UserLikeValue;
 import com.gj.gejigeji.repository.FeedRepository;
 import com.gj.gejigeji.repository.UserFeedRepository;
+import com.gj.gejigeji.repository.UserLikeValueRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +29,9 @@ public class FeedService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserLikeValueRepository userLikeValueRepository;
 
     public List<Feed> getAll() {
         return feedRepository.findAll();
@@ -106,14 +112,45 @@ public class FeedService {
     }
 
     public FeedingVo feeding(FeedingParam feedingParam) {
-        // TODO: 2018/11/7 喂食 需要继续完成
-        
 
+        //查询用户饲料表
+        UserFeed userFeedEx = new UserFeed();
+        userFeedEx.setId(feedingParam.getFeedID());
+        userFeedEx.setUserId(feedingParam.getAccountID());
+
+        UserFeed userFeed = userFeedRepository.findOne(Example.of(userFeedEx)).orElse(null);
         FeedingVo feedingVo = new FeedingVo();
-        feedingVo.setAllow(true);
-        feedingVo.setCount(10);
-        feedingVo.setLikeValue(90);
+        // 用户不存在这个饲料 或者 用户该种饲料 个数为0
+        if (userFeed == null || userFeed.getAmount() == 0){
 
+            feedingVo.setAllow(false);
+            feedingVo.setCount(0);
+            return feedingVo;
+        }
+
+        //减去用户饲料的数量 保存
+        userFeed.setAmount(userFeed.getAmount()-1);
+        userFeedRepository.save(userFeed);
+
+        //修改用户的好感度
+        UserLikeValue userLikeValueEx = new UserLikeValue();
+        userLikeValueEx.setUserId(feedingParam.getAccountID());
+        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        if (userLikeValue!=null){
+
+            userLikeValue.setFeed(userLikeValue.getFeed() + 10);
+            userLikeValue.setFeedLastTime(new Date());
+            userLikeValueRepository.save(userLikeValue);
+
+            feedingVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+            feedingVo.setAllow(true);
+            feedingVo.setCount(userFeed.getAmount());
+
+            return feedingVo;
+        }
+
+        feedingVo.setAllow(false);
+        feedingVo.setCount(0);
         return feedingVo;
 
     }
