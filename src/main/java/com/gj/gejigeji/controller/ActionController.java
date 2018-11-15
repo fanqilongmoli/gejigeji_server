@@ -20,7 +20,7 @@ public class ActionController {
     @ApiOperation(value = "抚摸")
     @PostMapping("stroke")
     public ActionVo stroke(@RequestBody ActionParam actionParam){
-        // TODO: 2018/11/8 待完成
+
         return actionService.stroke(actionParam);
     }
 
@@ -28,15 +28,15 @@ public class ActionController {
     @ApiOperation(value = "洗澡")
     @PostMapping("bathe")
     public ActionVo bathe(@RequestBody ActionParam actionParam){
-        // TODO: 2018/11/8 待完成
-        return actionService.stroke(actionParam);
+
+        return actionService.bathe(actionParam);
     }
 
     @ApiOperation(value = "打扫")
     @PostMapping("clean")
     public ActionVo clean(@RequestBody ActionParam actionParam){
-        // TODO: 2018/11/8 待完成
-        return actionService.stroke(actionParam);
+
+        return actionService.clean(actionParam);
     }
 
 

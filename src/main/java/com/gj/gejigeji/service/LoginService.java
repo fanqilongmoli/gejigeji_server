@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +34,7 @@ public class LoginService {
 
     /**
      * 登录
+     *
      * @param loginParam
      * @return
      */
@@ -50,6 +52,7 @@ public class LoginService {
 
     /**
      * 第三方登录
+     *
      * @param login3rdParam
      * @return
      */
@@ -75,6 +78,7 @@ public class LoginService {
 
     /**
      * 绑定手机
+     *
      * @param bindPhoneParam
      * @return
      */
@@ -88,7 +92,7 @@ public class LoginService {
     }
 
 
-    private LoginVo ret(User user){
+    private LoginVo ret(User user) {
         //====拼装返回的vo====
         Mail mailEx = new Mail();
         mailEx.setUserId(user.getId());
@@ -105,14 +109,31 @@ public class LoginService {
         loginVo.setEggCount(user.getEggCount());
         loginVo.setJewel(user.getJewel());
         loginVo.setPhone(user.getPhone());
-        // 获取好感度
+        // 获取好感度  不存在需要添加
         UserLikeValue userLikeValueEx = new UserLikeValue();
         userLikeValueEx.setUserId(user.getId());
         UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
-        if (userLikeValue != null) {
-            int likeValue = userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv();
-            loginVo.setLikeValue(likeValue);
+
+        if (userLikeValue == null) {
+            Date lastTime = new Date();
+            userLikeValue = new UserLikeValue();
+            userLikeValue.setUserId(user.getId());
+            userLikeValue.setBathe(0);
+            userLikeValue.setBatheLastTime(lastTime);
+            userLikeValue.setFeed(0);
+            userLikeValue.setFeedLastTime(lastTime);
+            userLikeValue.setStroke(0);
+            userLikeValue.setStrokeLastTime(lastTime);
+            userLikeValue.setTv(0);
+            userLikeValue.setTvLastTime(lastTime);
+            userLikeValue.setGame(0);
+            userLikeValue.setGameLastTime(lastTime);
+            userLikeValueRepository.save(userLikeValue);
+
         }
+        int likeValue = userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv();
+        loginVo.setLikeValue(likeValue);
+
 
         loginVo.setSkinID(user.getSkinID());
         loginVo.setUserName(user.getUserName());

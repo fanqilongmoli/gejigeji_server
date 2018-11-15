@@ -2,12 +2,16 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.User;
+import com.gj.gejigeji.model.UserLikeValue;
+import com.gj.gejigeji.repository.UserLikeValueRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.ActionVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class ActionService {
@@ -22,18 +26,112 @@ public class ActionService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserLikeValueRepository userLikeValueRepository;
+
+    /**
+     * 抚摸
+     *
+     * @param actionParam
+     * @return
+     */
     public ActionVo stroke(ActionParam actionParam) {
 
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
 
+        //查询好感表
+        UserLikeValue userLikeValueEx = new UserLikeValue();
+        userLikeValueEx.setUserId(actionParam.getAccountID());
+        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
         ActionVo actionVo = new ActionVo();
-        actionVo.setLikeValue(99);
+        if (userLikeValue != null) {
+            Date lastTime = new Date();
+            userLikeValue.setStroke(userLikeValue.getStroke() + 2);
+            userLikeValue.setStrokeLastTime(lastTime);
+            userLikeValueRepository.save(userLikeValue);
+            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+
+        } else {
+            actionVo.setLikeValue(0);
+        }
+
+
         return actionVo;
 
+
+    }
+
+    /**
+     * 洗澡
+     *
+     * @param actionParam
+     * @return
+     */
+    public ActionVo bathe(ActionParam actionParam) {
+
+        User userEx = new User();
+        userEx.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+
+        //查询好感表
+        UserLikeValue userLikeValueEx = new UserLikeValue();
+        userLikeValueEx.setUserId(actionParam.getAccountID());
+        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        ActionVo actionVo = new ActionVo();
+        if (userLikeValue != null) {
+            userLikeValue.setBathe(userLikeValue.getBathe() + 5);
+            userLikeValue.setBatheLastTime(new Date());
+            userLikeValueRepository.save(userLikeValue);
+            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+
+        } else {
+            actionVo.setLikeValue(0);
+        }
+
+
+        return actionVo;
+    }
+
+    /**
+     * 打扫
+     *
+     * @param actionParam
+     * @return
+     */
+    public ActionVo clean(ActionParam actionParam) {
+
+
+        User userEx = new User();
+        userEx.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+
+        //查询好感表
+        UserLikeValue userLikeValueEx = new UserLikeValue();
+        userLikeValueEx.setUserId(actionParam.getAccountID());
+        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        ActionVo actionVo = new ActionVo();
+        if (userLikeValue != null) {
+            userLikeValue.setTv(userLikeValue.getTv() + 1);
+            userLikeValue.setTvLastTime(new Date());
+            userLikeValueRepository.save(userLikeValue);
+            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+
+        } else {
+            actionVo.setLikeValue(0);
+        }
+
+
+        return actionVo;
     }
 }
