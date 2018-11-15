@@ -27,7 +27,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("格叽格叽")
-                .description("格叽格叽接口文档")
+                .description("格叽格叽接口文档 ------ 开发阶段用户的游戏次数20分钟刷新一次")
                 .version("1.0")
                 .build();
     }
