@@ -32,6 +32,9 @@ public class LoginService {
     @Autowired
     UserLikeValueRepository userLikeValueRepository;
 
+    @Autowired
+    UserSiteRepository userSiteRepository;
+
     /**
      * 登录
      *
@@ -113,7 +116,6 @@ public class LoginService {
         UserLikeValue userLikeValueEx = new UserLikeValue();
         userLikeValueEx.setUserId(user.getId());
         UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
-
         if (userLikeValue == null) {
             Date lastTime = new Date();
             userLikeValue = new UserLikeValue();
@@ -133,7 +135,11 @@ public class LoginService {
         }
         int likeValue = userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv();
         loginVo.setLikeValue(likeValue);
-
+        // 获取配送地址
+        UserSite userSiteEx = new UserSite();
+        userSiteEx.setUserId(user.getId());
+        UserSite userSite = userSiteRepository.findOne(Example.of(userSiteEx)).orElse(null);
+        loginVo.setSite(userSite);
 
         loginVo.setSkinID(user.getSkinID());
         loginVo.setUserName(user.getUserName());

@@ -90,6 +90,8 @@ public class UserService {
 
         if (user.getPassword().equals(updatePasswordParam.getFormerPas())) {
             user.setPassword(updatePasswordParam.getNewPas());
+            userRepository.save(user);
+
             return new OkResult(true);
 
         }else {

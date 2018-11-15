@@ -2,6 +2,7 @@ package com.gj.gejigeji.vo;
 
 import com.gj.gejigeji.model.Mail;
 import com.gj.gejigeji.model.UserProp;
+import com.gj.gejigeji.model.UserSite;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class LoginVo {
     @ApiModelProperty(value = "是否需要绑定手机号")
     private boolean bindPhone = false;
     private String phone;
-    private String site;
+    @ApiModelProperty("配送信息")
+    private UserSite site;
     // 小游戏打地鼠的次数
     private Integer miniGameCount1;
     // 小游戏大转盘次数
@@ -134,11 +136,11 @@ public class LoginVo {
         this.phone = phone;
     }
 
-    public String getSite() {
+    public UserSite getSite() {
         return site;
     }
 
-    public void setSite(String site) {
+    public void setSite(UserSite site) {
         this.site = site;
     }
 
