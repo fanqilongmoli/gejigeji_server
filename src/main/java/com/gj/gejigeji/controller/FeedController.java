@@ -40,7 +40,7 @@ public class FeedController {
         return feedService.feedTest(userId);
     }
 
-    @ApiOperation(value = "喂食-->feedType(饲料类型) 1:富硒 2:有机 3:特质")
+    @ApiOperation(value = "喂食")
     @PostMapping("feeding")
     public FeedingVo feeding(@RequestBody FeedingParam feedingParam){
         return feedService.feeding(feedingParam);
