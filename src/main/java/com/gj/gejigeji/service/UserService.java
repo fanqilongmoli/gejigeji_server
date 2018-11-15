@@ -2,7 +2,9 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.User;
+import com.gj.gejigeji.model.UserAuthentication;
 import com.gj.gejigeji.model.UserSite;
+import com.gj.gejigeji.repository.UserAuthenticationRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.repository.UserSiteRepository;
 import com.gj.gejigeji.vo.*;
@@ -17,6 +19,9 @@ public class UserService {
 
     @Autowired
     UserSiteRepository userSiteRepository;
+
+    @Autowired
+    UserAuthenticationRepository userAuthenticationRepository;
 
     /**
      * 获取金币数量
@@ -106,7 +111,16 @@ public class UserService {
      * @return
      */
     public OkResult authentication(AuthenticationParam authenticationParam) {
-        // TODO: 2018/11/14  用户认证怎么搞
+
+        UserAuthentication userAuthenticationEx = new UserAuthentication();
+        userAuthenticationEx.setUserId(authenticationParam.getAccountID());
+        UserAuthentication userAuthentication = userAuthenticationRepository.findOne(Example.of(userAuthenticationEx)).orElse(new UserAuthentication());
+        userAuthentication.setUserId(authenticationParam.getAccountID());
+        userAuthentication.setUserName(authenticationParam.getUserName());
+        userAuthentication.setPapers(authenticationParam.getPapers());
+        userAuthentication.setOk(true); //暂时默认为true
+        userAuthenticationRepository.save(userAuthentication);
+
         return new OkResult(true);
     }
 }
