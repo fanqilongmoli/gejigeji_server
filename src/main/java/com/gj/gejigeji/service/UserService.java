@@ -1,16 +1,16 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
-import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserAuthentication;
-import com.gj.gejigeji.model.UserSite;
-import com.gj.gejigeji.repository.UserAuthenticationRepository;
-import com.gj.gejigeji.repository.UserRepository;
-import com.gj.gejigeji.repository.UserSiteRepository;
+import com.gj.gejigeji.model.*;
+import com.gj.gejigeji.repository.*;
+import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -23,8 +23,21 @@ public class UserService {
     @Autowired
     UserAuthenticationRepository userAuthenticationRepository;
 
+    @Autowired
+    UserChickenRepository userChickenRepository;
+
+    @Autowired
+    UserEggRepository userEggRepository;
+
+    @Autowired
+    UserFeedRecordRepository userFeedRecordRepository;
+
+    @Autowired
+    ChickenRepository chickenRepository;
+
     /**
      * 获取金币数量
+     *
      * @param actionParam
      * @return
      */
@@ -32,7 +45,7 @@ public class UserService {
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
         GetCoinVo getCoinVo = new GetCoinVo();
@@ -43,6 +56,7 @@ public class UserService {
 
     /**
      * 修改昵称
+     *
      * @param updateUserNameParam
      * @return
      */
@@ -50,7 +64,7 @@ public class UserService {
         User userEx = new User();
         userEx.setId(updateUserNameParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
 
@@ -62,6 +76,7 @@ public class UserService {
 
     /**
      * 修改配送信息
+     *
      * @param updateSiteParam
      * @return
      */
@@ -82,6 +97,7 @@ public class UserService {
 
     /**
      * 修改密码
+     *
      * @param updatePasswordParam
      * @return
      */
@@ -89,7 +105,7 @@ public class UserService {
         User userEx = new User();
         userEx.setId(updatePasswordParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
 
@@ -99,7 +115,7 @@ public class UserService {
 
             return new OkResult(true);
 
-        }else {
+        } else {
             return new OkResult(false);
         }
 
@@ -107,6 +123,7 @@ public class UserService {
 
     /**
      * 用户认证
+     *
      * @param authenticationParam
      * @return
      */
@@ -126,6 +143,7 @@ public class UserService {
 
     /**
      * 下蛋请求
+     *
      * @param actionParam
      * @return
      */
@@ -133,13 +151,56 @@ public class UserService {
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
-        // 记住下蛋类型
+
+        //演示版 默认只有一只鸡  正式的应该加上 鸡的id
+
+        //检查是否可以下蛋
+        UserChicken userChickenEx = new UserChicken();
+        userChickenEx.setUserId(actionParam.getAccountID());
+        UserChicken userChicken = userChickenRepository.findAll(Example.of(userChickenEx)).get(0);
+        Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
+        Integer dayEgg = userChicken.getDayEgg();
+        if (dayEgg >= maxEgg ) {
+            // TODO: 2018/11/18 抛出一个不能下蛋的异常
+        }
+
+        //查询喂食记录表  获取最后一次喂食的饲料
+        UserFeedRecord userFeedRecordEx = new UserFeedRecord();
+        userFeedRecordEx.setUserId(actionParam.getAccountID());
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        Pageable pageable = PageRequest.of(0,1,sort);
+        List<UserFeedRecord> content = userFeedRecordRepository.findAll(pageable).getContent();
+        UserFeedRecord userFeedRecord = content.get(0);
+
+        //保存用户下蛋的和什么饲料相关的蛋
+        UserEgg userEggEx = new UserEgg();
+        userEggEx.setFeedId(userFeedRecord.getFeedId());
+        userEggEx.setUserId(actionParam.getAccountID());
+        UserEgg userEgg = userEggRepository.findOne(Example.of(userEggEx)).orElse(null);
+        if (userEgg == null) {
+            userEgg = new UserEgg();
+            userEgg.setUserId(actionParam.getAccountID());
+            userEgg.setAmount(1);
+            userEgg.setCreateTime(new Date());
+            userEgg.setFeedId(userFeedRecord.getFeedId());
+            userEgg.setUpdateTime(new Date());
+            userEgg.setDeleteFlag(ConstUtil.Delete_Flag_No);
+        }
+        userEgg.setUpdateTime(new Date());
+        userEgg.setAmount(userEgg.getAmount()+1);
+        UserEgg save = userEggRepository.save(userEgg);
+
+        //更新UserChicken 表
+        userChicken.setDayEgg(userChicken.getDayEgg() + 1);
+        userChickenRepository.save(userChicken);
 
 
+        EggCountVo eggCountVo = new EggCountVo();
+        eggCountVo.setEggCount(save.getAmount());
 
-        return null;
+        return eggCountVo;
     }
 }

@@ -26,10 +26,13 @@ public class FeedService {
     UserRepository userRepository;
 
     @Autowired
-    UserChickenRepository UserChickenRepository;
+    UserChickenRepository userChickenRepository;
 
     @Autowired
     UserFeedRecordRepository userFeedRecordRepository;
+
+    @Autowired
+    ChickenRepository chickenRepository;
 
     public List<Feed> getAll() {
         return feedRepository.findAll();
@@ -124,7 +127,7 @@ public class FeedService {
 
         //查询用户饲料表
         UserFeed userFeedEx = new UserFeed();
-        userFeedEx.setId(feedingParam.getFeedID());
+        userFeedEx.setFeedId(feedingParam.getFeedID());
         userFeedEx.setUserId(feedingParam.getAccountID());
 
         UserFeed userFeed = userFeedRepository.findOne(Example.of(userFeedEx)).orElse(null);
@@ -142,18 +145,13 @@ public class FeedService {
         userFeedRepository.save(userFeed);
 
         //修改用户的好感度
-        UserChicken UserChickenEx = new UserChicken();
-        UserChickenEx.setUserId(feedingParam.getAccountID());
-        UserChicken UserChicken = UserChickenRepository.findOne(Example.of(UserChickenEx)).orElse(null);
-        if (UserChicken != null) {
+        UserChicken userChickenEx = new UserChicken();
+        userChickenEx.setUserId(feedingParam.getAccountID());
+        UserChicken userChicken = userChickenRepository.findOne(Example.of(userChickenEx)).orElse(null);
+        if (userChicken != null) {
 
-            UserChicken.setFeed(UserChicken.getFeed() + 10);
-            UserChicken.setFeedLastTime(new Date());
-            UserChickenRepository.save(UserChicken);
-
-            feedingVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
-            feedingVo.setAllow(true);
-            feedingVo.setCount(userFeed.getAmount());
+            userChicken.setFeed(userChicken.getFeed() + 10);
+            userChicken.setFeedLastTime(new Date());
 
             //保存到用户喂食记录表
             UserFeedRecord userFeedRecord = new UserFeedRecord();
@@ -164,11 +162,22 @@ public class FeedService {
             userFeedRecord.setDeleteFlag(ConstUtil.Delete_Flag_No);
             userFeedRecordRepository.save(userFeedRecord);
 
+            //检查是否可以下蛋
+            Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
+            Integer dayEgg = userChicken.getDayEgg();
+            int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
+            if (dayEgg < maxEgg && likeValue == 100) {
+                feedingVo.setEgg(true);
+            }
+            userChickenRepository.save(userChicken);
+
+            feedingVo.setLikeValue(likeValue);
+            feedingVo.setAllow(true);
+            feedingVo.setCount(userFeed.getAmount());
+
             return feedingVo;
         }
 
-        feedingVo.setAllow(false);
-        feedingVo.setCount(0);
         return feedingVo;
 
     }

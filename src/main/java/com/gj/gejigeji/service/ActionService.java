@@ -66,7 +66,6 @@ public class ActionService {
             int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
             if (dayEgg < maxEgg && likeValue == 100) {
                 actionVo.setEgg(true);
-                userChicken.setDayEgg(dayEgg + 1);
             }
             userChickenRepository.save(userChicken);
             actionVo.setLikeValue(likeValue);
@@ -113,7 +112,6 @@ public class ActionService {
             int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
             if (dayEgg < maxEgg && likeValue == 100) {
                 actionVo.setEgg(true);
-                userChicken.setDayEgg(dayEgg + 1);
             }
             userChickenRepository.save(userChicken);
             actionVo.setLikeValue(likeValue);
@@ -156,7 +154,6 @@ public class ActionService {
             int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
             if (dayEgg < maxEgg && likeValue == 100) {
                 actionVo.setEgg(true);
-                userChicken.setDayEgg(dayEgg + 1);
             }
             userChickenRepository.save(userChicken);
             actionVo.setLikeValue(likeValue);

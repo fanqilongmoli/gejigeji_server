@@ -4,33 +4,43 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class FeedingVo {
     @ApiModelProperty("饲料剩余的个数")
-    private Integer count;
+    private int count;
     @ApiModelProperty("好感度")
-    private Integer likeValue;
+    private int likeValue;
     @ApiModelProperty("是否允许操作")
-    private Boolean allow;
+    private boolean allow;
+    @ApiModelProperty("是否执行下蛋操作")
+    private boolean egg;
 
-    public Integer getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(int count) {
         this.count = count;
     }
 
-    public Integer getLikeValue() {
+    public int getLikeValue() {
         return likeValue;
     }
 
-    public void setLikeValue(Integer likeValue) {
+    public void setLikeValue(int likeValue) {
         this.likeValue = likeValue;
     }
 
-    public Boolean getAllow() {
+    public boolean isAllow() {
         return allow;
     }
 
-    public void setAllow(Boolean allow) {
+    public void setAllow(boolean allow) {
         this.allow = allow;
+    }
+
+    public boolean isEgg() {
+        return egg;
+    }
+
+    public void setEgg(boolean egg) {
+        this.egg = egg;
     }
 }

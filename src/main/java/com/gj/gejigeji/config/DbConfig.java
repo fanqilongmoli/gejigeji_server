@@ -44,10 +44,16 @@ public class DbConfig implements CommandLineRunner {
         if (allFeed.size()==0) {
             Feed feed1 = new Feed(null,feedBase64,"富硒饲料","富硒鸡蛋","富硒饲料吃了就是好",10f,1);
             Feed feed2 = new Feed(null,feedBase64,"有机饲料","有机鸡蛋","有机饲料吃了就是好",10f,1);
-            Feed feed3 = new Feed(null,feedBase64,"特质饲料","特质鸡蛋","特质饲料吃了就是好",10f,1);
+            Feed feed3 = new Feed(null,feedBase64,"特质饲料1","特质1鸡蛋","特质饲料吃了就是好",10f,1);
+            Feed feed4 = new Feed(null,feedBase64,"特质饲料2","特质2鸡蛋","特质饲料吃了就是好",10f,1);
+            Feed feed5 = new Feed(null,feedBase64,"特质饲料3","特质3鸡蛋","特质饲料吃了就是好",10f,1);
+            Feed feed6 = new Feed(null,feedBase64,"特质饲料4","特质4鸡蛋","特质饲料吃了就是好",10f,1);
             feedRepository.save(feed1);
             feedRepository.save(feed2);
             feedRepository.save(feed3);
+            feedRepository.save(feed4);
+            feedRepository.save(feed5);
+            feedRepository.save(feed6);
         }
 
         // 初始化主题

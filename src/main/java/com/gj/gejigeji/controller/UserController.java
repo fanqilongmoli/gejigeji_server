@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @ApiOperation("下蛋")
-    @RequestMapping("egg")
+    @PostMapping("egg")
     public EggCountVo egg(@RequestBody ActionParam actionParam){
         return userService.egg(actionParam);
     }
