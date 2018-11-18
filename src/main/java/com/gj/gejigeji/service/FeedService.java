@@ -1,14 +1,9 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
-import com.gj.gejigeji.model.Feed;
-import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserFeed;
-import com.gj.gejigeji.model.UserLikeValue;
-import com.gj.gejigeji.repository.FeedRepository;
-import com.gj.gejigeji.repository.UserFeedRepository;
-import com.gj.gejigeji.repository.UserLikeValueRepository;
-import com.gj.gejigeji.repository.UserRepository;
+import com.gj.gejigeji.model.*;
+import com.gj.gejigeji.repository.*;
+import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -33,12 +28,16 @@ public class FeedService {
     @Autowired
     UserLikeValueRepository userLikeValueRepository;
 
+    @Autowired
+    UserFeedRecordRepository userFeedRecordRepository;
+
     public List<Feed> getAll() {
         return feedRepository.findAll();
     }
 
     /**
      * 购买
+     *
      * @param feedBuyParam
      * @return
      */
@@ -47,7 +46,7 @@ public class FeedService {
         User userEx = new User();
         userEx.setId(feedBuyParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
 
@@ -59,15 +58,14 @@ public class FeedService {
             throw new BaseRuntimeException("no.feed");
         }
         //检查购买的个数 是否大于最小购买个数
-        if (feedBuyParam.getAmount()<feed.getMin()){
+        if (feedBuyParam.getAmount() < feed.getMin()) {
             throw new BaseRuntimeException("less.than.min");
         }
 
 
+        Float resultCoin = user.getCoin() - feedBuyParam.getAmount() * feed.getPrice();
 
-        Float resultCoin = user.getCoin()-feedBuyParam.getAmount()*feed.getPrice();
-
-        if (resultCoin<0){
+        if (resultCoin < 0) {
             throw new BaseRuntimeException("no.money");
         }
         // 更新用户金币数
@@ -78,18 +76,18 @@ public class FeedService {
         ex.setUserId(feedBuyParam.getAccountID());
         ex.setFeedId(feedBuyParam.getFeedId());
         UserFeed userFeed = userFeedRepository.findOne(Example.of(ex)).orElse(null);
-        if (userFeed == null){
+        if (userFeed == null) {
             userFeed = new UserFeed();
             userFeed.setUserId(feedBuyParam.getAccountID());
             userFeed.setFeedId(feedBuyParam.getFeedId());
             userFeed.setAmount(feedBuyParam.getAmount());
             userFeed.setPrice(feed.getPrice());
-            userFeed.setAllPrice(feed.getPrice()*feedBuyParam.getAmount());
+            userFeed.setAllPrice(feed.getPrice() * feedBuyParam.getAmount());
             userFeedRepository.save(userFeed);
-        }else {
+        } else {
 
-            userFeed.setAmount(userFeed.getAmount()+feedBuyParam.getAmount());
-            userFeed.setAllPrice(userFeed.getAllPrice()+feed.getPrice()*feedBuyParam.getAmount());
+            userFeed.setAmount(userFeed.getAmount() + feedBuyParam.getAmount());
+            userFeed.setAllPrice(userFeed.getAllPrice() + feed.getPrice() * feedBuyParam.getAmount());
 
             userFeedRepository.save(userFeed);
         }
@@ -105,7 +103,7 @@ public class FeedService {
             Float price = feed.getPrice();
 
             UserFeed userFeed = new UserFeed();
-            userFeed.setAllPrice(price*10);
+            userFeed.setAllPrice(price * 10);
             userFeed.setFeedId(feed.getId());
             userFeed.setAmount(10);
             userFeed.setPrice(price);
@@ -118,6 +116,7 @@ public class FeedService {
 
     /**
      * 喂食
+     *
      * @param feedingParam
      * @return
      */
@@ -131,7 +130,7 @@ public class FeedService {
         UserFeed userFeed = userFeedRepository.findOne(Example.of(userFeedEx)).orElse(null);
         FeedingVo feedingVo = new FeedingVo();
         // 用户不存在这个饲料 或者 用户该种饲料 个数为0
-        if (userFeed == null || userFeed.getAmount() == 0){
+        if (userFeed == null || userFeed.getAmount() == 0) {
 
             feedingVo.setAllow(false);
             feedingVo.setCount(0);
@@ -139,14 +138,14 @@ public class FeedService {
         }
 
         //减去用户饲料的数量 保存
-        userFeed.setAmount(userFeed.getAmount()-1);
+        userFeed.setAmount(userFeed.getAmount() - 1);
         userFeedRepository.save(userFeed);
 
         //修改用户的好感度
         UserLikeValue userLikeValueEx = new UserLikeValue();
         userLikeValueEx.setUserId(feedingParam.getAccountID());
         UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
-        if (userLikeValue!=null){
+        if (userLikeValue != null) {
 
             userLikeValue.setFeed(userLikeValue.getFeed() + 10);
             userLikeValue.setFeedLastTime(new Date());
@@ -155,6 +154,15 @@ public class FeedService {
             feedingVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
             feedingVo.setAllow(true);
             feedingVo.setCount(userFeed.getAmount());
+
+            //保存到用户喂食记录表
+            UserFeedRecord userFeedRecord = new UserFeedRecord();
+            userFeedRecord.setChickenId(feedingParam.getAccountID());
+            userFeedRecord.setUserId(feedingParam.getAccountID());
+            userFeedRecord.setCreateTime(new Date());
+            userFeedRecord.setFeedId(feedingParam.getFeedID());
+            userFeedRecord.setDeleteFlag(ConstUtil.Delete_Flag_No);
+            userFeedRecordRepository.save(userFeedRecord);
 
             return feedingVo;
         }
@@ -167,6 +175,7 @@ public class FeedService {
 
     /**
      * 获取饲料
+     *
      * @param actionParam
      * @return
      */
@@ -182,7 +191,7 @@ public class FeedService {
             Feed feedEx = new Feed();
             feedEx.setId(userFeed.getFeedId());
             Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
-            if (feed != null){
+            if (feed != null) {
                 feedListVo = new FeedListVo();
                 feedListVo.setUrl(feed.getUrl());
                 feedListVo.setAmount(userFeed.getAmount());

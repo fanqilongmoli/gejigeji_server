@@ -22,6 +22,9 @@ public class Feed {
     @ApiModelProperty(value = "饲料的名字")
     private String name;
 
+    @ApiModelProperty("吃这种饲料下的蛋的名字")
+    private String eggName;
+
     // 描述
     @ApiModelProperty(value = "饲料的描述")
     private String desc;
@@ -38,10 +41,11 @@ public class Feed {
     public Feed() {
     }
 
-    public Feed(String id, String url, String name, String desc, Float price,Integer min) {
+    public Feed(String id, String url, String name,String eggName, String desc, Float price,Integer min) {
         Id = id;
         this.url = url;
         this.name = name;
+        this.eggName = eggName;
         this.desc = desc;
         this.price = price;
         this.min = min;
@@ -93,5 +97,13 @@ public class Feed {
 
     public void setMin(Integer min) {
         this.min = min;
+    }
+
+    public String getEggName() {
+        return eggName;
+    }
+
+    public void setEggName(String eggName) {
+        this.eggName = eggName;
     }
 }

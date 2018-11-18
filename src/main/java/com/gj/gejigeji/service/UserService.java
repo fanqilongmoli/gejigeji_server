@@ -123,4 +123,23 @@ public class UserService {
 
         return new OkResult(true);
     }
+
+    /**
+     * 下蛋请求
+     * @param actionParam
+     * @return
+     */
+    public EggCountVo egg(ActionParam actionParam) {
+        User userEx = new User();
+        userEx.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null){
+            throw new BaseRuntimeException("login.user.null");
+        }
+        // 记住下蛋类型
+
+
+
+        return null;
+    }
 }

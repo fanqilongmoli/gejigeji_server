@@ -48,5 +48,11 @@ public class UserController {
         return userService.authentication(authenticationParam);
     }
 
+    @ApiOperation("下蛋")
+    @RequestMapping("egg")
+    public EggCountVo egg(@RequestBody ActionParam actionParam){
+        return userService.egg(actionParam);
+    }
+
 
 }

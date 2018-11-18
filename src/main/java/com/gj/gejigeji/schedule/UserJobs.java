@@ -1,10 +1,9 @@
 package com.gj.gejigeji.schedule;
 
 import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserLikeValue;
-import com.gj.gejigeji.repository.UserLikeValueRepository;
+import com.gj.gejigeji.model.UserChicken;
+import com.gj.gejigeji.repository.UserChickenRepository;
 import com.gj.gejigeji.repository.UserRepository;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class UserJobs {
     UserRepository userRepository;
 
     @Autowired
-    UserLikeValueRepository userLikeValueRepository;
+    UserChickenRepository userChickenRepository;
 
     /**
      * 刷新用户的游戏次数
@@ -58,8 +57,8 @@ public class UserJobs {
     @Transactional
     @Scheduled(fixedDelay = 1000 * 60)
     public void refreshLikeValue() {
-        List<UserLikeValue> all = userLikeValueRepository.findAll();
-        for (UserLikeValue userLikeValue : all) {
+        List<UserChicken> all = userChickenRepository.findAll();
+        for (UserChicken userLikeValue : all) {
             //抚摸
             Date strokeLastTime = userLikeValue.getStrokeLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(strokeLastTime, Calendar.HOUR)) >= 1) {
@@ -101,7 +100,7 @@ public class UserJobs {
                 userLikeValue.setTvLastTime(new Date());
                 logger.warn(userLikeValue.getUserId()+"===打扫====亲密度衰减逻辑===>"+newTv);
             }
-            userLikeValueRepository.save(userLikeValue);
+            userChickenRepository.save(userLikeValue);
 
         }
     }

@@ -30,7 +30,7 @@ public class LoginService {
     UserPropRepository userPropRepository;
 
     @Autowired
-    UserLikeValueRepository userLikeValueRepository;
+    UserChickenRepository userChickenRepository;
 
     @Autowired
     UserSiteRepository userSiteRepository;
@@ -113,26 +113,10 @@ public class LoginService {
         loginVo.setJewel(user.getJewel());
         loginVo.setPhone(user.getPhone());
         // 获取好感度  不存在需要添加
-        UserLikeValue userLikeValueEx = new UserLikeValue();
+        UserChicken userLikeValueEx = new UserChicken();
         userLikeValueEx.setUserId(user.getId());
-        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
-        if (userLikeValue == null) {
-            Date lastTime = new Date();
-            userLikeValue = new UserLikeValue();
-            userLikeValue.setUserId(user.getId());
-            userLikeValue.setBathe(0);
-            userLikeValue.setBatheLastTime(lastTime);
-            userLikeValue.setFeed(0);
-            userLikeValue.setFeedLastTime(lastTime);
-            userLikeValue.setStroke(0);
-            userLikeValue.setStrokeLastTime(lastTime);
-            userLikeValue.setTv(0);
-            userLikeValue.setTvLastTime(lastTime);
-            userLikeValue.setGame(0);
-            userLikeValue.setGameLastTime(lastTime);
-            userLikeValueRepository.save(userLikeValue);
+        UserChicken userLikeValue = userChickenRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
 
-        }
         int likeValue = userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv();
         loginVo.setLikeValue(likeValue);
         // 获取配送地址
