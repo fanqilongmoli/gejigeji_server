@@ -14,6 +14,9 @@ public class Prop {
     @Id
     private String Id;
 
+    @ApiModelProperty("道具从属主题ID")
+    private String themeId;
+
     @ApiModelProperty("道具的图片")
     private String url;
 
@@ -35,8 +38,9 @@ public class Prop {
     private Boolean have;
 
 
-    public Prop(String id, String url, String name, String desc, Float price,Integer min) {
+    public Prop(String id, String themeId, String url, String name, String desc, Float price, Integer min) {
         Id = id;
+        this.themeId = themeId;
         this.url = url;
         this.name = name;
         this.desc = desc;
@@ -45,6 +49,14 @@ public class Prop {
     }
 
     public Prop() {
+    }
+
+    public String getThemeId() {
+        return themeId;
+    }
+
+    public void setThemeId(String themeId) {
+        this.themeId = themeId;
     }
 
     public String getId() {

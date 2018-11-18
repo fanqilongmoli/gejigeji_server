@@ -5,6 +5,7 @@ import com.gj.gejigeji.service.ThemeService;
 import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.OkResult;
 import com.gj.gejigeji.vo.ThemeBuyParam;
+import com.gj.gejigeji.vo.ThemeVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ThemeController {
 
     @ApiOperation(value = "获取所有的主题(鸡舍就是主题)")
     @PostMapping("getAll")
-    public List<Theme> getAll(@RequestBody ActionParam actionParam){
+    public List<ThemeVo> getAll(@RequestBody ActionParam actionParam){
         return themeService.getAll(actionParam);
     }
 

@@ -2,16 +2,16 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.*;
-import com.gj.gejigeji.repository.ThemeRepository;
-import com.gj.gejigeji.repository.UserRepository;
-import com.gj.gejigeji.repository.UserThemeRepository;
+import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.OkResult;
 import com.gj.gejigeji.vo.ThemeBuyParam;
+import com.gj.gejigeji.vo.ThemeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,27 +27,61 @@ public class ThemeService {
     @Autowired
     UserRepository userRepository;
 
-    public List<Theme> getAll(ActionParam actionParam) {
+    @Autowired
+    PropRepository propRepository;
 
-        // 获取所有道具
+    @Autowired
+    UserPropRepository userPropRepository;
+
+    public List<ThemeVo> getAll(ActionParam actionParam) {
+
+        List<ThemeVo> allThemeVo = new ArrayList<>();
+
+        // 获取所有主题
         List<Theme> allTheme = themeRepository.findAll();
         for (Theme theme : allTheme) {
             theme.setHave(false);
         }
-
-        // 判断出已拥有的道具
         UserTheme userThemeEx = new UserTheme();
         userThemeEx.setUserId(actionParam.getAccountID());
-        List<UserTheme> UserProps = userThemeRepository.findAll(Example.of(userThemeEx));
-        for (UserTheme userProp : UserProps) {
-            for (Theme prop : allTheme) {
-                if (prop.getId().equals(userProp.getThemeId())) {
-                    prop.setHave(true);
+        List<UserTheme> userThemes = userThemeRepository.findAll(Example.of(userThemeEx));
+        for (Theme theme : allTheme) {
+            //判断出已拥有主题
+            for (UserTheme userTheme : userThemes) {
+                if (theme.getId().equals(userTheme.getThemeId())) {
+                    theme.setHave(true);
                 }
             }
+
+            //获取主题下面带有的道具
+            Prop propEx = new Prop();
+            propEx.setThemeId(theme.getId());
+            List<Prop> allProps = propRepository.findAll(Example.of(propEx));
+            for (Prop allProp : allProps) {
+                allProp.setHave(false);
+            }
+            UserProp userPropEx = new UserProp();
+            userPropEx.setUserId(actionParam.getAccountID());
+            List<UserProp> UserProps = userPropRepository.findAll(Example.of(userPropEx));
+
+            for (Prop prop : allProps) {
+                for (UserProp userProp : UserProps) {
+                    if (prop.getId().equals(userProp.getPropId())){
+                        prop.setHave(true);
+                    }
+                }
+
+            }
+
+            ThemeVo themeVo = new ThemeVo();
+            themeVo.setTheme(theme);
+            themeVo.setProps(allProps);
+            allThemeVo.add(themeVo);
         }
 
-        return allTheme;
+
+
+        return allThemeVo;
     }
 
     public OkResult buy(ThemeBuyParam themeBuyParam) {
@@ -55,7 +89,7 @@ public class ThemeService {
         User userEx = new User();
         userEx.setId(themeBuyParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null){
+        if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
 
@@ -73,16 +107,14 @@ public class ThemeService {
         themeEx.setId(themeBuyParam.getThemeId());
         Theme theme = themeRepository.findOne(Example.of(themeEx)).orElse(null);
 
-        if (theme==null){
+        if (theme == null) {
             throw new BaseRuntimeException("no.theme");
         }
 
 
-
-
         // 检查金币是否充足
         Float resultCoin = user.getCoin() - theme.getPrice();
-        if (resultCoin<0){
+        if (resultCoin < 0) {
             throw new BaseRuntimeException("no.money");
 
         }

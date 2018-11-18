@@ -47,43 +47,19 @@ public class DbConfig implements CommandLineRunner {
             feedRepository.save(feed3);
         }
 
-        // 初始化鸡舍
-        if (henhouseRepository.findAll().size() == 0) {
-            Henhouse henhouse = new Henhouse();
-            henhouse.setPrice(1000f);
-            henhouse.setUrl("www.jishe1.com");
-            henhouse.setDesc("鸡舍1desc");
-            henhouse.setName("鸡舍1");
-            henhouseRepository.save(henhouse);
-        }
-
-        //初始化道具
-        List<Prop> allProp = propRepository.findAll();
-        if (allProp.size()==0){
-            Prop prop1 = new Prop(null,"www.test.url","道具1","道具1desc",10f,1);
-            Prop prop2 = new Prop(null,"www.test.url","道具2","道具2desc",10f,1);
-            Prop prop3 = new Prop(null,"www.test.url","道具3","道具3desc",10f,1);
-            Prop prop4 = new Prop(null,"www.test.url","道具4","道具4desc",10f,1);
-            Prop prop5 = new Prop(null,"www.test.url","道具5","道具5desc",10f,1);
-            propRepository.save(prop1);
-            propRepository.save(prop2);
-            propRepository.save(prop3);
-            propRepository.save(prop4);
-            propRepository.save(prop5);
-        }
         // 初始化主题
         if (themeRepository.findAll().size() == 0) {
-            Theme theme1 = new Theme(null,"www.zhuti.com","主题1","主题1desc",100f);
-            Theme theme2 = new Theme(null,"www.zhuti.com","主题2","主题2desc",100f);
-            Theme theme3 = new Theme(null,"www.zhuti.com","主题3","主题3desc",100f);
-            Theme theme4 = new Theme(null,"www.zhuti.com","主题4","主题4desc",100f);
-            Theme theme5 = new Theme(null,"www.zhuti.com","主题5","主题5desc",100f);
 
-            themeRepository.save(theme1);
-            themeRepository.save(theme2);
-            themeRepository.save(theme3);
-            themeRepository.save(theme4);
-            themeRepository.save(theme5);
+            for (int i = 0; i < 3; i++) {
+                Theme theme = new Theme(null,"www.zhuti.com","主题"+i,"描述",10f*i);
+                Theme save = themeRepository.save(theme);
+
+                for (int j = 0; j < 6; j++) {
+                    Prop prop = new Prop(null,save.getId(),"www.test.url","道具1","道具1desc",10f,1);
+                    propRepository.save(prop);
+                }
+
+            }
 
         }
 
