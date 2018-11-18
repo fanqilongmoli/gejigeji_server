@@ -26,7 +26,7 @@ public class FeedService {
     UserRepository userRepository;
 
     @Autowired
-    UserLikeValueRepository userLikeValueRepository;
+    UserChickenRepository UserChickenRepository;
 
     @Autowired
     UserFeedRecordRepository userFeedRecordRepository;
@@ -142,16 +142,16 @@ public class FeedService {
         userFeedRepository.save(userFeed);
 
         //修改用户的好感度
-        UserLikeValue userLikeValueEx = new UserLikeValue();
-        userLikeValueEx.setUserId(feedingParam.getAccountID());
-        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
-        if (userLikeValue != null) {
+        UserChicken UserChickenEx = new UserChicken();
+        UserChickenEx.setUserId(feedingParam.getAccountID());
+        UserChicken UserChicken = UserChickenRepository.findOne(Example.of(UserChickenEx)).orElse(null);
+        if (UserChicken != null) {
 
-            userLikeValue.setFeed(userLikeValue.getFeed() + 10);
-            userLikeValue.setFeedLastTime(new Date());
-            userLikeValueRepository.save(userLikeValue);
+            UserChicken.setFeed(UserChicken.getFeed() + 10);
+            UserChicken.setFeedLastTime(new Date());
+            UserChickenRepository.save(UserChicken);
 
-            feedingVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+            feedingVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
             feedingVo.setAllow(true);
             feedingVo.setCount(userFeed.getAmount());
 

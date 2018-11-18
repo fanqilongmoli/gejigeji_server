@@ -58,49 +58,49 @@ public class UserJobs {
     @Scheduled(fixedDelay = 1000 * 60)
     public void refreshLikeValue() {
         List<UserChicken> all = userChickenRepository.findAll();
-        for (UserChicken userLikeValue : all) {
+        for (UserChicken userChicken : all) {
             //抚摸
-            Date strokeLastTime = userLikeValue.getStrokeLastTime();
+            Date strokeLastTime = userChicken.getStrokeLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(strokeLastTime, Calendar.HOUR)) >= 1) {
-                int newStroke = userLikeValue.getStroke() - 1;
-                userLikeValue.setStroke(newStroke);
-                userLikeValue.setStrokeLastTime(new Date());
-                logger.warn(userLikeValue.getUserId()+"===抚摸====亲密度衰减逻辑===>"+newStroke);
+                int newStroke = userChicken.getStroke() - 1;
+                userChicken.setStroke(newStroke);
+                userChicken.setStrokeLastTime(new Date());
+                logger.warn(userChicken.getUserId()+"===抚摸====亲密度衰减逻辑===>"+newStroke);
             }
 
             //喂食
-             Date feedLastTime = userLikeValue.getFeedLastTime();
+             Date feedLastTime = userChicken.getFeedLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(feedLastTime, Calendar.HOUR)) >= 1) {
-                int newFeed = userLikeValue.getFeed() - 2;
-                userLikeValue.setFeed(newFeed);
-                userLikeValue.setFeedLastTime(new Date());
-                logger.warn(userLikeValue.getUserId()+"===喂食====亲密度衰减逻辑===>"+newFeed);
+                int newFeed = userChicken.getFeed() - 2;
+                userChicken.setFeed(newFeed);
+                userChicken.setFeedLastTime(new Date());
+                logger.warn(userChicken.getUserId()+"===喂食====亲密度衰减逻辑===>"+newFeed);
             }
             //洗澡
-            Date batheLastTime = userLikeValue.getBatheLastTime();
+            Date batheLastTime = userChicken.getBatheLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(batheLastTime, Calendar.HOUR)) >= 1) {
-                int newBathe = userLikeValue.getBathe() - 1;
-                userLikeValue.setBathe(newBathe);
-                userLikeValue.setBatheLastTime(new Date());
-                logger.warn(userLikeValue.getUserId()+"===洗澡====亲密度衰减逻辑===>"+newBathe);
+                int newBathe = userChicken.getBathe() - 1;
+                userChicken.setBathe(newBathe);
+                userChicken.setBatheLastTime(new Date());
+                logger.warn(userChicken.getUserId()+"===洗澡====亲密度衰减逻辑===>"+newBathe);
             }
             //玩耍
-            Date gameLastTime = userLikeValue.getGameLastTime();
+            Date gameLastTime = userChicken.getGameLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(gameLastTime, Calendar.HOUR)) >= 1) {
-                int newGame = userLikeValue.getGame() - 3;
-                userLikeValue.setGame(newGame);
-                userLikeValue.setGameLastTime(new Date());
-                logger.warn(userLikeValue.getUserId()+"===玩耍====亲密度衰减逻辑===>"+newGame);
+                int newGame = userChicken.getGame() - 3;
+                userChicken.setGame(newGame);
+                userChicken.setGameLastTime(new Date());
+                logger.warn(userChicken.getUserId()+"===玩耍====亲密度衰减逻辑===>"+newGame);
             }
             //打扫
-            Date tvLastTime = userLikeValue.getTvLastTime();
+            Date tvLastTime = userChicken.getTvLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(tvLastTime, Calendar.HOUR)) >= 1) {
-                int newTv = userLikeValue.getTv() - 1;
-                userLikeValue.setTv(newTv);
-                userLikeValue.setTvLastTime(new Date());
-                logger.warn(userLikeValue.getUserId()+"===打扫====亲密度衰减逻辑===>"+newTv);
+                int newTv = userChicken.getTv() - 1;
+                userChicken.setTv(newTv);
+                userChicken.setTvLastTime(new Date());
+                logger.warn(userChicken.getUserId()+"===打扫====亲密度衰减逻辑===>"+newTv);
             }
-            userChickenRepository.save(userLikeValue);
+            userChickenRepository.save(userChicken);
 
         }
     }

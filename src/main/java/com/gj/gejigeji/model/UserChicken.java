@@ -67,6 +67,10 @@ public class UserChicken {
         if (feed > 30) {
             feed = 30;
         }
+
+        if (feed < 0) {
+            feed = 0;
+        }
         this.feed = feed;
     }
 
@@ -74,6 +78,10 @@ public class UserChicken {
     public void setBathe(Integer bathe) {
         if (bathe > 10) {
             bathe = 10;
+        }
+
+        if (bathe < 0) {
+            bathe = 0;
         }
         this.bathe = bathe;
     }
@@ -83,6 +91,9 @@ public class UserChicken {
         if (tv > 5) {
             tv = 5;
         }
+        if (tv < 0) {
+            tv = 0;
+        }
         this.tv = tv;
     }
 
@@ -90,6 +101,9 @@ public class UserChicken {
     public void setGame(Integer game) {
         if (game > 45) {
             game = 45;
+        }
+        if (game < 45) {
+            game = 0;
         }
         this.game = game;
     }

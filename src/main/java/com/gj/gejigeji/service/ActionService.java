@@ -2,8 +2,11 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserLikeValue;
-import com.gj.gejigeji.repository.UserLikeValueRepository;
+import com.gj.gejigeji.model.UserChicken;
+import com.gj.gejigeji.model.UserChicken;
+import com.gj.gejigeji.repository.ChickenRepository;
+import com.gj.gejigeji.repository.UserChickenRepository;
+import com.gj.gejigeji.repository.UserChickenRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.ActionVo;
@@ -27,7 +30,10 @@ public class ActionService {
     UserRepository userRepository;
 
     @Autowired
-    UserLikeValueRepository userLikeValueRepository;
+    UserChickenRepository userChickenRepository;
+
+    @Autowired
+    ChickenRepository chickenRepository;
 
     /**
      * 抚摸
@@ -44,17 +50,27 @@ public class ActionService {
             throw new BaseRuntimeException("login.user.null");
         }
 
-        //查询好感表
-        UserLikeValue userLikeValueEx = new UserLikeValue();
-        userLikeValueEx.setUserId(actionParam.getAccountID());
-        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        //查询好感
+        UserChicken userChickenEx = new UserChicken();
+        userChickenEx.setUserId(actionParam.getAccountID());
+        UserChicken userChicken = userChickenRepository.findOne(Example.of(userChickenEx)).orElse(null);
         ActionVo actionVo = new ActionVo();
-        if (userLikeValue != null) {
+        if (userChicken != null) {
             Date lastTime = new Date();
-            userLikeValue.setStroke(userLikeValue.getStroke() + 2);
-            userLikeValue.setStrokeLastTime(lastTime);
-            userLikeValueRepository.save(userLikeValue);
-            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+            userChicken.setStroke(userChicken.getStroke() + 2);
+            userChicken.setStrokeLastTime(lastTime);
+
+            //检查是否可以下蛋
+            Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
+            Integer dayEgg = userChicken.getDayEgg();
+            int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
+            if (dayEgg < maxEgg && likeValue == 100) {
+                actionVo.setEgg(true);
+                userChicken.setDayEgg(dayEgg + 1);
+            }
+            userChickenRepository.save(userChicken);
+            actionVo.setLikeValue(likeValue);
+
 
         } else {
             actionVo.setLikeValue(0);
@@ -82,15 +98,25 @@ public class ActionService {
         }
 
         //查询好感表
-        UserLikeValue userLikeValueEx = new UserLikeValue();
-        userLikeValueEx.setUserId(actionParam.getAccountID());
-        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        UserChicken userChickenEx = new UserChicken();
+        userChickenEx.setUserId(actionParam.getAccountID());
+        UserChicken userChicken = userChickenRepository.findOne(Example.of(userChickenEx)).orElse(null);
         ActionVo actionVo = new ActionVo();
-        if (userLikeValue != null) {
-            userLikeValue.setBathe(userLikeValue.getBathe() + 5);
-            userLikeValue.setBatheLastTime(new Date());
-            userLikeValueRepository.save(userLikeValue);
-            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+        if (userChicken != null) {
+
+            userChicken.setBathe(userChicken.getBathe() + 5);
+            userChicken.setBatheLastTime(new Date());
+
+            //检查是否可以下蛋
+            Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
+            Integer dayEgg = userChicken.getDayEgg();
+            int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
+            if (dayEgg < maxEgg && likeValue == 100) {
+                actionVo.setEgg(true);
+                userChicken.setDayEgg(dayEgg + 1);
+            }
+            userChickenRepository.save(userChicken);
+            actionVo.setLikeValue(likeValue);
 
         } else {
             actionVo.setLikeValue(0);
@@ -117,15 +143,23 @@ public class ActionService {
         }
 
         //查询好感表
-        UserLikeValue userLikeValueEx = new UserLikeValue();
-        userLikeValueEx.setUserId(actionParam.getAccountID());
-        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        UserChicken userChickenEx = new UserChicken();
+        userChickenEx.setUserId(actionParam.getAccountID());
+        UserChicken userChicken = userChickenRepository.findOne(Example.of(userChickenEx)).orElse(null);
         ActionVo actionVo = new ActionVo();
-        if (userLikeValue != null) {
-            userLikeValue.setTv(userLikeValue.getTv() + 1);
-            userLikeValue.setTvLastTime(new Date());
-            userLikeValueRepository.save(userLikeValue);
-            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+        if (userChicken != null) {
+            userChicken.setTv(userChicken.getTv() + 1);
+            userChicken.setTvLastTime(new Date());
+            //检查是否可以下蛋
+            Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
+            Integer dayEgg = userChicken.getDayEgg();
+            int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
+            if (dayEgg < maxEgg && likeValue == 100) {
+                actionVo.setEgg(true);
+                userChicken.setDayEgg(dayEgg + 1);
+            }
+            userChickenRepository.save(userChicken);
+            actionVo.setLikeValue(likeValue);
 
         } else {
             actionVo.setLikeValue(0);

@@ -2,8 +2,8 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserLikeValue;
-import com.gj.gejigeji.repository.UserLikeValueRepository;
+import com.gj.gejigeji.model.UserChicken;
+import com.gj.gejigeji.repository.UserChickenRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class GameService {
     UserRepository userRepository;
 
     @Autowired
-    UserLikeValueRepository userLikeValueRepository;
+    UserChickenRepository UserChickenRepository;
 
 
     public GameCountVo gameCount(ActionParam actionParam) {
@@ -185,16 +185,16 @@ public class GameService {
      * @param accountID
      */
     private void updateGameLikeValue(String accountID){
-        UserLikeValue userLikeValueEx = new UserLikeValue();
-        userLikeValueEx.setUserId(accountID);
-        UserLikeValue userLikeValue = userLikeValueRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
+        UserChicken UserChickenEx = new UserChicken();
+        UserChickenEx.setUserId(accountID);
+        UserChicken UserChicken = UserChickenRepository.findOne(Example.of(UserChickenEx)).orElse(null);
         ActionVo actionVo = new ActionVo();
-        if (userLikeValue != null) {
+        if (UserChicken != null) {
             Date lastTime = new Date();
-            userLikeValue.setStroke(userLikeValue.getGame() + 3);
-            userLikeValue.setGameLastTime(lastTime);
-            userLikeValueRepository.save(userLikeValue);
-            actionVo.setLikeValue(userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv());
+            UserChicken.setStroke(UserChicken.getGame() + 3);
+            UserChicken.setGameLastTime(lastTime);
+            UserChickenRepository.save(UserChicken);
+            actionVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
 
         }
     }

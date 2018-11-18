@@ -113,12 +113,13 @@ public class LoginService {
         loginVo.setJewel(user.getJewel());
         loginVo.setPhone(user.getPhone());
         // 获取好感度  不存在需要添加
-        UserChicken userLikeValueEx = new UserChicken();
-        userLikeValueEx.setUserId(user.getId());
-        UserChicken userLikeValue = userChickenRepository.findOne(Example.of(userLikeValueEx)).orElse(null);
-
-        int likeValue = userLikeValue.getFeed() + userLikeValue.getStroke() + userLikeValue.getBathe() + userLikeValue.getGame() + userLikeValue.getTv();
-        loginVo.setLikeValue(likeValue);
+        UserChicken userChickenEx = new UserChicken();
+        userChickenEx.setUserId(user.getId());
+        UserChicken userChicken = userChickenRepository.findOne(Example.of(userChickenEx)).orElse(null);
+        if (userChicken!=null){
+            int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
+            loginVo.setLikeValue(likeValue);
+        }
         // 获取配送地址
         UserSite userSiteEx = new UserSite();
         userSiteEx.setUserId(user.getId());
