@@ -36,6 +36,9 @@ public class Order {
     @ApiModelProperty("鸡蛋的类型")
     private String feedId;
 
+    @ApiModelProperty("鸡蛋名字")
+    private String eggName;
+
     @ApiModelProperty("订单完成的状态")
     private Byte orderState;
 
@@ -120,5 +123,13 @@ public class Order {
 
     public void setAllPrice(Integer allPrice) {
         this.allPrice = allPrice;
+    }
+
+    public String getEggName() {
+        return eggName;
+    }
+
+    public void setEggName(String eggName) {
+        this.eggName = eggName;
     }
 }

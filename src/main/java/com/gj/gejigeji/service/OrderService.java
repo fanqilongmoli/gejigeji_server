@@ -3,9 +3,11 @@ package com.gj.gejigeji.service;
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.exception.NoEggException;
 import com.gj.gejigeji.exception.NoOrderException;
+import com.gj.gejigeji.model.Feed;
 import com.gj.gejigeji.model.Order;
 import com.gj.gejigeji.model.User;
 import com.gj.gejigeji.model.UserEgg;
+import com.gj.gejigeji.repository.FeedRepository;
 import com.gj.gejigeji.repository.OrderRepository;
 import com.gj.gejigeji.repository.UserEggRepository;
 import com.gj.gejigeji.repository.UserRepository;
@@ -31,6 +33,9 @@ public class OrderService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    FeedRepository feedRepository;
+
     /**
      * 下订单
      *
@@ -54,8 +59,13 @@ public class OrderService {
             throw new NoEggException();
         }
 
+
+        Feed feed = feedRepository.findById(placeParam.getFeedId()).orElse(null);
         //保存订单
         Order order = new Order();
+        if (feed!=null) {
+            order.setEggName(feed.getEggName());
+        }
         order.setAmount(placeParam.getAmount());
         order.setUserId(placeParam.getAccountID());
         order.setCreateTime(new Date());
