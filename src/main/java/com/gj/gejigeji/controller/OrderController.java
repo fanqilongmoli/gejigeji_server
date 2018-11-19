@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequestMapping("order")
 @RestController
@@ -40,14 +39,14 @@ public class OrderController {
 
     @ApiOperation("获取用户已完成的订单")
     @PostMapping("successOrders/{accountID}")
-    public void successOrders(@PathVariable String accountID,@RequestBody PageParam pageParam){
-
+    public Page<Order> successOrders(@PathVariable String accountID,@RequestBody PageParam pageParam){
+        return orderService.successOrders(accountID,pageParam);
     }
 
     @ApiOperation("获取所有的拍卖数据列表")
     @PostMapping("orders")
-    public void orders(@RequestBody PageParam pageParam){
-
+    public Page<Order> orders(@RequestBody PageParam pageParam){
+        return orderService.orders(pageParam);
     }
 
 }

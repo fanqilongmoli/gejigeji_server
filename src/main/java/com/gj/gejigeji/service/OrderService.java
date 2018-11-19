@@ -64,6 +64,7 @@ public class OrderService {
         order.setUserName(user.getUserName());
         order.setFeedId(placeParam.getFeedId());
         order.setDeleteFlag(ConstUtil.Delete_Flag_No);
+        order.setOrderState(ConstUtil.Order_Finish_No);
         orderRepository.save(order);
 
         //冻结用户鸡蛋
@@ -94,8 +95,8 @@ public class OrderService {
             throw new NoEggException();
         }
 
-        //软删除订单
-        order.setDeleteFlag(ConstUtil.Delete_Flag_Yes);
+        //修改取消状态
+        order.setOrderState(ConstUtil.Order_Cancel);
         orderRepository.save(order);
         //减去用户冻结的鸡蛋数
         userEgg.setFreeze(userEgg.getFreeze()-order.getAmount());
@@ -116,6 +117,37 @@ public class OrderService {
         Order orderEx = new Order();
         orderEx.setUserId(accountID);
         orderEx.setDeleteFlag(ConstUtil.Delete_Flag_No);
+        orderEx.setOrderState(ConstUtil.Order_Finish_No);
+        Page<Order> all = orderRepository.findAll(pageable);
+        return all;
+    }
+
+    /**
+     *
+     * @param pageParam
+     * @return
+     */
+    public Page<Order> orders(PageParam pageParam) {
+        Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize(), new Sort(Sort.Direction.DESC, "createTime"));
+        Order orderEx = new Order();
+        orderEx.setDeleteFlag(ConstUtil.Delete_Flag_No);
+        orderEx.setOrderState(ConstUtil.Order_Finish_No);
+        Page<Order> all = orderRepository.findAll(pageable);
+        return all;
+    }
+
+    /**
+     * 获取用户已完成点单
+     * @param accountID
+     * @param pageParam
+     * @return
+     */
+    public Page<Order> successOrders(String accountID, PageParam pageParam) {
+        Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize(), new Sort(Sort.Direction.DESC, "createTime"));
+        Order orderEx = new Order();
+        orderEx.setUserId(accountID);
+        orderEx.setDeleteFlag(ConstUtil.Delete_Flag_No);
+        orderEx.setOrderState(ConstUtil.Order_Finish_Yes);
         Page<Order> all = orderRepository.findAll(pageable);
         return all;
     }

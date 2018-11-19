@@ -36,11 +36,22 @@ public class Order {
     @ApiModelProperty("鸡蛋的类型")
     private String feedId;
 
+    @ApiModelProperty("订单完成的状态")
+    private Byte orderState;
+
 
     private Byte deleteFlag;
 
     public String getFeedId() {
         return feedId;
+    }
+
+    public Byte getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(Byte orderState) {
+        this.orderState = orderState;
     }
 
     public void setFeedId(String feedId) {
