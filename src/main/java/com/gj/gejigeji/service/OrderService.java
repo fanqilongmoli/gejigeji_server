@@ -76,6 +76,7 @@ public class OrderService {
         order.setUserName(user.getUserName());
         order.setFeedId(placeParam.getFeedId());
         order.setOrderState(ConstUtil.Order_Open);
+        order.setVolume(0);
         orderRepository.save(order);
 
         //冻结用户鸡蛋

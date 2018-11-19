@@ -24,6 +24,9 @@ public class Order {
     @ApiModelProperty("挂单量")
     private Integer amount;
 
+    @ApiModelProperty("成交量")
+    private Integer volume;
+
     @ApiModelProperty("单价")
     private Integer price;
 
@@ -131,5 +134,13 @@ public class Order {
 
     public void setEggName(String eggName) {
         this.eggName = eggName;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
     }
 }
