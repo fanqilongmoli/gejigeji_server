@@ -24,8 +24,11 @@ public class UserEgg {
     private String feedId;
 
     //个数
-    @ApiModelProperty("个数")
+    @ApiModelProperty("总的鸡蛋个数")
     private Integer amount;
+
+    @ApiModelProperty("鸡蛋冻结的个数")
+    private Integer freeze;
 
     //创建时间
     @ApiModelProperty("创建时间")
@@ -94,5 +97,13 @@ public class UserEgg {
 
     public void setDeleteFlag(Byte deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    public Integer getFreeze() {
+        return freeze;
+    }
+
+    public void setFreeze(Integer freeze) {
+        this.freeze = freeze;
     }
 }

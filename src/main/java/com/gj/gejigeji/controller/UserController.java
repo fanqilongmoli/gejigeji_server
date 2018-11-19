@@ -1,6 +1,5 @@
 package com.gj.gejigeji.controller;
 
-import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.service.UserService;
 import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -54,5 +55,10 @@ public class UserController {
         return userService.egg(actionParam);
     }
 
+    @ApiOperation("获取用户的鸡蛋")
+    @PostMapping("userEggs")
+    public List<UserEggVo> userEggs(@RequestBody ActionParam actionParam){
+        return userService.userEggs(actionParam);
+    }
 
 }

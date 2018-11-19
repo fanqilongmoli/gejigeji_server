@@ -72,6 +72,8 @@ public class RegService {
                 user.setMiniGameCount3(10);
                 user.setMiniGameCount4(10);
 
+                //用户名 初始化为 电话号码
+                user.setUserName(regParam.getPhone());
 
                 User save = userRepository.save(user);
 

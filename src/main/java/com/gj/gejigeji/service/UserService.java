@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class UserService {
 
     @Autowired
     ChickenRepository chickenRepository;
+
+    @Autowired
+    FeedRepository feedRepository;
 
     /**
      * 获取金币数量
@@ -163,15 +167,15 @@ public class UserService {
         UserChicken userChicken = userChickenRepository.findAll(Example.of(userChickenEx)).get(0);
         Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
         Integer dayEgg = userChicken.getDayEgg();
-        if (dayEgg >= maxEgg ) {
-            // TODO: 2018/11/18 抛出一个不能下蛋的异常
+        if (dayEgg >= maxEgg) {
+            // TODO: 2018/11/18 抛出一个不能下蛋的异常 好像么有必要
         }
 
         //查询喂食记录表  获取最后一次喂食的饲料
         UserFeedRecord userFeedRecordEx = new UserFeedRecord();
         userFeedRecordEx.setUserId(actionParam.getAccountID());
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
-        Pageable pageable = PageRequest.of(0,1,sort);
+        Pageable pageable = PageRequest.of(0, 1, sort);
         List<UserFeedRecord> content = userFeedRecordRepository.findAll(pageable).getContent();
         UserFeedRecord userFeedRecord = content.get(0);
 
@@ -184,13 +188,14 @@ public class UserService {
             userEgg = new UserEgg();
             userEgg.setUserId(actionParam.getAccountID());
             userEgg.setAmount(1);
+            userEgg.setFreeze(0);
             userEgg.setCreateTime(new Date());
             userEgg.setFeedId(userFeedRecord.getFeedId());
             userEgg.setUpdateTime(new Date());
             userEgg.setDeleteFlag(ConstUtil.Delete_Flag_No);
         }
         userEgg.setUpdateTime(new Date());
-        userEgg.setAmount(userEgg.getAmount()+1);
+        userEgg.setAmount(userEgg.getAmount() + 1);
         UserEgg save = userEggRepository.save(userEgg);
 
         //更新UserChicken 表
@@ -202,5 +207,35 @@ public class UserService {
         eggCountVo.setEggCount(save.getAmount());
 
         return eggCountVo;
+    }
+
+    /**
+     * 获取用户的鸡蛋
+     *
+     * @param actionParam
+     * @return
+     */
+    public List<UserEggVo> userEggs(ActionParam actionParam) {
+
+        List<UserEggVo> userEggVos = new ArrayList<>();
+
+        UserEgg userEggEx = new UserEgg();
+        userEggEx.setUserId(actionParam.getAccountID());
+        List<UserEgg> all = userEggRepository.findAll(Example.of(userEggEx));
+        UserEggVo userEggVo;
+        for (UserEgg userEgg : all) {
+            userEggVo = new UserEggVo();
+            userEggVo.setUserEgg(userEgg);
+
+            Feed feedEx = new Feed();
+            feedEx.setId(userEgg.getFeedId());
+            Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+            if (feed != null) {
+                userEggVo.setEggName(feed.getEggName());
+            }
+            userEggVos.add(userEggVo);
+
+        }
+        return userEggVos;
     }
 }
