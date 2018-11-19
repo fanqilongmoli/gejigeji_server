@@ -19,12 +19,16 @@ public class ConstUtil {
     public static final int MAIL_TYPE_JL = 2;
 
 
-    // 订单未完成
-    public static final Byte Order_Finish_No = 0;
-    // 订单已完成
-    public static final Byte Order_Finish_Yes = 1;
-    // 订单取消
-    public static final Byte Order_Cancel = 2;
+    // 订单 打开 全部未完成
+    public static final Byte Order_Open = 0;
+    // 订单 关闭 全部完成
+    public static final Byte Order_Close_Finish_All= 1;
+    // 订单 关闭
+    public static final Byte Order_Close = 2;
+    // 订单 打开 部分完成
+    public static final Byte Order_Open_Finish_Part = 3;
+    // 订单 关闭 部分完成
+    public static final Byte Order_Close_Finish_Part = 4;
 
 
     //时间格式

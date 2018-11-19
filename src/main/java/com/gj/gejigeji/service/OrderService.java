@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -73,8 +75,7 @@ public class OrderService {
         order.setAllPrice(placeParam.getAmount() * placeParam.getPrice());
         order.setUserName(user.getUserName());
         order.setFeedId(placeParam.getFeedId());
-        order.setDeleteFlag(ConstUtil.Delete_Flag_No);
-        order.setOrderState(ConstUtil.Order_Finish_No);
+        order.setOrderState(ConstUtil.Order_Open);
         orderRepository.save(order);
 
         //冻结用户鸡蛋
@@ -105,8 +106,14 @@ public class OrderService {
             throw new NoEggException();
         }
 
+
         //修改取消状态
-        order.setOrderState(ConstUtil.Order_Cancel);
+        if (order.getOrderState().equals(ConstUtil.Order_Open)) {
+            order.setOrderState(ConstUtil.Order_Close);
+        }else {
+            order.setOrderState(ConstUtil.Order_Close_Finish_Part);
+        }
+
         orderRepository.save(order);
         //减去用户冻结的鸡蛋数
         userEgg.setFreeze(userEgg.getFreeze()-order.getAmount());
@@ -123,12 +130,11 @@ public class OrderService {
      * @return
      */
     public Page<Order> openOrders(String accountID, PageParam pageParam) {
-        Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize(), new Sort(Sort.Direction.DESC, "createTime"));
-        Order orderEx = new Order();
-        orderEx.setUserId(accountID);
-        orderEx.setDeleteFlag(ConstUtil.Delete_Flag_No);
-        orderEx.setOrderState(ConstUtil.Order_Finish_No);
-        Page<Order> all = orderRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize());
+        List<Byte> bytes = new ArrayList<>();
+        bytes.add(ConstUtil.Order_Open);
+        bytes.add(ConstUtil.Order_Open_Finish_Part);
+        Page<Order> all = orderRepository.findByUserIdAndOrderStateInOrderByCreateTimeDesc(pageable,accountID,bytes);
         return all;
     }
 
@@ -139,10 +145,11 @@ public class OrderService {
      */
     public Page<Order> orders(PageParam pageParam) {
         Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize(), new Sort(Sort.Direction.DESC, "createTime"));
-        Order orderEx = new Order();
-        orderEx.setDeleteFlag(ConstUtil.Delete_Flag_No);
-        orderEx.setOrderState(ConstUtil.Order_Finish_No);
-        Page<Order> all = orderRepository.findAll(pageable);
+        List<Byte> bytes = new ArrayList<>();
+        bytes.add(ConstUtil.Order_Open);
+        bytes.add(ConstUtil.Order_Open_Finish_Part);
+
+        Page<Order> all = orderRepository.findByOrderStateIn(pageable,bytes);
         return all;
     }
 
@@ -153,12 +160,12 @@ public class OrderService {
      * @return
      */
     public Page<Order> successOrders(String accountID, PageParam pageParam) {
-        Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize(), new Sort(Sort.Direction.DESC, "createTime"));
-        Order orderEx = new Order();
-        orderEx.setUserId(accountID);
-        orderEx.setDeleteFlag(ConstUtil.Delete_Flag_No);
-        orderEx.setOrderState(ConstUtil.Order_Finish_Yes);
-        Page<Order> all = orderRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageParam.getPage(), pageParam.getSize());
+        List<Byte> bytes = new ArrayList<>();
+        bytes.add(ConstUtil.Order_Close);
+        bytes.add(ConstUtil.Order_Close_Finish_Part);
+        bytes.add(ConstUtil.Order_Close_Finish_All);
+        Page<Order> all = orderRepository.findByUserIdAndOrderStateInOrderByCreateTimeDesc(pageable,accountID,bytes);
         return all;
     }
 }
