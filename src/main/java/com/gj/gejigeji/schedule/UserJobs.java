@@ -33,7 +33,8 @@ public class UserJobs {
     //@Scheduled(cron = "0 0 0 * * ?")
     //测试情况下设置30分钟刷新一次
     @Transactional
-    @Scheduled(fixedDelay = 20 * 60 * 1000)
+    //@Scheduled(fixedDelay = 20 * 60 * 1000)
+    @Scheduled(cron = "0 0 0 * * ?")
     public void refreshGameCount() {
         logger.info("=======刷新用户的游戏次数开始========");
         List<User> all = userRepository.findAll();
