@@ -62,7 +62,9 @@ public class OrderService {
         }
 
 
-        Feed feed = feedRepository.findById(placeParam.getFeedId()).orElse(null);
+        Feed feedEx = new Feed();
+        feedEx.setId(placeParam.getFeedId());
+        Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
         //保存订单
         Order order = new Order();
         if (feed!=null) {

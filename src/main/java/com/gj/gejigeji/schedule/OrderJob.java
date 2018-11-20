@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -50,9 +51,9 @@ public class OrderJob {
             recycleRecord.setUserId("-1");
             recycleRecordRepository.save(recycleRecord);
         } else {
-            //if (Math.abs(UserJobs.calculateTimeDifferenceByCalendar(recycleRecord.getCreateTime(), Calendar.HOUR)) >= 8) {
+//            if (Math.abs(UserJobs.calculateTimeDifferenceByCalendar(recycleRecord.getCreateTime(), Calendar.HOUR)) >= 8) {
             startRecycle();
-            //}
+//            }
 
 
         }
@@ -100,7 +101,7 @@ public class OrderJob {
                 // 更新用户-鸡蛋 信息 和 用户的金币数量
                 updateUserEgg(order,realVol);
                 // 更新订单信息 部分完成
-                order.setOrderState(ConstUtil.Order_Close_Finish_Part);
+                order.setOrderState(ConstUtil.Order_Open_Finish_Part);
                 order.setVolume(realVol);
                 orderRepository.save(order);
                 // 添加回收记录
