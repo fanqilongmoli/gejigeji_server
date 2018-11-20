@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserEggRepository extends MongoRepository<UserEgg,String> {
 
     Optional<UserEgg> findUserEggByUserIdAndFeedId(String userId, String feedId);
+
 }

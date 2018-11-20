@@ -107,7 +107,7 @@ public class UserJobs {
     }
 
 
-    private static int calculateTimeDifferenceByCalendar(Date lastDate, int get) {
+    public static int calculateTimeDifferenceByCalendar(Date lastDate, int get) {
         Calendar current = Calendar.getInstance();
         Calendar last = Calendar.getInstance();
         last.setTime(lastDate);
