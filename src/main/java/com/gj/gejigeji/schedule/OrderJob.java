@@ -51,9 +51,9 @@ public class OrderJob {
             recycleRecord.setUserId("-1");
             recycleRecordRepository.save(recycleRecord);
         } else {
-//            if (Math.abs(UserJobs.calculateTimeDifferenceByCalendar(recycleRecord.getCreateTime(), Calendar.HOUR)) >= 8) {
-            startRecycle();
-//            }
+            if (Math.abs(UserJobs.calculateTimeDifferenceByCalendar(recycleRecord.getCreateTime(), Calendar.HOUR)) >= 8) {
+                startRecycle();
+            }
 
 
         }
@@ -99,7 +99,7 @@ public class OrderJob {
                 int realVol = vol - allAmount;
 
                 // 更新用户-鸡蛋 信息 和 用户的金币数量
-                updateUserEgg(order,realVol);
+                updateUserEgg(order, realVol);
                 // 更新订单信息 部分完成
                 order.setOrderState(ConstUtil.Order_Open_Finish_Part);
                 order.setVolume(realVol);
