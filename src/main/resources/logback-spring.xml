@@ -19,9 +19,9 @@
            stdout将日志信息输出到控制上，为方便开发测试使用
     -->
     <contextName>admin</contextName>
-    <property name="LOG_PATH" value="./logs" />
+    <property name="LOG_PATH" value="./logs"/>
     <!--设置系统日志目录-->
-    <property name="APPDIR" value="gejigeji" />
+    <property name="APPDIR" value="gejigeji"/>
 
     <!-- 日志记录器，日期滚动记录 -->
     <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -125,16 +125,16 @@
         </filter>
     </appender>
 
-    <logger name="org.springframework" level="WARN" />
+    <logger name="org.springframework" level="WARN"/>
     <!--<logger name="com.msp.admin.mapper" level="DEBUG"/>-->
 
     <!-- 生产环境下，将此级别配置为适合的级别，以免日志文件太多或影响程序性能 -->
     <root level="INFO">
-        <appender-ref ref="FILEERROR" />
-        <appender-ref ref="FILEWARN" />
-        <appender-ref ref="FILEINFO" />
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+        <appender-ref ref="FILEINFO"/>
 
         <!-- 生产环境将请stdout,testfile去掉 -->
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
