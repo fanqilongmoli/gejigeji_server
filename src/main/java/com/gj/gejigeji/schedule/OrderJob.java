@@ -1,14 +1,9 @@
 package com.gj.gejigeji.schedule;
 
-import com.gj.gejigeji.model.Order;
-import com.gj.gejigeji.model.RecycleRecord;
-import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserEgg;
-import com.gj.gejigeji.repository.OrderRepository;
-import com.gj.gejigeji.repository.RecycleRecordRepository;
-import com.gj.gejigeji.repository.UserEggRepository;
-import com.gj.gejigeji.repository.UserRepository;
+import com.gj.gejigeji.model.*;
+import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.util.ConstUtil;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +32,9 @@ public class OrderJob {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AuctionChartRepository auctionChartRepository;
 
     @Transactional
     @Scheduled(fixedDelay = 1000 * 60 * 5)
@@ -134,7 +132,7 @@ public class OrderJob {
 
 
     /**
-     * 添加回收记录
+     * 添加回收记录 同时添加到回收的图表中
      *
      * @param order 订单
      * @param vol   成交数量
@@ -146,6 +144,48 @@ public class OrderJob {
         recycleRecord.setCreateTime(new Date());
         recycleRecord.setPrice(order.getPrice());
         recycleRecordRepository.save(recycleRecord);
+
+        AuctionChart auctionChart = auctionChartRepository.findFirstByOrderByDateDesc().orElse(null);
+
+        if (auctionChart != null && DateUtils.isSameDay(auctionChart.getDate(), new Date())){
+            //不为空 是同一天  更新当前记录
+
+            //更新当前记录
+            // v
+            auctionChart.setVol(auctionChart.getVol()+vol);
+            // h
+            if (order.getPrice()>auctionChart.getHigh()) {
+                auctionChart.setHigh(order.getPrice());
+            }
+            // l
+            if (order.getPrice()<auctionChart.getLow()) {
+                auctionChart.setLow(order.getPrice());
+            }
+
+            // o
+            //auctionChart.setOpen(order.getPrice());
+            // c
+            auctionChart.setClose(order.getPrice());
+            // d
+            //auctionChart.setDate(new Date());
+
+        }else {
+            //添加新的记录
+            auctionChart = new AuctionChart();
+            // v
+            auctionChart.setVol(auctionChart.getVol()+vol);
+            // h
+            auctionChart.setHigh(order.getPrice());
+            // l
+            auctionChart.setLow(order.getPrice());
+            // o
+            auctionChart.setOpen(order.getPrice());
+            // c
+            auctionChart.setClose(order.getPrice());
+            // d
+            auctionChart.setDate(new Date());
+        }
+        auctionChartRepository.save(auctionChart);
 
     }
 }
