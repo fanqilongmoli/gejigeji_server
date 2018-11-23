@@ -94,7 +94,7 @@ public class OrderService {
      * @param orderId
      * @return
      */
-    public OkResult submitCancel(String orderId) {
+    public OkResult submitCancel(String accountID,String orderId) {
 
         //检查订单是否存在
         Order order = orderRepository.findById(orderId).orElse(null);
@@ -103,7 +103,7 @@ public class OrderService {
         }
 
         //检查用户鸡蛋 是否存在
-        UserEgg userEgg = userEggRepository.findUserEggByUserIdAndFeedId(order.getUserId(), order.getFeedId()).orElse(null);
+        UserEgg userEgg = userEggRepository.findUserEggByUserIdAndFeedId(accountID, order.getFeedId()).orElse(null);
         if (userEgg == null){
 
             throw new NoEggException();

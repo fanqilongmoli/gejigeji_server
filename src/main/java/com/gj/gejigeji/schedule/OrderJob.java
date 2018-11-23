@@ -167,7 +167,8 @@ public class OrderJob {
             // c
             auctionChart.setClose(order.getPrice());
             // d
-            //auctionChart.setDate(new Date());
+            //
+            // auctionChart.setDate(new Date());
 
         }else {
             //添加新的记录

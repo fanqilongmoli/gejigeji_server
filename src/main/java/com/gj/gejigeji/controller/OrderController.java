@@ -26,9 +26,9 @@ public class OrderController {
     }
 
     @ApiOperation("取消订单")
-    @PostMapping("{orderId}/submitCancel")
-    public OkResult submitCancel(@PathVariable String orderId){
-        return orderService.submitCancel(orderId);
+    @PostMapping("/{accountID}/{orderId}/submitCancel")
+    public OkResult submitCancel(@PathVariable String accountID,@PathVariable String orderId){
+        return orderService.submitCancel(accountID,orderId);
     }
 
     @ApiOperation("获取用户未完成的订单")
