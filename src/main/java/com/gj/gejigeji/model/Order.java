@@ -13,7 +13,7 @@ import java.util.Date;
 public class Order {
 
     @Id
-    private String Id;
+    private String id;
 
     @ApiModelProperty("用户Id")
     private String userId;
@@ -73,11 +73,11 @@ public class Order {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getUserId() {
