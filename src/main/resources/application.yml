@@ -6,6 +6,23 @@ spring:
       #uri: mongodb://39.105.86.90:27017/gejigeji
       #uri: mongodb://172.16.122.128:27017/fanqilong
       uri: mongodb://172.17.85.173:27017/gejigeji
+  redis:
+    host: 172.17.85.173
+    port: 6379
+
+  thymeleaf:
+    cache: false
+    enabled: true
+    encoding: utf-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    servlet:
+      content-type: text/html
+    suffix: .html
+    enable-spring-el-compiler: true
+
+
 logging.level.org.springframework.data.mongodb.core: DEBUG
 server:
   port: 80
+

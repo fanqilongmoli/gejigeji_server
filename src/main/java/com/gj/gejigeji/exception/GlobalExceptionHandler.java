@@ -4,6 +4,7 @@ import com.gj.gejigeji.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.FieldError;
@@ -19,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -59,8 +61,11 @@ public class GlobalExceptionHandler {
             errorList.forEach(d -> {
                 String prop = "";
                 try {
+
                     String code = new StringBuilder(fieldFullName(e.getBindingResult().getTarget().getClass(), d.getField())).toString();
-                    String name = messageSource.getMessage(code, null, RequestContextUtils.getLocale(request));
+                    final Locale locale1 = LocaleContextHolder.getLocale();
+                    final Locale locale = RequestContextUtils.getLocale(request);
+                    String name = messageSource.getMessage(code, null, locale);
                     if (name != null) {
                         prop = name;
                     }
@@ -94,7 +99,8 @@ public class GlobalExceptionHandler {
                 }
             }
         }
-        return ReflectionUtils.findField(clazz, name).toString().split(" ")[2];
+        final String s = ReflectionUtils.findField(clazz, name).toString();
+        return s.split(" ")[2];
     }
 
 }
