@@ -15,7 +15,8 @@
 	var websocket = null;
 	//当前浏览前是否支持websocket
 	if("WebSocket" in window){
-		var url = "ws://127.0.0.1:[[${port}]]/websocket/[[${topic}]]/[[${myname}]]";
+        var hostname = window.location.hostname;
+        var url = "ws://"+hostname+":[[${port}]]/websocket/[[${topic}]]/[[${myname}]]";
 		websocket = new WebSocket(url);
 	}else{
 		alert("浏览器不支持websocket");
