@@ -1,6 +1,6 @@
 git pull
 
-# mvn clean install -X
+# mvn clean install -X -DskipTests
 # ./startup.sh
 
-mvn clean package dockerfile:build
+mvn clean package -DskipTests dockerfile:build
