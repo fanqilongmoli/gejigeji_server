@@ -1,6 +1,7 @@
 package com.gj.gejigeji.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gj.gejigeji.vo.ErrorResult;
 

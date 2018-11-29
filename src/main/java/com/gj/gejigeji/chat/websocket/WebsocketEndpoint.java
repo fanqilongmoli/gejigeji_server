@@ -1,8 +1,11 @@
 package com.gj.gejigeji.chat.websocket;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.gj.gejigeji.chat.listener.PublishService;
 import com.gj.gejigeji.chat.listener.SubscribeListener;
+import com.gj.gejigeji.util.JsonUtil;
 import com.gj.gejigeji.util.SpringUtils;
+import com.gj.gejigeji.vo.MessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -13,10 +16,11 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
-@ServerEndpoint(value="/websocket/{topic}/{myname}")
+@ServerEndpoint(value="/websocket/{accountID}")
 public class WebsocketEndpoint {
 
     private StringRedisTemplate stringRedisTemplate = SpringUtils.getBean(StringRedisTemplate.class);
@@ -29,15 +33,15 @@ public class WebsocketEndpoint {
     private Session session;
 
     @OnOpen
-    public void onOpen(Session session,@PathParam("topic")String topic){
+    public void onOpen(Session session,@PathParam("accountID")String accountID){
         System.out.println("java websocket:打开连接");
         this.session = session;
         sessions.add(this);
         SubscribeListener subscribeListener = new SubscribeListener();
         subscribeListener.setSession(session);
         subscribeListener.setStringRedisTemplate(stringRedisTemplate);
-        //设置订阅topic
-        redisMessageListenerContainer.addMessageListener(subscribeListener, new ChannelTopic(topic));
+        //聊天socket链接 订阅本身
+        redisMessageListenerContainer.addMessageListener(subscribeListener, new ChannelTopic(accountID));
     }
 
     @OnClose
@@ -47,16 +51,20 @@ public class WebsocketEndpoint {
     }
 
     @OnMessage
-    public void onMessage(Session session,String message,@PathParam("topic")String topic,@PathParam("myname")String myname) throws IOException {
-        message = myname+"："+message;
+    public void onMessage(Session session,String message,@PathParam("accountID")String accountID) throws IOException {
+
         System.out.println("java websocket 收到消息=="+message);
+        MessageVo messageVo = JsonUtil.deserialize(message, MessageVo.class);
+        //添加时间
+        messageVo.setCreateTime(new Date());
         PublishService publishService = SpringUtils.getBean(PublishService.class);
-        publishService.publish(topic, message);
+        // 发送消息给 to  消息内容 content
+        publishService.publish(messageVo.getTo(), JsonUtil.serialize(messageVo));
     }
 
     @OnError
     public void onError(Session session,Throwable error){
-        System.out.println("java websocket 出现错误");
+        System.out.println("java websocket 出现错误"+error.getMessage());
     }
 
     public Session getSession() {

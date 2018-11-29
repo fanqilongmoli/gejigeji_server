@@ -15,12 +15,11 @@ public class WebsocketController {
 
     public static final String INDEX = "websocket/index";
 
-    @RequestMapping("index/{topic}/{myname}")
-    public ModelAndView index(@PathVariable("topic")String topic, @PathVariable("myname")String myname){
+    @RequestMapping("index/{accountID}")
+    public ModelAndView index(@PathVariable("accountID")String accountID){
         ModelAndView mav = new ModelAndView(INDEX);
         mav.addObject("port", port);
-        mav.addObject("topic",topic);
-        mav.addObject("myname",myname);
+        mav.addObject("accountID",accountID);
         return mav;
     }
 }

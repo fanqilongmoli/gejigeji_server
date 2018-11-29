@@ -7,16 +7,18 @@
 <body>
 	本服务端口号：[[${port}]]，使用redismq实现websocket集群<br/>
 	[[${topic}]] 频道 聊天中。。。<br/>
+	to:<input id="input_to" type="text" /><br/>
 	<input id="input_id" type="text" /><button onclick="sendMessage()">发送</button>    <button onclick="closeWebsocket()">关闭</button>
 	<div id="message_id"></div>
 </body>
 <script type="text/javascript">
 	document.getElementById('input_id').focus();
+	var accountID = "[[${accountID}]]";
 	var websocket = null;
 	//当前浏览前是否支持websocket
 	if("WebSocket" in window){
         var hostname = window.location.hostname;
-        var url = "ws://"+hostname+":[[${port}]]/websocket/[[${topic}]]/[[${myname}]]";
+        var url = "ws://"+hostname+":[[${port}]]/websocket/[[${accountID}]]";
 		websocket = new WebSocket(url);
 	}else{
 		alert("浏览器不支持websocket");
@@ -31,6 +33,7 @@
 	}
 	
 	websocket.onmessage = function(event){
+	    console.log("onmessage",event);
 		setMessage(event.data);
 	}
 	
@@ -63,8 +66,14 @@
 		//1代表正在连接
 		if(1==websocket.readyState){
 			var message = document.getElementById('input_id').value;
-			//setMessage(message);
-			websocket.send(message);
+			var messageObj = {
+			    from:accountID,
+				to:document.getElementById('input_to').value,
+				msgType:1,
+				content:message
+			}
+			setMessage(JSON.stringify(messageObj));
+			websocket.send(JSON.stringify(messageObj));
 		}else{
 			alert("websocket未连接");
 		}
