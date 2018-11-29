@@ -12,18 +12,26 @@ public class Feed {
 
 
     @Id
-    private String Id;
+    private String id;
 
-    // 图片
+    @ApiModelProperty(value = "U3D饲料图片的唯一表示")
+    private Integer feedUI;
+
     @ApiModelProperty(value = "图片的url")
     private String url;
 
-    // 名字
     @ApiModelProperty(value = "饲料的名字")
     private String name;
 
     @ApiModelProperty("吃这种饲料下的蛋的名字")
     private String eggName;
+
+
+    @ApiModelProperty(value = "U3D鸡蛋图片的唯一表示")
+    private Integer eggUI;
+
+    @ApiModelProperty(value = "鸡蛋的图片url")
+    private String eggUrl;
 
     // 描述
     @ApiModelProperty(value = "饲料的描述")
@@ -42,7 +50,7 @@ public class Feed {
     }
 
     public Feed(String id, String url, String name,String eggName, String desc, Float price,Integer min) {
-        Id = id;
+        this.id = id;
         this.url = url;
         this.name = name;
         this.eggName = eggName;
@@ -52,11 +60,11 @@ public class Feed {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getUrl() {
@@ -105,5 +113,29 @@ public class Feed {
 
     public void setEggName(String eggName) {
         this.eggName = eggName;
+    }
+
+    public Integer getFeedUI() {
+        return feedUI;
+    }
+
+    public void setFeedUI(Integer feedUI) {
+        this.feedUI = feedUI;
+    }
+
+    public Integer getEggUI() {
+        return eggUI;
+    }
+
+    public void setEggUI(Integer eggUI) {
+        this.eggUI = eggUI;
+    }
+
+    public String getEggUrl() {
+        return eggUrl;
+    }
+
+    public void setEggUrl(String eggUrl) {
+        this.eggUrl = eggUrl;
     }
 }

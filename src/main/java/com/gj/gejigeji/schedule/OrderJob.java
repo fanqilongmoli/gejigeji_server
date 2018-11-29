@@ -174,7 +174,7 @@ public class OrderJob {
             //添加新的记录
             auctionChart = new AuctionChart();
             // v
-            auctionChart.setVol(auctionChart.getVol()+vol);
+            auctionChart.setVol(vol);
             // h
             auctionChart.setHigh(order.getPrice());
             // l

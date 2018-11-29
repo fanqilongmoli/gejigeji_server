@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Theme {
 
     @Id
-    private String Id;
+    private String id;
 
     // 图片
     @ApiModelProperty("图片")
@@ -33,8 +33,12 @@ public class Theme {
     @ApiModelProperty("是否已经拥有")
     private Boolean have;
 
+    @ApiModelProperty("U3D主题图片的唯一表示")
+    private Integer themeUI;
+
+
     public Theme(String id, String url, String name, String desc, Float price) {
-        Id = id;
+        this.id = id;
         this.url = url;
         this.name = name;
         this.desc = desc;
@@ -45,11 +49,11 @@ public class Theme {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getUrl() {
@@ -90,5 +94,13 @@ public class Theme {
 
     public void setHave(Boolean have) {
         this.have = have;
+    }
+
+    public Integer getThemeUI() {
+        return themeUI;
+    }
+
+    public void setThemeUI(Integer themeUI) {
+        this.themeUI = themeUI;
     }
 }

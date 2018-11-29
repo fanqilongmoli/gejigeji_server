@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PublishService {
 
+    /**
+     * form to time content msgType
+     */
+
     @Autowired
     StringRedisTemplate redisTemplate;
 

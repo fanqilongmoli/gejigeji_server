@@ -27,6 +27,9 @@ public class Henhouse {
     @ApiModelProperty(value = "描述")
     private String desc;
 
+    @ApiModelProperty("U3D鸡舍图片的唯一表示")
+    private Integer henhouseUI;
+
     public String getId() {
         return Id;
     }
@@ -65,5 +68,13 @@ public class Henhouse {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Integer getHenhouseUI() {
+        return henhouseUI;
+    }
+
+    public void setHenhouseUI(Integer henhouseUI) {
+        this.henhouseUI = henhouseUI;
     }
 }

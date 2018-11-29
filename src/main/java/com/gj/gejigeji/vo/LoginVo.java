@@ -1,6 +1,7 @@
 package com.gj.gejigeji.vo;
 
 import com.gj.gejigeji.model.Mail;
+import com.gj.gejigeji.model.Prop;
 import com.gj.gejigeji.model.UserProp;
 import com.gj.gejigeji.model.UserSite;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,7 +32,8 @@ public class LoginVo {
     private Integer miniGameCount4;
     // 用户名
     private String userName;
-    private List<UserProp> itemInfos;
+    private List<ItemInfo> itemInfos;
+
 
     public LoginVo() {
     }
@@ -112,14 +114,6 @@ public class LoginVo {
         this.mailInfo = mailInfo;
     }
 
-    public List<UserProp> getItemInfos() {
-        return itemInfos;
-    }
-
-    public void setItemInfos(List<UserProp> itemInfos) {
-        this.itemInfos = itemInfos;
-    }
-
     public boolean isBindPhone() {
         return bindPhone;
     }
@@ -182,5 +176,13 @@ public class LoginVo {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public List<ItemInfo> getItemInfos() {
+        return itemInfos;
+    }
+
+    public void setItemInfos(List<ItemInfo> itemInfos) {
+        this.itemInfos = itemInfos;
     }
 }
