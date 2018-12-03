@@ -21,7 +21,6 @@ spring:
     suffix: .html
     enable-spring-el-compiler: true
 
-
 logging.level.org.springframework.data.mongodb.core: DEBUG
 server:
   port: 80
