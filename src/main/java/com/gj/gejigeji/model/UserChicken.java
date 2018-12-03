@@ -1,5 +1,6 @@
 package com.gj.gejigeji.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,28 +20,32 @@ public class UserChicken {
     private String chickenId;
     //每天下蛋个数记录
     private Integer dayEgg;
-
     //抚摸
+    @ApiModelProperty("抚摸")
     private Integer stroke;
 
     private Date strokeLastTime;
 
     // 喂食
+    @ApiModelProperty("喂食")
     private Integer feed;
 
     private Date feedLastTime;
 
     //洗澡
+    @ApiModelProperty("洗澡")
     private Integer bathe;
 
     private Date batheLastTime;
 
     //看电视 现在当成打扫用
+    @ApiModelProperty("看电视 现在当成打扫用")
     private Integer tv;
 
     private Date tvLastTime;
 
     // 玩耍
+    @ApiModelProperty("玩耍")
     private Integer game;
 
     private Date gameLastTime;

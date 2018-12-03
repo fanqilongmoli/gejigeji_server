@@ -164,6 +164,7 @@ public class LoginService {
         loginVo.setEggCount(user.getEggCount());
         loginVo.setJewel(user.getJewel());
         loginVo.setPhone(user.getPhone());
+
         // 获取好感度  不存在需要添加
         UserChicken userChickenEx = new UserChicken();
         userChickenEx.setUserId(user.getId());
@@ -171,7 +172,10 @@ public class LoginService {
         if (userChicken!=null){
             int likeValue = userChicken.getFeed() + userChicken.getStroke() + userChicken.getBathe() + userChicken.getGame() + userChicken.getTv();
             loginVo.setLikeValue(likeValue);
+
+            loginVo.setLikeValues(userChicken);
         }
+
         // 获取配送地址
         UserSite userSiteEx = new UserSite();
         userSiteEx.setUserId(user.getId());

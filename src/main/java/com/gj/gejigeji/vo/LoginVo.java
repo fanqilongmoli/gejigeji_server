@@ -1,9 +1,6 @@
 package com.gj.gejigeji.vo;
 
-import com.gj.gejigeji.model.Mail;
-import com.gj.gejigeji.model.Prop;
-import com.gj.gejigeji.model.UserProp;
-import com.gj.gejigeji.model.UserSite;
+import com.gj.gejigeji.model.*;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
@@ -11,8 +8,11 @@ import java.util.List;
 public class LoginVo {
     private String accountID;
     private int eggCount;
+    @ApiModelProperty("金币")
     private Float coin;
+    @ApiModelProperty("钻石")
     private int jewel;
+    @ApiModelProperty("好感度总和")
     private int likeValue;
     private Boolean award;
     private int skinID;
@@ -33,6 +33,8 @@ public class LoginVo {
     // 用户名
     private String userName;
     private List<ItemInfo> itemInfos;
+    @ApiModelProperty("好感度")
+    private UserChicken likeValues;
 
 
     public LoginVo() {
@@ -184,5 +186,13 @@ public class LoginVo {
 
     public void setItemInfos(List<ItemInfo> itemInfos) {
         this.itemInfos = itemInfos;
+    }
+
+    public UserChicken getLikeValues() {
+        return likeValues;
+    }
+
+    public void setLikeValues(UserChicken likeValues) {
+        this.likeValues = likeValues;
     }
 }
