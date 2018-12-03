@@ -24,23 +24,23 @@ public class GameController {
 
     @ApiOperation(value = "打地鼠进入 进入游戏后扣除次数")
     @PostMapping("ddsStart")
-    public OkResult ddsStart(@RequestBody ActionParam actionParam){
+    public GameResultVo ddsStart(@RequestBody ActionParam actionParam){
         return gameService.ddsStart(actionParam);
     }
 
     @ApiOperation(value = "打地鼠结算 打地鼠完成时结算")
     @PostMapping("ddsEnd")
-    public OkResult ddsEnd(@RequestBody DDSEndParam ddsEndParam){
+    public GameResultVo ddsEnd(@RequestBody DDSEndParam ddsEndParam){
         return gameService.ddsEnd(ddsEndParam);
     }
 
-    @ApiOperation(value = "老虎机开始请求")
+    @ApiOperation(value = "老虎机进入请求")
     @PostMapping("lhjStart")
-    public OkResult lhjStart(@RequestBody ActionParam actionParam){
+    public GameResultVo lhjStart(@RequestBody ActionParam actionParam){
         return gameService.lhjStart(actionParam);
     }
 
-    @ApiOperation(value = "大转盘转动")
+    @ApiOperation(value = "大转盘进入请求")
     @PostMapping("dzbStart")
     public GameResultVo dzbStart(@RequestBody ActionParam actionParam){
         return gameService.dzbStart(actionParam);
@@ -48,7 +48,7 @@ public class GameController {
 
     @ApiOperation(value = "打怪兽进入(允许时扣除次数)")
     @PostMapping("dgsStart")
-    public OkResult dgsStart(@RequestBody ActionParam actionParam){
+    public GameResultVo dgsStart(@RequestBody ActionParam actionParam){
         return gameService.dgsStart(actionParam);
     }
 

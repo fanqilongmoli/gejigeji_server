@@ -35,6 +35,8 @@ public class User {
     private String userName;
     // 配送地址
     private String site;
+    // 今天是否完成了下蛋数量
+    private Boolean egged;
 
 
     public String getId() {
@@ -155,5 +157,13 @@ public class User {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public Boolean getEgged() {
+        return egged;
+    }
+
+    public void setEgged(Boolean egged) {
+        this.egged = egged;
     }
 }

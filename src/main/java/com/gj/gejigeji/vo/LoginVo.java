@@ -35,6 +35,8 @@ public class LoginVo {
     private List<ItemInfo> itemInfos;
     @ApiModelProperty("好感度")
     private UserChicken likeValues;
+    @ApiModelProperty("是否已经下过蛋")
+    private boolean egged;
 
 
     public LoginVo() {
@@ -194,5 +196,13 @@ public class LoginVo {
 
     public void setLikeValues(UserChicken likeValues) {
         this.likeValues = likeValues;
+    }
+
+    public boolean isEgged() {
+        return egged;
+    }
+
+    public void setEgged(boolean egged) {
+        this.egged = egged;
     }
 }

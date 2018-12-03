@@ -21,7 +21,11 @@ public class GameService {
     @Autowired
     UserChickenRepository UserChickenRepository;
 
-
+    /**
+     * 获取用户的游戏次数
+     * @param actionParam
+     * @return
+     */
     public GameCountVo gameCount(ActionParam actionParam) {
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
@@ -44,25 +48,24 @@ public class GameService {
      * @param actionParam
      * @return
      */
-    public OkResult ddsStart(ActionParam actionParam) {
+    public GameResultVo ddsStart(ActionParam actionParam) {
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
         if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
-
+        GameResultVo gameResultVo = new GameResultVo();
         Integer miniGameCount1 = user.getMiniGameCount1();
+        // 减少游戏次数
         if (miniGameCount1>0){
             user.setMiniGameCount1(miniGameCount1-1);
             userRepository.save(user);
-
-            // 添加游戏的好感度
-            updateGameLikeValue(actionParam.getAccountID());
-
-            return new OkResult(true);
+            gameResultVo.setAllow(true);
+            return gameResultVo;
         }
-        return new OkResult(false);
+        gameResultVo.setAllow(false);
+        return gameResultVo;
     }
 
     /**
@@ -70,8 +73,9 @@ public class GameService {
      * @param ddsEndParam
      * @return
      */
-    public OkResult ddsEnd(DDSEndParam ddsEndParam) {
-        OkResult okResult = new OkResult(true);
+    public GameResultVo ddsEnd(DDSEndParam ddsEndParam) {
+        GameResultVo okResult = new GameResultVo();
+        okResult.setAllow(true);
         okResult.setCoin(5);
         return okResult;
     }
@@ -81,7 +85,7 @@ public class GameService {
      * @param actionParam
      * @return
      */
-    public OkResult lhjStart(ActionParam actionParam) {
+    public GameResultVo lhjStart(ActionParam actionParam) {
 
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
@@ -89,7 +93,7 @@ public class GameService {
         if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
-
+        // 减少游戏次数
         Integer miniGameCount3 = user.getMiniGameCount3();
         if (miniGameCount3>0){
             user.setMiniGameCount3(miniGameCount3-1);
@@ -98,12 +102,15 @@ public class GameService {
             // 添加游戏的好感度
             updateGameLikeValue(actionParam.getAccountID());
 
-            OkResult okResult = new OkResult(true);
-            okResult.setAwardId("23123123");
+            GameResultVo okResult = new GameResultVo();
+            okResult.setAllow(true);
+            okResult.setAwardId(111);
             return okResult;
 
         }
-        return new OkResult(false);
+        GameResultVo gameResultVo = new GameResultVo();
+        gameResultVo.setAllow(true);
+        return gameResultVo;
     }
 
     /**
@@ -119,7 +126,7 @@ public class GameService {
         if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
-
+        // 减少游戏次数
         Integer miniGameCount2 = user.getMiniGameCount2();
         if (miniGameCount2>0){
             user.setMiniGameCount2(miniGameCount2-1);
@@ -145,26 +152,24 @@ public class GameService {
      * @param actionParam
      * @return
      */
-    public OkResult dgsStart(ActionParam actionParam) {
+    public GameResultVo dgsStart(ActionParam actionParam) {
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
         if (user == null) {
             throw new BaseRuntimeException("login.user.null");
         }
-
+        GameResultVo gameResultVo = new GameResultVo();
         Integer miniGameCount4 = user.getMiniGameCount4();
         if (miniGameCount4>0){
             user.setMiniGameCount4(miniGameCount4-1);
             userRepository.save(user);
-
-            // 添加游戏的好感度
-            updateGameLikeValue(actionParam.getAccountID());
-
-            return new OkResult(true);
+            gameResultVo.setAllow(true);
+            return gameResultVo;
 
         }
-        return new OkResult(false);
+        gameResultVo.setAllow(false);
+        return gameResultVo;
     }
 
     /**
