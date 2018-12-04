@@ -60,10 +60,15 @@ public class UserController {
         return userService.egg(actionParam);
     }
 
-    @ApiOperation("获取用户的鸡蛋")
+    @ApiOperation("获取用户的鸡蛋--分类")
     @PostMapping("userEggs")
     public List<UserEggVo> userEggs(@RequestBody ActionParam actionParam){
         return userService.userEggs(actionParam);
     }
 
+    @ApiOperation("获取用户的鸡蛋--全部")
+    @PostMapping("userEggsAll")
+    public UserEggsAllVo userEggsAll(@RequestBody ActionParam actionParam){
+        return userService.userEggsAll(actionParam);
+    }
 }

@@ -4,6 +4,7 @@ import com.gj.gejigeji.model.User;
 import com.gj.gejigeji.model.UserChicken;
 import com.gj.gejigeji.repository.UserChickenRepository;
 import com.gj.gejigeji.repository.UserRepository;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,9 @@ public class UserJobs {
             Date strokeLastTime = userChicken.getStrokeLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(strokeLastTime, Calendar.HOUR)) >= 1) {
                 int newStroke = userChicken.getStroke() - 1;
+
+                newStroke = newStroke>0?newStroke:0;
+
                 userChicken.setStroke(newStroke);
                 userChicken.setStrokeLastTime(new Date());
                 logger.warn(userChicken.getUserId()+"===抚摸====亲密度衰减逻辑===>"+newStroke);
@@ -73,6 +77,7 @@ public class UserJobs {
              Date feedLastTime = userChicken.getFeedLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(feedLastTime, Calendar.HOUR)) >= 1) {
                 int newFeed = userChicken.getFeed() - 2;
+                newFeed = newFeed>0?newFeed:0;
                 userChicken.setFeed(newFeed);
                 userChicken.setFeedLastTime(new Date());
                 logger.warn(userChicken.getUserId()+"===喂食====亲密度衰减逻辑===>"+newFeed);
@@ -81,6 +86,7 @@ public class UserJobs {
             Date batheLastTime = userChicken.getBatheLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(batheLastTime, Calendar.HOUR)) >= 1) {
                 int newBathe = userChicken.getBathe() - 1;
+                newBathe = newBathe>0?newBathe:0;
                 userChicken.setBathe(newBathe);
                 userChicken.setBatheLastTime(new Date());
                 logger.warn(userChicken.getUserId()+"===洗澡====亲密度衰减逻辑===>"+newBathe);
@@ -89,6 +95,7 @@ public class UserJobs {
             Date gameLastTime = userChicken.getGameLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(gameLastTime, Calendar.HOUR)) >= 1) {
                 int newGame = userChicken.getGame() - 3;
+                newGame=newGame>0?newGame:0;
                 userChicken.setGame(newGame);
                 userChicken.setGameLastTime(new Date());
                 logger.warn(userChicken.getUserId()+"===玩耍====亲密度衰减逻辑===>"+newGame);
@@ -97,6 +104,7 @@ public class UserJobs {
             Date tvLastTime = userChicken.getTvLastTime();
             if (Math.abs(calculateTimeDifferenceByCalendar(tvLastTime, Calendar.HOUR)) >= 1) {
                 int newTv = userChicken.getTv() - 1;
+                newTv= newTv>0?newTv:0;
                 userChicken.setTv(newTv);
                 userChicken.setTvLastTime(new Date());
                 logger.warn(userChicken.getUserId()+"===打扫====亲密度衰减逻辑===>"+newTv);

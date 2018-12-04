@@ -237,7 +237,6 @@ public class UserService {
                 userEggVo.setEggName(feed.getEggName());
             }
             userEggVos.add(userEggVo);
-
         }
         return userEggVos;
     }
@@ -262,5 +261,29 @@ public class UserService {
         GetCoinVo getCoinVo = new GetCoinVo();
         getCoinVo.setCoin(save.getCoin());
         return getCoinVo;
+    }
+
+    /**
+     * 获取用户的鸡蛋--全部
+     * @param actionParam
+     */
+    public UserEggsAllVo userEggsAll(ActionParam actionParam) {
+        User userEx = new User();
+        userEx.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+
+        UserEggsAllVo userEggsAllVo = new UserEggsAllVo();
+
+        UserEgg userEggEx = new UserEgg();
+        userEggEx.setUserId(actionParam.getAccountID());
+        List<UserEgg> all = userEggRepository.findAll(Example.of(userEggEx));
+        for (UserEgg userEgg : all) {
+            userEggsAllVo.setAmount(userEggsAllVo.getAmount()+userEgg.getAmount());
+            userEggsAllVo.setFreeze(userEggsAllVo.getFreeze()+userEgg.getFreeze());
+        }
+        return userEggsAllVo;
     }
 }
