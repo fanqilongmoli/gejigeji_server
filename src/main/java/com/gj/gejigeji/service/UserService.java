@@ -5,6 +5,9 @@ import com.gj.gejigeji.model.*;
 import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.*;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -40,7 +43,7 @@ public class UserService {
     FeedRepository feedRepository;
 
     /**
-     * 获取金币数量
+     * 获取金币数量  随机添加用户的金币数
      *
      * @param actionParam
      * @return
@@ -237,5 +240,27 @@ public class UserService {
 
         }
         return userEggVos;
+    }
+
+    /**
+     * 用户获取金币--->随机添加  1-3
+     * @param actionParam
+     * @return
+     */
+    public GetCoinVo addCoin(ActionParam actionParam) {
+        User userEx = new User();
+        userEx.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+        // 随机为用户添加 [1,3] 个金币
+        int i = RandomUtils.nextInt(1, 4);
+        user.setCoin(user.getCoin()+i);
+        User save = userRepository.save(user);
+
+        GetCoinVo getCoinVo = new GetCoinVo();
+        getCoinVo.setCoin(save.getCoin());
+        return getCoinVo;
     }
 }

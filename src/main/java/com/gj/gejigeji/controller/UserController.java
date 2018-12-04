@@ -18,12 +18,17 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @ApiOperation("获取金币")
+    @ApiOperation("获取用户的金币余额")
     @PostMapping("getCoin")
     public GetCoinVo getCoin(@RequestBody ActionParam actionParam){
         return  userService.getCoin(actionParam);
     }
 
+    @ApiOperation("用户获取金币--->随机添加同事返回用户当前的金币数量")
+    @PostMapping("addCoin")
+    public GetCoinVo addCoin(@RequestBody ActionParam actionParam){
+        return userService.addCoin(actionParam);
+    }
     @ApiOperation("修改昵称")
     @PostMapping("updateUserName")
     public OkResult updateUserName(@RequestBody UpdateUserNameParam updateUserNameParam){
