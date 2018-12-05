@@ -1,24 +1,38 @@
-package com.gj.gejigeji.vo;
+package com.gj.gejigeji.model;
 
-import java.io.Serializable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
 /**
- * 聊天消息对象
+ * 聊天记录表
  */
-public class MessageVo implements Serializable {
+@Document(collection = "message")
+public class Message {
+    @Id
+    private String id;
     //发送者
     private String from;
-    //接收者
+    //接受者
     private String to;
+    //消息状态
+    private Byte status;
     //消息类型
     private Integer msgType;
     //消息内容  第一版只存在文字
     private String content;
     //消息时间
     private Date createTime;
-    //消息状态
-    private Byte status;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFrom() {
         return from;
@@ -34,6 +48,14 @@ public class MessageVo implements Serializable {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Integer getMsgType() {
@@ -60,11 +82,4 @@ public class MessageVo implements Serializable {
         this.createTime = createTime;
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
 }

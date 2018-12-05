@@ -10,6 +10,11 @@ public class ConstUtil {
     // 未删除
     public static final Byte Delete_Flag_No = 0;
 
+    // 消息未读
+    public static final Byte MSG_UNREAD = 1;
+    // 消息已读
+    public static final Byte MSG_READ = 0;
+
 
     public static final int SMS_CODE_REG = 1;
 

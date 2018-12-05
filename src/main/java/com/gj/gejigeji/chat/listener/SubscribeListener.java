@@ -2,6 +2,7 @@ package com.gj.gejigeji.chat.listener;
 
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.websocket.Session;
@@ -12,7 +13,7 @@ import java.io.IOException;
  */
 public class SubscribeListener implements MessageListener {
 
-    private StringRedisTemplate stringRedisTemplate;
+    private RedisTemplate redisTemplate;
 
     private Session session;
     /**
@@ -33,13 +34,12 @@ public class SubscribeListener implements MessageListener {
         }
     }
 
-
-    public StringRedisTemplate getStringRedisTemplate() {
-        return stringRedisTemplate;
+    public RedisTemplate getRedisTemplate() {
+        return redisTemplate;
     }
 
-    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
     public Session getSession() {
