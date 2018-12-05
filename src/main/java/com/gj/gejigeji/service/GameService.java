@@ -1,6 +1,7 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
+import com.gj.gejigeji.exception.NoCoinException;
 import com.gj.gejigeji.exception.NoUserException;
 import com.gj.gejigeji.model.User;
 import com.gj.gejigeji.model.UserChicken;
@@ -63,6 +64,14 @@ public class GameService {
         // 减少游戏次数
         if (miniGameCount1 > 0) {
             user.setMiniGameCount1(miniGameCount1 - 1);
+            //每天各有3次免费的机会，超过免费机会，每次10个金币
+            if (user.getMiniGameCount1()<7){
+                float newCoin = user.getCoin() - 10;
+                if (newCoin <0){
+                    throw new NoCoinException();
+                }
+                user.setCoin(newCoin);
+            }
             userRepository.save(user);
             gameResultVo.setAllow(true);
             return gameResultVo;
@@ -102,6 +111,15 @@ public class GameService {
         Integer miniGameCount3 = user.getMiniGameCount3();
         if (miniGameCount3 > 0) {
             user.setMiniGameCount3(miniGameCount3 - 1);
+            //每天各有3次免费的机会，超过免费机会，每次10个金币
+            if (user.getMiniGameCount3()<7){
+                float newCoin = user.getCoin() - 10;
+                if (newCoin <0){
+                    throw new NoCoinException();
+                }
+                user.setCoin(newCoin);
+            }
+
             userRepository.save(user);
 
             // 添加游戏的好感度
@@ -136,6 +154,15 @@ public class GameService {
         Integer miniGameCount2 = user.getMiniGameCount2();
         if (miniGameCount2 > 0) {
             user.setMiniGameCount2(miniGameCount2 - 1);
+
+            //每天各有3次免费的机会，超过免费机会，每次10个金币
+            if (user.getMiniGameCount2()<7){
+                float newCoin = user.getCoin() - 10;
+                if (newCoin <0){
+                    throw new NoCoinException();
+                }
+                user.setCoin(newCoin);
+            }
             userRepository.save(user);
 
             // 添加游戏的好感度
@@ -170,6 +197,16 @@ public class GameService {
         Integer miniGameCount4 = user.getMiniGameCount4();
         if (miniGameCount4 > 0) {
             user.setMiniGameCount4(miniGameCount4 - 1);
+
+            //每天各有3次免费的机会，超过免费机会，每次10个金币
+            if (user.getMiniGameCount4()<7){
+                float newCoin = user.getCoin() - 10;
+                if (newCoin <0){
+                    throw new NoCoinException();
+                }
+                user.setCoin(newCoin);
+            }
+
             userRepository.save(user);
             gameResultVo.setAllow(true);
             return gameResultVo;
@@ -229,29 +266,21 @@ public class GameService {
         }
         switch (game) {
             case "1":
-                if (user.getMiniGameCount1() > 7) {
-                    return new OkResult(true);
-                } else {
-                    return new OkResult(false);
-                }
+
+                return new OkResult(user.getMiniGameCount1() > 7);
+
             case "2":
-                if (user.getMiniGameCount2() > 7) {
-                    return new OkResult(true);
-                } else {
-                    return new OkResult(false);
-                }
+
+                return new OkResult(user.getMiniGameCount2() > 7);
+
             case "3":
-                if (user.getMiniGameCount3() > 7) {
-                    return new OkResult(true);
-                } else {
-                    return new OkResult(false);
-                }
+
+                return new OkResult(user.getMiniGameCount3() > 7);
+
             case "4":
-                if (user.getMiniGameCount4() > 7) {
-                    return new OkResult(true);
-                } else {
-                    return new OkResult(false);
-                }
+
+                return new OkResult(user.getMiniGameCount4() > 7);
+
         }
         return new OkResult(false);
     }
