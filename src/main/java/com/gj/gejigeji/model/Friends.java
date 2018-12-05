@@ -17,6 +17,16 @@ public class Friends {
     private String friendId;
     // 好友的关系状态  1申请 2已经是好友
     private Integer status;
+    // 附言
+    private String ps;
+
+    public String getPs() {
+        return ps;
+    }
+
+    public void setPs(String ps) {
+        this.ps = ps;
+    }
 
     public String getId() {
         return id;

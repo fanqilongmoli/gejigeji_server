@@ -4,10 +4,7 @@ import com.gj.gejigeji.service.GameService;
 import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("game")
@@ -58,6 +55,10 @@ public class GameController {
         return gameService.dgsEnd(dgsEndParam);
     }
 
-
+    @ApiOperation("每个游戏每天各有3次免费的机会，超过免费机会，每次10个金币（game：游戏类型 1打地鼠 2大转盘 3老虎机 4打怪兽）")
+    @PostMapping("checkGame4Free/{game}")
+    public OkResult checkGame4Free(@RequestBody ActionParam actionParam, @PathVariable String game){
+        return gameService.checkGame4Free(actionParam,game);
+    }
 
 }
