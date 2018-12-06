@@ -1,13 +1,9 @@
 package com.gj.gejigeji.chat.websocket;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.gj.gejigeji.chat.listener.PublishService;
 import com.gj.gejigeji.chat.listener.SubscribeListener;
 import com.gj.gejigeji.util.*;
 import com.gj.gejigeji.vo.MessageVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Component;

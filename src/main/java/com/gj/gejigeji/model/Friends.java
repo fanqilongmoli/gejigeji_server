@@ -3,6 +3,8 @@ package com.gj.gejigeji.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 /**
  * 好友列表
  */
@@ -19,6 +21,10 @@ public class Friends {
     private Integer status;
     // 附言
     private String ps;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public String getPs() {
         return ps;
@@ -58,5 +64,21 @@ public class Friends {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

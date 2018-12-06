@@ -35,6 +35,14 @@ public class ConstUtil {
     // 订单 关闭 部分完成
     public static final Byte Order_Close_Finish_Part = 4;
 
+    // 好友 申请状态
+    public static final int FRIEND_APPLY = 0;
+    // 好友 好友状态
+    public static final int FRIEND_OK = 1;
+    // 好友 忽略状态
+    public static final int FRIEND_HIND = 2;
+
+
 
     //时间格式
     public static final String yyyyMMddHHmm = "yyyy-MM-dd HH:mm";
