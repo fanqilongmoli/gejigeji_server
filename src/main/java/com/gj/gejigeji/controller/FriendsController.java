@@ -1,6 +1,5 @@
 package com.gj.gejigeji.controller;
 
-import com.gj.gejigeji.model.Message;
 import com.gj.gejigeji.service.FriendsService;
 import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;

@@ -114,14 +114,19 @@ public class FriendsService {
         friendsRepository.findByUserIdAndAndStatus(accountID, ConstUtil.FRIEND_OK).stream().forEach(friends -> {
             User user = userRepository.findById(friends.getFriendId()).orElse(null);
             if (user != null) {
-                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs(), friends.getLastMsgTime()));
+                // 检查是否有唯独消息
+                List<Message> unReadMessages = messageRepository.findByFromAndToAndStatus(friends.getFriendId(), accountID, ConstUtil.MSG_UNREAD);
+
+                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs(), friends.getLastMsgTime(), unReadMessages.size() > 0));
             }
         });
         // 查询对方添加的好友 自己为friendID
         friendsRepository.findByFriendIdAndAndStatus(accountID, ConstUtil.FRIEND_OK).stream().forEach(friends -> {
             User user = userRepository.findById(friends.getUserId()).orElse(null);
             if (user != null) {
-                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs(), friends.getLastMsgTime()));
+                // 检查是否有唯独消息
+                List<Message> unReadMessages = messageRepository.findByFromAndToAndStatus(friends.getUserId(), accountID, ConstUtil.MSG_UNREAD);
+                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs(), friends.getLastMsgTime(), unReadMessages.size() > 0));
             }
         });
 
@@ -146,7 +151,6 @@ public class FriendsService {
                 friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs()));
             }
         });
-
 
         return friendVos;
     }
@@ -231,7 +235,7 @@ public class FriendsService {
             Message message = new Message();
             message.setFrom("sys");
             message.setTo(user.getId());
-            message.setContent(String.format(ConstUtil.EGG_SEND_TIP,friend.getUserName(),sendEggParam.getEgg()));
+            message.setContent(String.format(ConstUtil.EGG_SEND_TIP, friend.getUserName(), sendEggParam.getEgg()));
             message.setMsgType(ConstUtil.MSG_TYPE_SYS);
             message.setCreateTime(new Date());
             publishService.publish(user.getId(), JsonUtil.serialize(message));
@@ -239,7 +243,7 @@ public class FriendsService {
             Message message2 = new Message();
             message2.setFrom("sys");
             message2.setTo(friend.getId());
-            message2.setContent(String.format(ConstUtil.EGG_RECEIVE_TIP,user.getUserName(),sendEggParam.getEgg()));
+            message2.setContent(String.format(ConstUtil.EGG_RECEIVE_TIP, user.getUserName(), sendEggParam.getEgg()));
             message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
             message2.setCreateTime(new Date());
             publishService.publish(friend.getId(), JsonUtil.serialize(message2));
@@ -291,7 +295,7 @@ public class FriendsService {
             Message message = new Message();
             message.setFrom("sys");
             message.setTo(user.getId());
-            message.setContent(String.format(ConstUtil.COIN_SEND_TIP,friend.getUserName(),sendCoinParam.getCoin()));
+            message.setContent(String.format(ConstUtil.COIN_SEND_TIP, friend.getUserName(), sendCoinParam.getCoin()));
             message.setMsgType(ConstUtil.MSG_TYPE_SYS);
             message.setCreateTime(new Date());
             publishService.publish(user.getId(), JsonUtil.serialize(message));
@@ -299,7 +303,7 @@ public class FriendsService {
             Message message2 = new Message();
             message2.setFrom("sys");
             message2.setTo(friend.getId());
-            message2.setContent(String.format(ConstUtil.COIN_RECEIVE_TIP,user.getUserName(),sendCoinParam.getCoin()));
+            message2.setContent(String.format(ConstUtil.COIN_RECEIVE_TIP, user.getUserName(), sendCoinParam.getCoin()));
             message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
             message2.setCreateTime(new Date());
             publishService.publish(friend.getId(), JsonUtil.serialize(message2));
@@ -333,6 +337,12 @@ public class FriendsService {
         List<MessageHisVo> messageHisVos = new ArrayList<>();
 
         messages.forEach(message -> {
+
+            // 未读消息 修改为已读
+            if (message.getStatus().equals(ConstUtil.MSG_UNREAD)) {
+                message.setStatus(ConstUtil.MSG_READ);
+                messageRepository.save(message);
+            }
 
             if (user.getId().equals(message.getFrom())) {
                 // from 是 user

@@ -12,14 +12,17 @@ public class FriendVo {
 
     private Date lastMsgTime;
 
+    private Boolean unRead;
+
     public FriendVo() {
     }
 
-    public FriendVo(String friendId, String userName, String ps, Date lastMsgTime) {
+    public FriendVo(String friendId, String userName, String ps, Date lastMsgTime, Boolean unRead) {
         this.friendId = friendId;
         this.userName = userName;
         this.ps = ps;
         this.lastMsgTime = lastMsgTime;
+        this.unRead = unRead;
     }
 
     public FriendVo(String friendId, String userName, String ps) {
@@ -58,5 +61,13 @@ public class FriendVo {
 
     public void setLastMsgTime(Date lastMsgTime) {
         this.lastMsgTime = lastMsgTime;
+    }
+
+    public Boolean getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(Boolean unRead) {
+        this.unRead = unRead;
     }
 }
