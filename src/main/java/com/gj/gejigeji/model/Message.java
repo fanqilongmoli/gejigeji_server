@@ -24,8 +24,7 @@ public class Message {
     private String content;
     //消息时间
     private Date createTime;
-    //最后回话时间
-    private Date lastMsgTime;
+
 
     public String getId() {
         return id;
@@ -83,11 +82,4 @@ public class Message {
         this.createTime = createTime;
     }
 
-    public Date getLastMsgTime() {
-        return lastMsgTime;
-    }
-
-    public void setLastMsgTime(Date lastMsgTime) {
-        this.lastMsgTime = lastMsgTime;
-    }
 }

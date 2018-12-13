@@ -2,20 +2,22 @@ package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.*;
 import com.gj.gejigeji.model.Friends;
+import com.gj.gejigeji.model.Message;
 import com.gj.gejigeji.model.User;
 import com.gj.gejigeji.model.UserEgg;
 import com.gj.gejigeji.repository.FriendsRepository;
+import com.gj.gejigeji.repository.MessageRepository;
 import com.gj.gejigeji.repository.UserEggRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.*;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FriendsService {
@@ -29,6 +31,8 @@ public class FriendsService {
     @Autowired
     UserEggRepository userEggRepository;
 
+    @Autowired
+    MessageRepository messageRepository;
 
 
     /**
@@ -104,17 +108,19 @@ public class FriendsService {
         friendsRepository.findByUserIdAndAndStatus(accountID, ConstUtil.FRIEND_OK).stream().forEach(friends -> {
             User user = userRepository.findById(friends.getFriendId()).orElse(null);
             if (user != null) {
-                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(),friends.getPs()));
+                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs(), friends.getLastMsgTime()));
             }
         });
         // 查询对方添加的好友 自己为friendID
         friendsRepository.findByFriendIdAndAndStatus(accountID, ConstUtil.FRIEND_OK).stream().forEach(friends -> {
             User user = userRepository.findById(friends.getUserId()).orElse(null);
             if (user != null) {
-                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(),friends.getPs()));
+                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs(), friends.getLastMsgTime()));
             }
         });
 
+        // 排序 根据最后聊天时间
+        friendVos.sort((o1, o2) -> DateUtils.truncatedCompareTo(o1.getLastMsgTime(), o2.getLastMsgTime(), Calendar.MINUTE));
 
         return friendVos;
     }
@@ -131,7 +137,7 @@ public class FriendsService {
         friendsRepository.findByFriendIdAndAndStatus(accountID, ConstUtil.FRIEND_APPLY).stream().forEach(friends -> {
             User user = userRepository.findById(friends.getUserId()).orElse(null);
             if (user != null) {
-                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(),friends.getPs()));
+                friendVos.add(new FriendVo(user.getId(), user.getUserName() == null ? user.getId() : user.getUserName(), friends.getPs()));
             }
         });
 
@@ -158,6 +164,7 @@ public class FriendsService {
 
     /**
      * 赠送好友鸡蛋
+     *
      * @param sendEggParam
      * @return
      */
@@ -194,7 +201,7 @@ public class FriendsService {
         userEggEx2.setFeedId(sendEggParam.getFeedId());
         UserEgg userEgg2 = userEggRepository.findOne(Example.of(userEggEx)).orElse(null);
 
-        if (userEgg2 == null){
+        if (userEgg2 == null) {
             UserEgg userEggNew = new UserEgg();
             userEggNew.setUserId(sendEggParam.getAccountID());
             userEggNew.setAmount(sendEggParam.getEgg());
@@ -205,7 +212,7 @@ public class FriendsService {
             userEggNew.setDeleteFlag(ConstUtil.Delete_Flag_No);
             userEggRepository.save(userEggNew);
 
-        }else {
+        } else {
             userEgg2.setAmount(userEgg.getAmount() + sendEggParam.getEgg());
             userEgg2.setUpdateTime(new Date());
             userEggRepository.save(userEgg2);
@@ -216,6 +223,7 @@ public class FriendsService {
 
     /**
      * 赠送好友金币
+     *
      * @param sendCoinParam
      * @return
      */
@@ -243,9 +251,61 @@ public class FriendsService {
 
         //被赠送者增加金币
 
-        friend.setCoin(friend.getCoin()+ sendCoinParam.getCoin());
+        friend.setCoin(friend.getCoin() + sendCoinParam.getCoin());
         userRepository.save(friend);
 
         return new OkResult(true);
+    }
+
+    /**
+     * 获取聊天记录
+     *
+     * @param getMessagesParam
+     */
+    public List<MessageHisVo> getMessages(GetMessagesParam getMessagesParam) {
+        User user = userRepository.findById(getMessagesParam.getAccountID()).get();
+        User friend = userRepository.findById(getMessagesParam.getFriendID()).get();
+
+        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrderByCreateTimeAsc(
+                getMessagesParam.getAccountID(),
+                getMessagesParam.getFriendID(),
+                getMessagesParam.getAccountID(),
+                getMessagesParam.getFriendID(),
+                new PageRequest(getMessagesParam.getPage(), getMessagesParam.getSize()));
+
+
+        //拼装返回的messageHisVo
+        List<MessageHisVo> messageHisVos = new ArrayList<>();
+
+        messages.forEach(message -> {
+
+            if (user.getId().equals(message.getFrom())) {
+                // from 是 user
+                messageHisVos.add(
+                        new MessageHisVo(
+                                user.getId(),
+                                user.getUserName(),
+                                friend.getId(),
+                                friend.getUserName(),
+                                message.getStatus(),
+                                message.getMsgType(),
+                                message.getContent(),
+                                message.getCreateTime()));
+            } else {
+                // from是 friend
+                messageHisVos.add(
+                        new MessageHisVo(
+                                friend.getId(),
+                                friend.getUserName(),
+                                user.getId(),
+                                user.getUserName(),
+                                message.getStatus(),
+                                message.getMsgType(),
+                                message.getContent(),
+                                message.getCreateTime()));
+            }
+        });
+
+        return messageHisVos;
     }
 }

@@ -26,6 +26,9 @@ public class Friends {
 
     private Date updateTime;
 
+    //最后回话时间
+    private Date lastMsgTime;
+
     public String getPs() {
         return ps;
     }
@@ -80,5 +83,13 @@ public class Friends {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getLastMsgTime() {
+        return lastMsgTime;
+    }
+
+    public void setLastMsgTime(Date lastMsgTime) {
+        this.lastMsgTime = lastMsgTime;
     }
 }

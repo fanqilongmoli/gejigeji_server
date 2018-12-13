@@ -23,6 +23,7 @@ public interface FriendsRepository extends MongoRepository<Friends,String> {
 
     List<Friends> findByFriendIdAndAndStatus(String friend,int status);
 
+    List<Friends> findByFriendIdAndStatusOrUserIdAndStatusOrderByLastMsgTime(String friend,int status1,String userId,int status2);
 
     Optional<Friends> findByUserIdAndFriendId(String userId,String friendId);
 

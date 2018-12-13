@@ -1,5 +1,6 @@
 package com.gj.gejigeji.controller;
 
+import com.gj.gejigeji.model.Message;
 import com.gj.gejigeji.service.FriendsService;
 import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +50,12 @@ public class FriendsController {
     @PostMapping("sendCoin")
     public OkResult sendCoin(@RequestBody SendCoinParam sendCoinParam){
         return friendsService.sendCoin(sendCoinParam);
+    }
+
+    @ApiOperation("获取和好友的聊天记录")
+    @PostMapping("getMessages")
+    public  List<MessageHisVo> getMessages(@RequestBody GetMessagesParam getMessagesParam){
+        return friendsService.getMessages(getMessagesParam);
     }
 
 
