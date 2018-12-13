@@ -1,5 +1,6 @@
 package com.gj.gejigeji.service;
 
+import com.gj.gejigeji.chat.listener.PublishService;
 import com.gj.gejigeji.exception.*;
 import com.gj.gejigeji.model.Friends;
 import com.gj.gejigeji.model.Message;
@@ -10,6 +11,7 @@ import com.gj.gejigeji.repository.MessageRepository;
 import com.gj.gejigeji.repository.UserEggRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.util.ConstUtil;
+import com.gj.gejigeji.util.JsonUtil;
 import com.gj.gejigeji.vo.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -33,6 +36,9 @@ public class FriendsService {
 
     @Autowired
     MessageRepository messageRepository;
+
+    @Autowired
+    PublishService publishService;
 
 
     /**
@@ -218,6 +224,30 @@ public class FriendsService {
             userEggRepository.save(userEgg2);
         }
 
+        //同时给双方发送消息
+
+        try {
+            // 发送给赠送者
+            Message message = new Message();
+            message.setFrom("sys");
+            message.setTo(user.getId());
+            message.setContent(String.format(ConstUtil.EGG_SEND_TIP,friend.getUserName(),sendEggParam.getEgg()));
+            message.setMsgType(ConstUtil.MSG_TYPE_SYS);
+            message.setCreateTime(new Date());
+            publishService.publish(user.getId(), JsonUtil.serialize(message));
+            // 发送给接受者
+            Message message2 = new Message();
+            message2.setFrom("sys");
+            message2.setTo(friend.getId());
+            message2.setContent(String.format(ConstUtil.EGG_RECEIVE_TIP,user.getUserName(),sendEggParam.getEgg()));
+            message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
+            message2.setCreateTime(new Date());
+            publishService.publish(friend.getId(), JsonUtil.serialize(message2));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return new OkResult(true);
     }
 
@@ -253,6 +283,31 @@ public class FriendsService {
 
         friend.setCoin(friend.getCoin() + sendCoinParam.getCoin());
         userRepository.save(friend);
+
+        //同时给双方发送消息
+
+        try {
+            // 发送给赠送者
+            Message message = new Message();
+            message.setFrom("sys");
+            message.setTo(user.getId());
+            message.setContent(String.format(ConstUtil.COIN_SEND_TIP,friend.getUserName(),sendCoinParam.getCoin()));
+            message.setMsgType(ConstUtil.MSG_TYPE_SYS);
+            message.setCreateTime(new Date());
+            publishService.publish(user.getId(), JsonUtil.serialize(message));
+            // 发送给接受者
+            Message message2 = new Message();
+            message2.setFrom("sys");
+            message2.setTo(friend.getId());
+            message2.setContent(String.format(ConstUtil.COIN_RECEIVE_TIP,user.getUserName(),sendCoinParam.getCoin()));
+            message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
+            message2.setCreateTime(new Date());
+            publishService.publish(friend.getId(), JsonUtil.serialize(message2));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return new OkResult(true);
     }

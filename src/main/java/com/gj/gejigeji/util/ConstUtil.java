@@ -52,4 +52,10 @@ public class ConstUtil {
     //时间格式
     public static final String yyyyMMddHHmm = "yyyy-MM-dd HH:mm";
 
+    public static final String COIN_SEND_TIP = "赠送给%s%d个金币";
+    public static final String COIN_RECEIVE_TIP="收到%s赠送的%d个金币";
+
+    public static final String EGG_SEND_TIP="赠送给%s%d个鸡蛋";
+    public static final String EGG_RECEIVE_TIP="收到%s赠送的%d个鸡蛋";
+
 }
