@@ -15,6 +15,11 @@ public class ConstUtil {
     // 消息已读
     public static final Byte MSG_READ = 0;
 
+    // 消息类型 文本
+    public static final int MSG_TYPE_TEXT = 1;
+    // 消息类型 系统
+    public static final int MSG_TYPE_SYS = 2;
+
 
     public static final int SMS_CODE_REG = 1;
 
