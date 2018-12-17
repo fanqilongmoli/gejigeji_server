@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MessageRepository extends MongoRepository<Message,String> {
 
-    List<Message> findByFromAndToOrToAndFromOrderByCreateTimeAsc(String from, String to, String to1, String from1, Pageable pageable);
+    List<Message> findByFromAndToOrToAndFromOrderByCreateTimeDesc(String from, String to, String to1, String from1, Pageable pageable);
 
     List<Message> findByFromAndToAndStatus(String from, String to, Byte status);
 }

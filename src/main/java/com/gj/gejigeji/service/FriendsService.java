@@ -325,7 +325,7 @@ public class FriendsService {
         User user = userRepository.findById(getMessagesParam.getAccountID()).get();
         User friend = userRepository.findById(getMessagesParam.getFriendID()).get();
 
-        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrderByCreateTimeAsc(
+        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrderByCreateTimeDesc(
                 getMessagesParam.getAccountID(),
                 getMessagesParam.getFriendID(),
                 getMessagesParam.getAccountID(),
