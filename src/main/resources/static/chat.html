@@ -102,6 +102,7 @@
             position: absolute;
             top: 0;
             right: 0;
+            overflow: hidden;
         }
         .chat-content-buttons {
             display: flex;
@@ -139,9 +140,16 @@
         .chat-dialog-head-right {
             right: 0;
         }
+        .chat-content-message {
+            height: 100%;
+            overflow: auto;
+        }
         .chat-dialog {
             position: relative;
             margin-bottom: 0.06rem;
+        }
+        .chat-padding2 {
+            height: 1.42rem;
         }
         .chat-dialog-right {
             text-align: right;
@@ -174,6 +182,7 @@
             min-height: 0.2rem;
             border-radius: 0.04rem;
             text-align: justify;
+            word-break: break-all;
         }
         .chat-dialog-time {
             color: rgb(152, 122, 110);
@@ -191,7 +200,7 @@
             background-color: rgb(178, 162, 151);
         }
         .chat-dialog-content-right {
-            right: 0.42rem;
+            left: 0.42rem;
             text-align: justify;
             background-color: rgb(180, 169, 111);
         }
@@ -215,7 +224,7 @@
             left: 0.08rem;
             bottom: 0.1rem;
             color: white;
-            font-size: 0.2rem;
+            font-size: 0.14rem;
         }
         .chat-enter-btn {
             width: 0.72rem;
@@ -483,24 +492,16 @@
     </style>
     <script src="js/angular.js"></script>
 </head>
-<body ng-app="myApp" ng-init="loadMore()" ng-controller="myCtrl" ng-class="{'show': showBody}" class="">
+<body ng-app="myApp" ng-init="loadFriends()" ng-controller="myCtrl" ng-class="{'show': showBody}" class="">
     <div class="auction-name-div">
         <img src="img/chat_name.png" class="auction-name">
     </div>
     <div class="chat-friends">
         <div class="chat-padding"></div>
-        <div class="chat-friend chat-friend-selected">
-            <div class="chat-friend-read"></div>
+        <div ng-repeat="item in friends" class="chat-friend" ng-class="{'chat-friend-selected': friend == item}" ng-click="selectFriend(item)">
+            <div class="chat-friend-read" ng-show="item.unRead"></div>
             <img class="chat-friend-head" src="img/chat_head.png">
-            <div class="chat-friend-name">张三</div>
-        </div>
-        <div class="chat-friend">
-            <img class="chat-friend-head" src="img/chat_head.png">
-            <div class="chat-friend-name">张三1</div>
-        </div>
-        <div class="chat-friend">
-            <img class="chat-friend-head" src="img/chat_head.png">
-            <div class="chat-friend-name">张三2</div>
+            <div class="chat-friend-name">{{item.userName}}</div>
         </div>
         <img src="img/chat_friend_btn.png" ng-click="openFriendsDialog()" class="chat-friend-btn">
     </div>
@@ -510,36 +511,40 @@
             <div class="chat-content-button1" ng-click="openEggsDialog()">送鸡蛋</div>
             <div class="chat-content-button2" ng-click="openCoinsDialog()">送金币</div>
         </div>
-        <div class="chat-dialog">
-            <img class="chat-dialog-head chat-dialog-head-left" src="img/chat_head.png">
-            <div class="chat-dialog-triangle chat-dialog-triangle-left"></div>
-            <div class="chat-dialog-content chat-dialog-content-left">
-                你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的
+        <div class="chat-content-message" id="message-content">
+            <div class="chat-dialog" ng-repeat="item in messages" repeat-finish>
+                <img class="chat-dialog-head" src="img/chat_head.png" ng-show="item.msgType == 1" ng-class="{'chat-dialog-head-left': item.to == myself, 'chat-dialog-head-right': item.from == myself}">
+                <div class="chat-dialog-triangle" ng-show="item.msgType == 1" ng-class="{'chat-dialog-triangle-left': item.to == myself, 'chat-dialog-triangle-right': item.from == myself}"></div>
+                <div class="chat-dialog-content" ng-class="{'chat-dialog-content-left': item.to == myself, 'chat-dialog-content-right': item.from == myself}">
+                    {{item.content}}
+                </div>
+                <div class="chat-dialog-time">{{timeFormat(item.createTime)}}</div>
             </div>
-            <div class="chat-dialog-time">19:21</div>
+            <div class="chat-padding2"></div>
         </div>
-        <div class="chat-dialog chat-dialog-right">
-            <img class="chat-dialog-head chat-dialog-head-right" src="img/chat_head.png">
-            <div class="chat-dialog-triangle chat-dialog-triangle-right"></div>
-            <div class="chat-dialog-content chat-dialog-content-right">
-                你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的
-            </div>
-        </div>
-        <div class="chat-dialog chat-dialog-right">
-            <div class="chat-dialog-content chat-dialog-content-right">
-                <span class="chat-dialog-content-em">赠送15个鸡蛋</span>
-            </div>
-        </div>
-        <div class="chat-dialog">
-            <div class="chat-dialog-content chat-dialog-content-left">
-                <span class="chat-dialog-content-em">获赠15个鸡蛋</span>
-            </div>
-        </div>
+
+        <!--<div class="chat-dialog chat-dialog-right">-->
+            <!--<img class="chat-dialog-head chat-dialog-head-right" src="img/chat_head.png">-->
+            <!--<div class="chat-dialog-triangle chat-dialog-triangle-right"></div>-->
+            <!--<div class="chat-dialog-content chat-dialog-content-right">-->
+                <!--你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="chat-dialog chat-dialog-right">-->
+            <!--<div class="chat-dialog-content chat-dialog-content-right">-->
+                <!--<span class="chat-dialog-content-em">赠送15个鸡蛋</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="chat-dialog">-->
+            <!--<div class="chat-dialog-content chat-dialog-content-left">-->
+                <!--<span class="chat-dialog-content-em">获赠15个鸡蛋</span>-->
+            <!--</div>-->
+        <!--</div>-->
 
     </div>
     <div class="chat-enter">
-        <input class="chat-input">
-        <div class="chat-enter-btn">发送</div>
+        <input class="chat-input" ng-model="messageInput">
+        <div class="chat-enter-btn" ng-click="sendMessage()">发送</div>
     </div>
     <div ng-show="showFriends" ng-class="{'hide': !showFriends}" class="hide">
         <mask class="mask" style="z-index: 2;"></mask>
@@ -670,7 +675,90 @@
 <script type="application/javascript">
     var app = angular.module('myApp', []);
     addHttpInterceptor(app);
-    app.controller('myCtrl', function($scope, $http) {
+
+    app.directive('repeatFinish',function($timeout){
+        return {
+            restrict: 'A',
+            link: function(scope,elem,attr){
+                //当前循环至最后一个
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        //向父控制器传递事件消息
+                        scope.$emit('repeatFinishCallback');
+                    });
+                }
+            }
+        }
+    });
+
+    app.controller('myCtrl', function($scope, $http, $timeout) {
+        $scope.myself = currentAccount();
+        $scope.connectWebSocket = function() {
+            window.websocket = new WebSocket("ws://39.105.86.90/websocket/" + currentAccount());
+            websocket.onopen = function(event){
+            }
+            websocket.onclose = function(event){
+            }
+            websocket.onmessage = function(event){
+                $timeout(function () {
+                    $scope.messages.push(JSON.parse(event.data));
+                })
+            }
+            websocket.onerror = function(event){
+                console.log(event)
+                window.setTimeout($scope.connectWebSocket, 2000);
+            }
+            window.onbeforeunload = function(){
+                closeWebsocket();
+            }
+            function closeWebsocket(){
+                if(3 != websocket.readyState){
+                    websocket.close();
+                }else{
+                }
+            }
+        }
+        $scope.loadFriends = function() {
+            $scope.connectWebSocket();
+            $http.get("/friends/getFriends/" + currentAccount()).then(function (response) {
+                $scope.friends = response.data;
+            })
+        }
+        $scope.sendMessage = function() {
+            if ($scope.messageInput && $scope.friend) {
+                var messageObj = {
+                    from: currentAccount(),
+                    to: $scope.friend.friendId,
+                    msgType: 1,
+                    content: $scope.messageInput,
+                    createTime: new Date()
+                }
+                try {
+                    window.websocket.send(JSON.stringify(messageObj));
+                    $scope.messages.push(messageObj);
+                    delete $scope.messageInput;
+                } catch (e) {
+                    console.log(e);
+                    alert("发送失败！")
+                }
+            }
+        }
+        $scope.selectFriend = function(item) {
+            $scope.friend = item;
+            $scope.friendPage = 0;
+            $http.post("/friends/getMessages", {
+                "accountID": currentAccount(),
+                "friendID": item.friendId,
+                "page": $scope.friendPage,
+                "size": 20
+            }).then(function (response) {
+                $scope.$on('repeatFinishCallback',function(){
+                    var _el = document.getElementById('message-content');
+                    _el.scrollTop = _el.scrollHeight;
+                });
+                $scope.messages = response.data;
+            });
+        }
         $scope.openFriendsDialog = function () {
             $scope.tabIndex = 0;
             $scope.showFriends = true;
@@ -721,6 +809,17 @@
         }
         $scope.closeCoinsDialog = function () {
             $scope.showCoins = false;
+        }
+        $scope.timeFormat = function (timeString) {
+            var now = new Date();
+            var time = new Date(timeString);
+            if (time.getFullYear() < now.getFullYear()) {
+                return time.getFullYear() + "年" + (time.getMonth() + 1) + "月" + time.getDate() + "日 " + time.getHours() + ":" + time.getMinutes();
+            }
+            if (time.getDate() == now.getDate()) {
+                return time.getHours() + ":" + time.getMinutes();
+            }
+            return (time.getMonth() + 1) + "月" + time.getDate() + "日 " + time.getHours() + ":" + time.getMinutes();
         }
     });
 </script>
