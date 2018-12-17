@@ -63,6 +63,9 @@
             background-size: 100% 100%;
             position: relative;
         }
+        .chat-friend-selected {
+            background-image: url("img/chat_friend_bg_selected.png");
+        }
         .chat-friend-btn {
             width: 0.66rem;
             position: fixed;
@@ -171,6 +174,17 @@
             min-height: 0.2rem;
             border-radius: 0.04rem;
             text-align: justify;
+        }
+        .chat-dialog-time {
+            color: rgb(152, 122, 110);
+            text-align: center;
+            font-size: 0.11rem;
+            padding-top: 0.04rem;
+            padding-bottom: 0.02rem;
+        }
+        .chat-dialog-content-em {
+            color: rgb(253, 88, 0);
+            font-weight: bold;
         }
         .chat-dialog-content-left {
             left: 0.42rem;
@@ -396,12 +410,16 @@
             top: 0.05rem;
         }
         .dialog-order-on-eggs {
-            height: 0.68rem;
+            height: 0.71rem;
             width: 100%;
-            overflow-y: auto;
+            overflow-x: auto;
             margin: 0.04rem auto 0 auto;
             text-align: center;
             background-color: #e2d7c9;
+        }
+        .dialog-order-on-eggs-body {
+            width: max-content;
+            overflow: hidden;
         }
         .dialog-order-on-egg {
             width: 0.54rem;
@@ -453,10 +471,11 @@
             background-color: #5b9b4c;
             outline-width: 0;
             line-height: 0.24rem;
-            vertical-align: text-bottom;
+            vertical-align: top;
             border: 0.01rem solid #9ce59a;
             color: #fffd32;
             font-size: 0.15rem;
+            margin-top: 0.02rem;
         }
         .eggs-dialog-row-amount {
             font-size: 0.15rem;
@@ -470,7 +489,7 @@
     </div>
     <div class="chat-friends">
         <div class="chat-padding"></div>
-        <div class="chat-friend">
+        <div class="chat-friend chat-friend-selected">
             <div class="chat-friend-read"></div>
             <img class="chat-friend-head" src="img/chat_head.png">
             <div class="chat-friend-name">张三</div>
@@ -497,6 +516,7 @@
             <div class="chat-dialog-content chat-dialog-content-left">
                 你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的
             </div>
+            <div class="chat-dialog-time">19:21</div>
         </div>
         <div class="chat-dialog chat-dialog-right">
             <img class="chat-dialog-head chat-dialog-head-right" src="img/chat_head.png">
@@ -505,6 +525,17 @@
                 你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的
             </div>
         </div>
+        <div class="chat-dialog chat-dialog-right">
+            <div class="chat-dialog-content chat-dialog-content-right">
+                <span class="chat-dialog-content-em">赠送15个鸡蛋</span>
+            </div>
+        </div>
+        <div class="chat-dialog">
+            <div class="chat-dialog-content chat-dialog-content-left">
+                <span class="chat-dialog-content-em">获赠15个鸡蛋</span>
+            </div>
+        </div>
+
     </div>
     <div class="chat-enter">
         <input class="chat-input">
@@ -594,7 +625,9 @@
                 </div>
                 <div class="eggs-dialog-body">
                     <div class="dialog-order-on-eggs">
-                        <div class="dialog-order-on-egg" ng-repeat="item in eggs" ng-click="selectEgg(item)" ng-class="{'dialog-order-on-egg-selected': item==egg}">
+                        <div class="dialog-order-on-eggs-body">
+                            <div class="dialog-order-on-egg" ng-repeat="item in eggs" ng-click="selectEgg(item)" ng-class="{'dialog-order-on-egg-selected': item==egg}">
+                            </div>
                         </div>
                     </div>
                     <div class="dialog-order-on-egg-name">
@@ -604,9 +637,9 @@
                         鸡蛋名称：<span class="eggs-dialog-row-name">{{egg.eggName}}</span>
                     </div>
                     <div class="eggs-dialog-row">
-                        赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="eggNumber" ng-change="changeEggNumber(eggNumber)">
+                        赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="eggNumber">
                     </div>
-                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': eggNumber <= 0 || eggNumber > egg.amount - egg.freeze}">
+                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendEgg()}">
                         赠送
                     </div>
                 </div>
@@ -623,10 +656,10 @@
                 </div>
                 <div class="eggs-dialog-body coins-dialog-body">
                     <div class="eggs-dialog-row">
-                        赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="coinNumber" ng-change="changeCoinNumber(coinNumber)">
+                        赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="coinNumber">
                         <span class="eggs-dialog-row-amount">最多{{coinsAmount}}</span>
                     </div>
-                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': coinNumber <= 0 || coinNumber > coinsAmount}">
+                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendCoin()}">
                         赠送
                     </div>
                 </div>
@@ -656,7 +689,7 @@
         }
         $scope.openEggsDialog = function() {
             $scope.showEggs = true;
-            $scope.eggNumber = 0;
+            $scope.eggNumber = 1;
             $scope.eggs = [
                 {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":2,"freeze":2},
                 {"feedId":"5bf13205fd6cb535791ae98c","eggName":"富硒鸡蛋","amount":944,"freeze":70},
@@ -664,26 +697,27 @@
                 {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1},
                 {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1},
                 {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1}];
+            $scope.egg = $scope.eggs[0];
         }
         $scope.closeEggsDialog = function () {
             $scope.showEggs = false;
         }
-        $scope.changeEggNumber = function (num) {
-            $scope.eggNumber = parseInt(num);
-            if ($scope.eggNumber === NaN) {
-                $scope.eggNumber = 0;
+        $scope.canSendEgg = function() {
+            if (!$scope.eggNumber) {
+                return false;
             }
+            return $scope.eggNumber > 0 && $scope.eggNumber <= $scope.egg.amount - $scope.egg.freeze;
+        }
+        $scope.canSendCoin = function() {
+            if (!$scope.coinNumber) {
+                return false;
+            }
+            return $scope.coinNumber > 0 && $scope.coinNumber <= $scope.coinsAmount;
         }
         $scope.openCoinsDialog = function() {
             $scope.coinsAmount = 200;
             $scope.showCoins = true;
-            $scope.coinNumber = true;
-        }
-        $scope.changeCoinNumber = function (num) {
-            $scope.coinNumber = parseInt(num);
-            if ($scope.coinNumber === NaN) {
-                $scope.coinNumber = 0;
-            }
+            $scope.coinNumber = 1;
         }
         $scope.closeCoinsDialog = function () {
             $scope.showCoins = false;
