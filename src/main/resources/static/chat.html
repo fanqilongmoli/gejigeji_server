@@ -63,6 +63,9 @@
             background-size: 100% 100%;
             position: relative;
         }
+        .chat-friend-selected {
+            background-image: url("img/chat_friend_bg_selected.png");
+        }
         .chat-friend-btn {
             width: 0.66rem;
             position: fixed;
@@ -162,7 +165,7 @@
         }
         .chat-dialog-content {
             display: inline-block;
-            width: 1.94rem;
+            width: 1.96rem;
             padding: 0.02rem 0.1rem;
             position: relative;
             top: 0;
@@ -172,12 +175,23 @@
             border-radius: 0.04rem;
             text-align: justify;
         }
+        .chat-dialog-time {
+            color: rgb(152, 122, 110);
+            text-align: center;
+            font-size: 0.11rem;
+            padding-top: 0.04rem;
+            padding-bottom: 0.02rem;
+        }
+        .chat-dialog-content-em {
+            color: rgb(253, 88, 0);
+            font-weight: bold;
+        }
         .chat-dialog-content-left {
-            left: 0.43rem;
+            left: 0.42rem;
             background-color: rgb(178, 162, 151);
         }
         .chat-dialog-content-right {
-            right: 0.43rem;
+            right: 0.42rem;
             text-align: justify;
             background-color: rgb(180, 169, 111);
         }
@@ -223,11 +237,11 @@
         }
         .friends-dialog-tab-add {
             background-color: rgb(184, 137, 81);
-            margin-right: 0.015rem;
+            margin: 0 0.015rem;
         }
         .friends-dialog-tab-apply-negative {
             background-color: rgb(141, 102, 62);
-            margin-left: 0.015rem;
+            margin: 0 0.015rem;
         }
         .friends-dialog-tab-img {
             width: 0.75rem;
@@ -237,7 +251,7 @@
         .friends-dialog-tabs {
             display: flex;
             justify-content: center;
-            padding-top: 0.15rem;
+            padding-top: 0.06rem;
         }
         .friends-dialog-tab {
             height: 0.4rem;
@@ -250,6 +264,8 @@
             height: 2.6rem;
             margin-top: 0.04rem;
             position: relative;
+            overflow-y: auto;
+            padding: 0.06rem 0;
         }
         .friends-dialog-row {
             height: 0.3rem;
@@ -264,6 +280,16 @@
             display: inline-block;
             text-align: right;
             height: 100%;
+        }
+        .friends-dialog-error {
+            display: inline-block;
+            height: 0.24rem;
+            width: 2.24rem;
+            padding: 0 0.05rem;
+            line-height: 0.24rem;
+            vertical-align: top;
+            font-size: 0.15rem;
+            color: #fe2e1e;
         }
         .friends-dialog-input {
             height: 0.3rem;
@@ -289,6 +315,171 @@
             bottom: 0.1rem;
             margin-left: 1.13rem;
         }
+        .friends-dialog-row2 {
+            width: 3.08rem;
+            height: 0.72rem;
+            position: relative;
+            background-color: #f0e6d5;
+            margin: 0 auto 0.04rem auto;
+            text-align: left;
+        }
+        .friends-dialog-row2-head {
+            width: 0.58rem;
+            height: 0.58rem;
+            top: 0.07rem;
+            left: 0.04rem;
+            position: absolute;
+        }
+        .friends-dialog-row2-content {
+            height: 100%;
+            padding: 0 0.9rem 0 0.68rem;
+            font-size: 0.13rem;
+        }
+        .friends-dialog-row2-content-name {
+            font-size: 0.14rem;
+            color: #0a0a0a;
+            height: 0.36rem;
+            line-height: 0.36rem;
+        }
+        .friends-dialog-row2-content-tip {
+            color: #fe2e1e;
+            height: 0.18rem;
+            line-height: 0.18rem;
+        }
+        .friends-dialog-row2-content-words {
+            color: #2e2e2e;
+            height: 0.18rem;
+            line-height: 0.18rem;
+        }
+        .friends-dialog-row2-btn {
+            width: 0.85rem;
+            height: 0.72rem;
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: flex;
+            justify-content: space-evenly;
+            flex-direction: column;
+        }
+        .friends-dialog-btn2 {
+            background-color: rgb(224, 72, 47);
+            border: 0.02rem solid rgb(179, 55, 34);
+            width: 0.76rem;
+            height: 0.26rem;
+            border-radius: 0.02rem;
+            font-size: 0.18rem;
+            line-height: 0.26rem;
+            /*margin: 0.03rem;*/
+            text-align: center;
+        }
+        .friends-dialog-btn2-gray {
+            background-color: #878787;
+            border: 0.02rem solid #6d6d6d;
+        }
+        .message-dialog-content {
+            background-color: rgb(86, 58, 38);
+            border-radius: 0.08rem;
+            text-align: center;
+            padding: 0 0.05rem 0.05rem 0.05rem;
+        }
+        .message-dialog-title {
+            height: 0.5rem;
+            line-height: 0.5rem;
+            font-size: 0.22rem;
+            color: #ffe168;
+        }
+        .message-dialog-title-img {
+            height: 0.36rem;
+            vertical-align: middle;
+        }
+        .message-dialog-body {
+            background-color: rgb(200, 183, 155);
+            height: 1.2rem;
+            margin-top: 0.04rem;
+            position: relative;
+            overflow-y: auto;
+            padding: 0.06rem 0;
+        }
+        .message-dialog-body-message {
+            color: #563a26;
+            font-size: 0.2rem;
+            height: 0.7rem;
+            line-height: 0.7rem;
+        }
+        .dialog-close2 {
+            top: 0.05rem;
+        }
+        .dialog-order-on-eggs {
+            height: 0.71rem;
+            width: 100%;
+            overflow-x: auto;
+            margin: 0.04rem auto 0 auto;
+            text-align: center;
+            background-color: #e2d7c9;
+        }
+        .dialog-order-on-eggs-body {
+            width: max-content;
+            overflow: hidden;
+        }
+        .dialog-order-on-egg {
+            width: 0.54rem;
+            height: 0.54rem;
+            display: inline-block;
+            margin: 0.07rem;
+            background-image: url("img/egg.png");
+            background-size: 0.33rem 0.44rem;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #9f8660;
+        }
+        .dialog-order-on-egg-selected {
+            background-color: #cb5835;
+        }
+        .dialog-order-on-egg-name {
+            color: #563A26;
+            font-size: 0.14rem;
+            height: 0.3rem;
+            line-height: 0.3rem;
+        }
+        .eggs-dialog-body {
+            background-color: rgb(200, 183, 155);
+            height: 2.4rem;
+            margin-top: 0.04rem;
+            position: relative;
+            padding: 0.06rem 0;
+        }
+        .coins-dialog-body {
+            height: 1rem;
+        }
+        .eggs-dialog-row {
+            height: 0.3rem;
+            line-height: 0.3rem;
+            background-color: #e3d8ca;
+            font-size: 0.18rem;
+            color: #1b1b1b;
+            text-align: left;
+            padding-left: 0.44rem;
+            margin-top: 0.1rem;
+        }
+        .eggs-dialog-row-name {
+            color: #953535;
+        }
+        .eggs-dialog-row-num {
+            height: 0.24rem;
+            width: 0.6rem;
+            padding: 0 0.05rem;
+            background-color: #5b9b4c;
+            outline-width: 0;
+            line-height: 0.24rem;
+            vertical-align: top;
+            border: 0.01rem solid #9ce59a;
+            color: #fffd32;
+            font-size: 0.15rem;
+            margin-top: 0.02rem;
+        }
+        .eggs-dialog-row-amount {
+            font-size: 0.15rem;
+        }
     </style>
     <script src="js/angular.js"></script>
 </head>
@@ -298,7 +489,7 @@
     </div>
     <div class="chat-friends">
         <div class="chat-padding"></div>
-        <div class="chat-friend">
+        <div class="chat-friend chat-friend-selected">
             <div class="chat-friend-read"></div>
             <img class="chat-friend-head" src="img/chat_head.png">
             <div class="chat-friend-name">张三</div>
@@ -316,8 +507,8 @@
     <div class="chat-content">
         <div class="chat-padding"></div>
         <div class="chat-content-buttons">
-            <div class="chat-content-button1">送鸡蛋</div>
-            <div class="chat-content-button2">送金币</div>
+            <div class="chat-content-button1" ng-click="openEggsDialog()">送鸡蛋</div>
+            <div class="chat-content-button2" ng-click="openCoinsDialog()">送金币</div>
         </div>
         <div class="chat-dialog">
             <img class="chat-dialog-head chat-dialog-head-left" src="img/chat_head.png">
@@ -325,6 +516,7 @@
             <div class="chat-dialog-content chat-dialog-content-left">
                 你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的
             </div>
+            <div class="chat-dialog-time">19:21</div>
         </div>
         <div class="chat-dialog chat-dialog-right">
             <img class="chat-dialog-head chat-dialog-head-right" src="img/chat_head.png">
@@ -333,6 +525,17 @@
                 你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的
             </div>
         </div>
+        <div class="chat-dialog chat-dialog-right">
+            <div class="chat-dialog-content chat-dialog-content-right">
+                <span class="chat-dialog-content-em">赠送15个鸡蛋</span>
+            </div>
+        </div>
+        <div class="chat-dialog">
+            <div class="chat-dialog-content chat-dialog-content-left">
+                <span class="chat-dialog-content-em">获赠15个鸡蛋</span>
+            </div>
+        </div>
+
     </div>
     <div class="chat-enter">
         <input class="chat-input">
@@ -341,18 +544,20 @@
     <div ng-show="showFriends" ng-class="{'hide': !showFriends}" class="hide">
         <mask class="mask" style="z-index: 2;"></mask>
         <div class="dialog" style="z-index: 3;">
-            <img class="dialog-close" src="img/dialog_close.png" style="z-index: 4;" ng-click="closeFriendsDialog()">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 4;" ng-click="closeFriendsDialog()">
             <div class="dialog-div">
                 <div class="friends-dialog-content">
                     <div class="friends-dialog-tabs">
-                        <div class="friends-dialog-tab friends-dialog-tab-add">
+                        <div class="friends-dialog-tab"
+                             ng-class="{'friends-dialog-tab-add': tabIndex == 0, 'friends-dialog-tab-apply-negative': tabIndex == 1}" ng-click="switchFriendsTab(0)">
                             <img class="friends-dialog-tab-img" ng-src="{{ tabIndex == 0 ? 'img/chat_add_friend.png':'img/chat_add_friend_negative.png'}}">
                         </div>
-                        <div class="friends-dialog-tab friends-dialog-tab-apply-negative">
-                            <img class="friends-dialog-tab-img" src="img/chat_apply_friend_negative.png">
+                        <div class="friends-dialog-tab"
+                             ng-class="{'friends-dialog-tab-add': tabIndex == 1, 'friends-dialog-tab-apply-negative': tabIndex == 0}" ng-click="switchFriendsTab(1)">
+                            <img class="friends-dialog-tab-img" ng-src="{{ tabIndex == 1 ? 'img/chat_apply_friend.png' : 'img/chat_apply_friend_negative.png'}}">
                         </div>
                     </div>
-                    <div class="friends-dialog-body">
+                    <div class="friends-dialog-body" ng-show="tabIndex == 0">
                         <div class="friends-dialog-row">
                             <div class="friends-dialog-label">叽友名</div>
                             <input class="friends-dialog-input">
@@ -361,9 +566,101 @@
                             <div class="friends-dialog-label">附言</div>
                             <input class="friends-dialog-input">
                         </div>
+                        <div class="friends-dialog-row">
+                            <div class="friends-dialog-label"></div>
+                            <div class="friends-dialog-error">查无此人，请重新输入</div>
+                        </div>
                         <div class="friends-dialog-btn">
                             添加
                         </div>
+                    </div>
+                    <div class="friends-dialog-body" ng-show="tabIndex == 1">
+                        <div class="friends-dialog-row2">
+                            <img class="friends-dialog-row2-head" src="img/chat_head.png">
+                            <div class="friends-dialog-row2-content">
+                                <div class="friends-dialog-row2-content-name">尼古拉斯凯奇</div>
+                                <div class="friends-dialog-row2-content-tip">申请添加好友</div>
+                                <div class="friends-dialog-row2-content-words">附言：<span>晚上去吃饭</span></div>
+                            </div>
+                            <div class="friends-dialog-row2-btn">
+                                <div class="friends-dialog-btn2">
+                                    同意
+                                </div>
+                                <div class="friends-dialog-btn2 friends-dialog-btn2-gray">
+                                    忽略
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="showMessage" ng-class="{'hide': !showMessage}" class="hide">
+        <mask class="mask" style="z-index: 11;"></mask>
+        <div class="dialog" style="z-index: 12;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeMessageDialog()">
+            <div class="message-dialog-content">
+                <div class="message-dialog-title">
+                    <img class="message-dialog-title-img" src="img/message_notification.png">
+                </div>
+                <div class="message-dialog-body">
+                    <div class="message-dialog-body-message">
+                        好友申请已发送
+                    </div>
+                    <div class="friends-dialog-btn">
+                        确定
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="showEggs" ng-class="{'hide': !showEggs}" class="hide">
+        <mask class="mask" style="z-index: 2;"></mask>
+        <div class="dialog" style="z-index: 3;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 4;" ng-click="closeEggsDialog()">
+            <div class="message-dialog-content">
+                <div class="message-dialog-title">
+                    赠送鸡蛋给张三
+                </div>
+                <div class="eggs-dialog-body">
+                    <div class="dialog-order-on-eggs">
+                        <div class="dialog-order-on-eggs-body">
+                            <div class="dialog-order-on-egg" ng-repeat="item in eggs" ng-click="selectEgg(item)" ng-class="{'dialog-order-on-egg-selected': item==egg}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialog-order-on-egg-name">
+                        <span ng-show="egg">{{egg.eggName}}，剩余{{egg.amount - egg.freeze}}个</span>
+                    </div>
+                    <div class="eggs-dialog-row">
+                        鸡蛋名称：<span class="eggs-dialog-row-name">{{egg.eggName}}</span>
+                    </div>
+                    <div class="eggs-dialog-row">
+                        赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="eggNumber">
+                    </div>
+                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendEgg()}">
+                        赠送
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="showCoins" ng-class="{'hide': !showCoins}" class="hide">
+        <mask class="mask" style="z-index: 2;"></mask>
+        <div class="dialog" style="z-index: 3;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 4;" ng-click="closeCoinsDialog()">
+            <div class="message-dialog-content">
+                <div class="message-dialog-title">
+                    赠送鸡蛋给张三
+                </div>
+                <div class="eggs-dialog-body coins-dialog-body">
+                    <div class="eggs-dialog-row">
+                        赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="coinNumber">
+                        <span class="eggs-dialog-row-amount">最多{{coinsAmount}}</span>
+                    </div>
+                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendCoin()}">
+                        赠送
                     </div>
                 </div>
             </div>
@@ -380,6 +677,50 @@
         }
         $scope.closeFriendsDialog = function () {
             $scope.showFriends = false;
+        }
+        $scope.switchFriendsTab = function (index) {
+            $scope.tabIndex = index;
+        }
+        $scope.closeMessageDialog = function () {
+            $scope.showMessage = false;
+        }
+        $scope.selectEgg = function (egg) {
+            $scope.egg = egg;
+        }
+        $scope.openEggsDialog = function() {
+            $scope.showEggs = true;
+            $scope.eggNumber = 1;
+            $scope.eggs = [
+                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":2,"freeze":2},
+                {"feedId":"5bf13205fd6cb535791ae98c","eggName":"富硒鸡蛋","amount":944,"freeze":70},
+                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":2,"freeze":1},
+                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1},
+                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1},
+                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1}];
+            $scope.egg = $scope.eggs[0];
+        }
+        $scope.closeEggsDialog = function () {
+            $scope.showEggs = false;
+        }
+        $scope.canSendEgg = function() {
+            if (!$scope.eggNumber) {
+                return false;
+            }
+            return $scope.eggNumber > 0 && $scope.eggNumber <= $scope.egg.amount - $scope.egg.freeze;
+        }
+        $scope.canSendCoin = function() {
+            if (!$scope.coinNumber) {
+                return false;
+            }
+            return $scope.coinNumber > 0 && $scope.coinNumber <= $scope.coinsAmount;
+        }
+        $scope.openCoinsDialog = function() {
+            $scope.coinsAmount = 200;
+            $scope.showCoins = true;
+            $scope.coinNumber = 1;
+        }
+        $scope.closeCoinsDialog = function () {
+            $scope.showCoins = false;
         }
     });
 </script>
