@@ -17,6 +17,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -325,13 +327,19 @@ public class FriendsService {
         User user = userRepository.findById(getMessagesParam.getAccountID()).get();
         User friend = userRepository.findById(getMessagesParam.getFriendID()).get();
 
-        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrderByCreateTimeAsc(
-                getMessagesParam.getAccountID(),
-                getMessagesParam.getFriendID(),
-                getMessagesParam.getAccountID(),
-                getMessagesParam.getFriendID(),
-                new PageRequest(getMessagesParam.getPage(), getMessagesParam.getSize()));
+        Sort sort = new Sort(Sort.Direction.DESC,"createTime"); //创建时间降序排序
+        Pageable pageable = PageRequest.of(getMessagesParam.getPage(), getMessagesParam.getSize(),sort);
 
+
+        final List<Message> messages = messageRepository.findByFromAndToOrToAndFrom(
+                getMessagesParam.getAccountID(),
+                getMessagesParam.getFriendID(),
+                getMessagesParam.getAccountID(),
+                getMessagesParam.getFriendID(),
+                pageable);
+
+
+        Collections.reverse(messages);
 
         //拼装返回的messageHisVo
         List<MessageHisVo> messageHisVos = new ArrayList<>();
