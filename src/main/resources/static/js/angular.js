@@ -353,11 +353,12 @@ function addHttpInterceptor(app) {
         return {
             request: function (config){
                 config.url = "http://39.105.86.90" + config.url;
+                // config.url = "http://172.30.9.99:8080" + config.url;
                 return config;
             },
             responseError: function(response) {
                 if (response && response.data) {
-                    if (response.data.code != "no.money" && response.data.errors) {
+                    if (response.data.code != "no.money" && response.data.code != "friend.no" && response.data.errors) {
                         alert(JSON.stringify(response.data.errors));
                     }
                 } else {
