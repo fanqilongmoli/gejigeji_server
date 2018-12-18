@@ -341,7 +341,7 @@ public class FriendsService {
                 getMessagesParam.getFriendID(),
                 getMessagesParam.getAccountID(),
                 getMessagesParam.getFriendID(),
-                "sys" + getMessagesParam.getAccountID(),
+                "sys" + getMessagesParam.getFriendID(),
                 getMessagesParam.getAccountID(),
                 pageable);
 
