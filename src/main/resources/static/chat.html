@@ -326,7 +326,7 @@
         }
         .friends-dialog-row2 {
             width: 3.08rem;
-            height: 0.72rem;
+            min-height: 0.72rem;
             position: relative;
             background-color: #f0e6d5;
             margin: 0 auto 0.04rem auto;
@@ -347,8 +347,8 @@
         .friends-dialog-row2-content-name {
             font-size: 0.14rem;
             color: #0a0a0a;
-            height: 0.36rem;
-            line-height: 0.36rem;
+            word-break: break-all;
+            padding: 0.05rem 0;
         }
         .friends-dialog-row2-content-tip {
             color: #fe2e1e;
@@ -357,8 +357,8 @@
         }
         .friends-dialog-row2-content-words {
             color: #2e2e2e;
-            height: 0.18rem;
-            line-height: 0.18rem;
+            /*height: 0.18rem;*/
+            line-height: 0.14rem;
         }
         .friends-dialog-row2-btn {
             width: 0.85rem;
@@ -492,57 +492,39 @@
     </style>
     <script src="js/angular.js"></script>
 </head>
-<body ng-app="myApp" ng-init="loadFriends()" ng-controller="myCtrl" ng-class="{'show': showBody}" class="">
+<body ng-app="myApp" ng-init="initAll()" ng-controller="myCtrl" ng-class="{'show': showBody}" class="">
     <div class="auction-name-div">
         <img src="img/chat_name.png" class="auction-name">
     </div>
     <div class="chat-friends">
         <div class="chat-padding"></div>
-        <div ng-repeat="item in friends" class="chat-friend" ng-class="{'chat-friend-selected': friend == item}" ng-click="selectFriend(item)">
+        <div ng-repeat="item in friends" class="chat-friend hide" ng-class="{'chat-friend-selected': friend == item, 'show': friends}" ng-click="selectFriend(item)">
             <div class="chat-friend-read" ng-show="item.unRead"></div>
             <img class="chat-friend-head" src="img/chat_head.png">
             <div class="chat-friend-name">{{item.userName}}</div>
         </div>
         <img src="img/chat_friend_btn.png" ng-click="openFriendsDialog()" class="chat-friend-btn">
     </div>
-    <div class="chat-content">
+    <div class="chat-content" >
         <div class="chat-padding"></div>
         <div class="chat-content-buttons">
-            <div class="chat-content-button1" ng-click="openEggsDialog()">送鸡蛋</div>
-            <div class="chat-content-button2" ng-click="openCoinsDialog()">送金币</div>
+            <div class="chat-content-button1 hide" ng-class="{'show': friend}" ng-click="openEggsDialog()">送鸡蛋</div>
+            <div class="chat-content-button2 hide" ng-class="{'show': friend}" ng-click="openCoinsDialog()">送金币</div>
         </div>
         <div class="chat-content-message" id="message-content">
             <div class="chat-dialog" ng-repeat="item in messages" repeat-finish>
                 <img class="chat-dialog-head" src="img/chat_head.png" ng-show="item.msgType == 1" ng-class="{'chat-dialog-head-left': item.to == myself, 'chat-dialog-head-right': item.from == myself}">
                 <div class="chat-dialog-triangle" ng-show="item.msgType == 1" ng-class="{'chat-dialog-triangle-left': item.to == myself, 'chat-dialog-triangle-right': item.from == myself}"></div>
                 <div class="chat-dialog-content" ng-class="{'chat-dialog-content-left': item.to == myself, 'chat-dialog-content-right': item.from == myself}">
-                    {{item.content}}
+                    <span ng-class="{'chat-dialog-content-em': item.msgType == 2}">{{item.content}}</span>
                 </div>
                 <div class="chat-dialog-time">{{timeFormat(item.createTime)}}</div>
             </div>
             <div class="chat-padding2"></div>
         </div>
 
-        <!--<div class="chat-dialog chat-dialog-right">-->
-            <!--<img class="chat-dialog-head chat-dialog-head-right" src="img/chat_head.png">-->
-            <!--<div class="chat-dialog-triangle chat-dialog-triangle-right"></div>-->
-            <!--<div class="chat-dialog-content chat-dialog-content-right">-->
-                <!--你好啊，对接开发接口的房间里肯定是的，饭店客房酒店开房间的，犯困的季节疯狂的JFK的-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="chat-dialog chat-dialog-right">-->
-            <!--<div class="chat-dialog-content chat-dialog-content-right">-->
-                <!--<span class="chat-dialog-content-em">赠送15个鸡蛋</span>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="chat-dialog">-->
-            <!--<div class="chat-dialog-content chat-dialog-content-left">-->
-                <!--<span class="chat-dialog-content-em">获赠15个鸡蛋</span>-->
-            <!--</div>-->
-        <!--</div>-->
-
     </div>
-    <div class="chat-enter">
+    <div class="chat-enter" ng-show="friend">
         <input class="chat-input" ng-model="messageInput">
         <div class="chat-enter-btn" ng-click="sendMessage()">发送</div>
     </div>
@@ -565,33 +547,36 @@
                     <div class="friends-dialog-body" ng-show="tabIndex == 0">
                         <div class="friends-dialog-row">
                             <div class="friends-dialog-label">叽友名</div>
-                            <input class="friends-dialog-input">
+                            <input class="friends-dialog-input" ng-model="friendName">
                         </div>
                         <div class="friends-dialog-row">
                             <div class="friends-dialog-label">附言</div>
-                            <input class="friends-dialog-input">
+                            <input class="friends-dialog-input" ng-model="friendPs">
                         </div>
                         <div class="friends-dialog-row">
                             <div class="friends-dialog-label"></div>
-                            <div class="friends-dialog-error">查无此人，请重新输入</div>
+                            <div class="friends-dialog-error hide" ng-show="friendNotFound">{{friendNotFound}}</div>
                         </div>
-                        <div class="friends-dialog-btn">
+                        <div class="friends-dialog-btn" ng-click="addFriend()" ng-class="{'gray': !canAddFriend()}">
                             添加
                         </div>
                     </div>
                     <div class="friends-dialog-body" ng-show="tabIndex == 1">
-                        <div class="friends-dialog-row2">
+                        <div ng-if="applies && applies.length == 0">
+                            暂无申请
+                        </div>
+                        <div class="friends-dialog-row2" ng-repeat="item in applies">
                             <img class="friends-dialog-row2-head" src="img/chat_head.png">
                             <div class="friends-dialog-row2-content">
-                                <div class="friends-dialog-row2-content-name">尼古拉斯凯奇</div>
+                                <div class="friends-dialog-row2-content-name">{{item.userName}}</div>
                                 <div class="friends-dialog-row2-content-tip">申请添加好友</div>
-                                <div class="friends-dialog-row2-content-words">附言：<span>晚上去吃饭</span></div>
+                                <div class="friends-dialog-row2-content-words">附言：<span>{{item.ps}}</span></div>
                             </div>
                             <div class="friends-dialog-row2-btn">
-                                <div class="friends-dialog-btn2">
+                                <div class="friends-dialog-btn2" ng-click="postApply(1, item.friendId)">
                                     同意
                                 </div>
-                                <div class="friends-dialog-btn2 friends-dialog-btn2-gray">
+                                <div class="friends-dialog-btn2 friends-dialog-btn2-gray" ng-click="postApply(2, item.friendId)">
                                     忽略
                                 </div>
                             </div>
@@ -611,9 +596,9 @@
                 </div>
                 <div class="message-dialog-body">
                     <div class="message-dialog-body-message">
-                        好友申请已发送
+                        {{info}}
                     </div>
-                    <div class="friends-dialog-btn">
+                    <div class="friends-dialog-btn" ng-click="closeMessageDialog()">
                         确定
                     </div>
                 </div>
@@ -626,7 +611,7 @@
             <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 4;" ng-click="closeEggsDialog()">
             <div class="message-dialog-content">
                 <div class="message-dialog-title">
-                    赠送鸡蛋给张三
+                    赠送鸡蛋给{{friend.userName}}
                 </div>
                 <div class="eggs-dialog-body">
                     <div class="dialog-order-on-eggs">
@@ -644,7 +629,7 @@
                     <div class="eggs-dialog-row">
                         赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="eggNumber">
                     </div>
-                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendEgg()}">
+                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendEgg()}" ng-click="sendEgg()">
                         赠送
                     </div>
                 </div>
@@ -657,14 +642,14 @@
             <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 4;" ng-click="closeCoinsDialog()">
             <div class="message-dialog-content">
                 <div class="message-dialog-title">
-                    赠送鸡蛋给张三
+                    赠送金币给{{friend.userName}}
                 </div>
                 <div class="eggs-dialog-body coins-dialog-body">
                     <div class="eggs-dialog-row">
                         赠送数量：<input class="eggs-dialog-row-num" type="number" ng-model="coinNumber">
                         <span class="eggs-dialog-row-amount">最多{{coinsAmount}}</span>
                     </div>
-                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendCoin()}">
+                    <div class="friends-dialog-btn" ng-class="{'friends-dialog-btn2-gray': !canSendCoin()}" ng-click="sendCoin()">
                         赠送
                     </div>
                 </div>
@@ -700,12 +685,40 @@
             websocket.onclose = function(event){
             }
             websocket.onmessage = function(event){
-                $timeout(function () {
-                    $scope.messages.push(JSON.parse(event.data));
+                var m = JSON.parse(event.data);
+                var mFriendId = m.from;
+                if (m.from == currentAccount()) {
+                    mFriendId = m.to;
+                }
+                var friend0;
+                $scope.friends.forEach(function (item) {
+                    if (item.friendId == mFriendId) {
+                        friend0 = item;
+                    }
                 })
+                if ($scope.friend) {
+                    if (m.from == $scope.friend.friendId || m.to == $scope.friend.friendId) {
+                        $timeout(function () {
+                            $scope.messages.push(m);
+                        })
+                    } else {
+                        if (friend0) {
+                            $scope.friends = $scope.friends.filter(function (f) {
+                                return f.friendId != mFriendId;
+                            })
+                            friend0.unRead = true;
+                            $timeout(function () {
+                                $scope.friends.unshift(friend0);
+                            })
+                        }
+                    }
+                } else {
+                    if (friend0) {
+                        $scope.selectFriend(friend0);
+                    }
+                }
             }
             websocket.onerror = function(event){
-                console.log(event)
                 window.setTimeout($scope.connectWebSocket, 2000);
             }
             window.onbeforeunload = function(){
@@ -718,10 +731,32 @@
                 }
             }
         }
-        $scope.loadFriends = function() {
+        $scope.initAll = function() {
             $scope.connectWebSocket();
+            $scope.loadFriends();
+        }
+        $scope.loadFriends = function() {
             $http.get("/friends/getFriends/" + currentAccount()).then(function (response) {
                 $scope.friends = response.data;
+            })
+        }
+        $scope.loadApplies = function() {
+            $http.get("/friends/getApply/" + currentAccount()).then(function (response) {
+                $scope.applies = response.data;
+            })
+        }
+        $scope.postApply = function(action, friendId) {
+            $http.post("/friends/applyFriend", {
+                "accountID": currentAccount(),
+                "action": action,
+                "friendId": friendId
+            }).then(function () {
+                $scope.myCloseMessage = function() {
+                    $scope.showMessage = false;
+                }
+                $scope.openMessageDialog("操作成功");
+                $scope.loadApplies();
+                $scope.loadFriends();
             })
         }
         $scope.sendMessage = function() {
@@ -746,6 +781,7 @@
         $scope.selectFriend = function(item) {
             $scope.friend = item;
             $scope.friendPage = 0;
+            item.unRead = false;
             $http.post("/friends/getMessages", {
                 "accountID": currentAccount(),
                 "friendID": item.friendId,
@@ -765,47 +801,89 @@
         }
         $scope.closeFriendsDialog = function () {
             $scope.showFriends = false;
+            delete $scope.friendNotFound;
         }
         $scope.switchFriendsTab = function (index) {
             $scope.tabIndex = index;
+            if (index == 1) {
+                $scope.loadApplies();
+            }
         }
         $scope.closeMessageDialog = function () {
+            if ($scope.myCloseMessage) {
+                $scope.myCloseMessage();
+                delete $scope.myCloseMessage;
+                return;
+            }
             $scope.showMessage = false;
+            $scope.showCoins = false;
+            $scope.showEggs = false;
+            $scope.showFriends = false;
+            delete $scope.friendNotFound;
         }
         $scope.selectEgg = function (egg) {
             $scope.egg = egg;
         }
         $scope.openEggsDialog = function() {
-            $scope.showEggs = true;
-            $scope.eggNumber = 1;
-            $scope.eggs = [
-                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":2,"freeze":2},
-                {"feedId":"5bf13205fd6cb535791ae98c","eggName":"富硒鸡蛋","amount":944,"freeze":70},
-                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":2,"freeze":1},
-                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1},
-                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1},
-                {"feedId":"5bf13205fd6cb535791ae98d","eggName":"有机鸡蛋","amount":200,"freeze":1}];
-            $scope.egg = $scope.eggs[0];
+            $http.post("/user/userEggs", {
+                "accountID": currentAccount()
+            }).then(function (response) {
+                $scope.eggs = response.data;
+                $scope.eggNumber = 1;
+                $scope.egg = $scope.eggs[0];
+                $scope.showEggs = true;
+            })
+        }
+        $scope.sendEgg = function() {
+            if (!$scope.canSendEgg()) {
+                return;
+            }
+            $http.post("/friends/sendEgg", {
+                "accountID": currentAccount(),
+                "egg": $scope.eggNumber,
+                "feedId": $scope.egg.feedId,
+                "friendID": $scope.friend.friendId
+            }).then(function () {
+                $scope.openMessageDialog("鸡蛋赠送成功");
+            })
         }
         $scope.closeEggsDialog = function () {
             $scope.showEggs = false;
         }
         $scope.canSendEgg = function() {
-            if (!$scope.eggNumber) {
+            if (!$scope.eggNumber || !$scope.friend || !$scope.egg) {
                 return false;
             }
             return $scope.eggNumber > 0 && $scope.eggNumber <= $scope.egg.amount - $scope.egg.freeze;
         }
         $scope.canSendCoin = function() {
-            if (!$scope.coinNumber) {
+            if (!$scope.coinNumber || !$scope.friend) {
                 return false;
             }
             return $scope.coinNumber > 0 && $scope.coinNumber <= $scope.coinsAmount;
         }
         $scope.openCoinsDialog = function() {
-            $scope.coinsAmount = 200;
-            $scope.showCoins = true;
-            $scope.coinNumber = 1;
+            if (!$scope.friend) {
+                return;
+            }
+            $http.post("/user/getCoin", {
+                "accountID": currentAccount()
+            }).then(function (response) {
+                $scope.coinsAmount = response.data.coin;
+                $scope.coinNumber = 1;
+                $scope.showCoins = true;
+            })
+        }
+        $scope.sendCoin = function() {
+            if ($scope.canSendCoin()) {
+                $http.post("/friends/sendCoin", {
+                    "accountID": currentAccount(),
+                    "coin": $scope.coinNumber,
+                    "friendID": $scope.friend.friendId
+                }).then(function (response) {
+                    $scope.openMessageDialog("金币赠送成功");
+                })
+            }
         }
         $scope.closeCoinsDialog = function () {
             $scope.showCoins = false;
@@ -820,6 +898,28 @@
                 return time.getHours() + ":" + time.getMinutes();
             }
             return (time.getMonth() + 1) + "月" + time.getDate() + "日 " + time.getHours() + ":" + time.getMinutes();
+        }
+        $scope.openMessageDialog = function (info) {
+            $scope.info = info;
+            $scope.showMessage = true;
+        }
+        $scope.addFriend = function () {
+            if (!$scope.canAddFriend()) {
+                return;
+            }
+            $http.post("/friends/addFriend", {
+                "accountID": currentAccount(),
+                "ps": $scope.friendPs,
+                "username": $scope.friendName
+            }).then(function () {
+                $scope.openMessageDialog("添加好友【" + $scope.friendName + "】申请已发送");
+                $scope.loadFriends();
+            }, function (response) {
+                $scope.friendNotFound = response.data.errors[0];
+            })
+        }
+        $scope.canAddFriend = function () {
+            return $scope.friendName && $scope.friendPs;
         }
     });
 </script>
