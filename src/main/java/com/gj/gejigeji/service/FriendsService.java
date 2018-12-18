@@ -166,12 +166,17 @@ public class FriendsService {
     public OkResult applyFriend(ApplyFriendParam applyFriendVo) {
         // 申请好友  申请方为 userId  同意方为 friendId
 
-        Friends friends = friendsRepository.findByUserIdAndFriendId(applyFriendVo.getFriendId(), applyFriendVo.getAccountID()).get();
+        Friends friends = friendsRepository.findByUserIdAndFriendId(applyFriendVo.getFriendId(), applyFriendVo.getAccountID()).orElse(null);
+        if (friends != null) {
+            friends.setStatus(applyFriendVo.getAction());
+            friends.setUpdateTime(new Date());
+            friends.setLastMsgTime(new Date());
+            friendsRepository.save(friends);
+            return new OkResult(true);
+        }
 
-        friends.setStatus(applyFriendVo.getAction());
-        friends.setUpdateTime(new Date());
-        friendsRepository.save(friends);
-        return new OkResult(true);
+        throw new NoUserException();
+
     }
 
     /**
@@ -235,7 +240,7 @@ public class FriendsService {
         try {
             // 发送给赠送者
             Message message = new Message();
-            message.setFrom("sys");
+            message.setFrom("sys" + friend.getId());
             message.setTo(user.getId());
             message.setContent(String.format(ConstUtil.EGG_SEND_TIP, friend.getUserName(), sendEggParam.getEgg()));
             message.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -243,7 +248,7 @@ public class FriendsService {
             publishService.publish(user.getId(), JsonUtil.serialize(message));
             // 发送给接受者
             Message message2 = new Message();
-            message2.setFrom("sys");
+            message2.setFrom("sys" + user.getId());
             message2.setTo(friend.getId());
             message2.setContent(String.format(ConstUtil.EGG_RECEIVE_TIP, user.getUserName(), sendEggParam.getEgg()));
             message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -295,7 +300,7 @@ public class FriendsService {
         try {
             // 发送给赠送者
             Message message = new Message();
-            message.setFrom("sys");
+            message.setFrom("sys" + friend.getId());
             message.setTo(user.getId());
             message.setContent(String.format(ConstUtil.COIN_SEND_TIP, friend.getUserName(), sendCoinParam.getCoin()));
             message.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -303,7 +308,7 @@ public class FriendsService {
             publishService.publish(user.getId(), JsonUtil.serialize(message));
             // 发送给接受者
             Message message2 = new Message();
-            message2.setFrom("sys");
+            message2.setFrom("sys" + user.getId());
             message2.setTo(friend.getId());
             message2.setContent(String.format(ConstUtil.COIN_RECEIVE_TIP, user.getUserName(), sendCoinParam.getCoin()));
             message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -327,15 +332,17 @@ public class FriendsService {
         User user = userRepository.findById(getMessagesParam.getAccountID()).get();
         User friend = userRepository.findById(getMessagesParam.getFriendID()).get();
 
-        Sort sort = new Sort(Sort.Direction.DESC,"createTime"); //创建时间降序排序
-        Pageable pageable = PageRequest.of(getMessagesParam.getPage(), getMessagesParam.getSize(),sort);
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime"); //创建时间降序排序
+        Pageable pageable = PageRequest.of(getMessagesParam.getPage(), getMessagesParam.getSize(), sort);
 
 
-        final List<Message> messages = messageRepository.findByFromAndToOrToAndFrom(
+        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrFromAndTo(
                 getMessagesParam.getAccountID(),
                 getMessagesParam.getFriendID(),
                 getMessagesParam.getAccountID(),
                 getMessagesParam.getFriendID(),
+                "sys" + getMessagesParam.getAccountID(),
+                getMessagesParam.getAccountID(),
                 pageable);
 
 
