@@ -48,6 +48,7 @@ public class PublishService {
             //保存到聊天记录
             messageRepository.save(msg);
             //同时更新双方最后的聊天时间
+
             Friends friends = friendsRepository.findByUserIdAndFriendIdOrFriendIdAndUserId(msg.getFrom(), msg.getTo(), msg.getFrom(), msg.getTo()).orElse(null);
             if (friends !=null){
                 friends.setLastMsgTime(new Date());
