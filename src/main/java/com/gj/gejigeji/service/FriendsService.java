@@ -331,7 +331,7 @@ public class FriendsService {
         Pageable pageable = PageRequest.of(getMessagesParam.getPage(), getMessagesParam.getSize(), sort);
 
 
-        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrToAndFrom(
+        final List<Message> messages = messageRepository.findByFromAndToOrToAndFromOrFromAndTo(
                 getMessagesParam.getAccountID(),
                 getMessagesParam.getFriendID(),
                 getMessagesParam.getAccountID(),
