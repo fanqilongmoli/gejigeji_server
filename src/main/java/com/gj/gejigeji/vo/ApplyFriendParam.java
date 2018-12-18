@@ -1,9 +1,8 @@
 package com.gj.gejigeji.vo;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel("同意添加/忽略添加")
+
 public class ApplyFriendParam {
 
     @ApiModelProperty("用户ID")
