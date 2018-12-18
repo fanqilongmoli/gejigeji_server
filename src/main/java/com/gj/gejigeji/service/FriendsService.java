@@ -167,7 +167,7 @@ public class FriendsService {
         // 申请好友  申请方为 userId  同意方为 friendId
 
         Friends friends = friendsRepository.findByUserIdAndFriendId(applyFriendVo.getFriendId(), applyFriendVo.getAccountID()).orElse(null);
-        if (friends !=null){
+        if (friends != null) {
             friends.setStatus(applyFriendVo.getAction());
             friends.setUpdateTime(new Date());
             friends.setLastMsgTime(new Date());
@@ -240,7 +240,7 @@ public class FriendsService {
         try {
             // 发送给赠送者
             Message message = new Message();
-            message.setFrom("sys");
+            message.setFrom("sys" + friend.getId());
             message.setTo(user.getId());
             message.setContent(String.format(ConstUtil.EGG_SEND_TIP, friend.getUserName(), sendEggParam.getEgg()));
             message.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -248,7 +248,7 @@ public class FriendsService {
             publishService.publish(user.getId(), JsonUtil.serialize(message));
             // 发送给接受者
             Message message2 = new Message();
-            message2.setFrom("sys");
+            message2.setFrom("sys" + user.getId());
             message2.setTo(friend.getId());
             message2.setContent(String.format(ConstUtil.EGG_RECEIVE_TIP, user.getUserName(), sendEggParam.getEgg()));
             message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -300,7 +300,7 @@ public class FriendsService {
         try {
             // 发送给赠送者
             Message message = new Message();
-            message.setFrom("sys");
+            message.setFrom("sys" + friend.getId());
             message.setTo(user.getId());
             message.setContent(String.format(ConstUtil.COIN_SEND_TIP, friend.getUserName(), sendCoinParam.getCoin()));
             message.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -308,7 +308,7 @@ public class FriendsService {
             publishService.publish(user.getId(), JsonUtil.serialize(message));
             // 发送给接受者
             Message message2 = new Message();
-            message2.setFrom("sys");
+            message2.setFrom("sys" + user.getId());
             message2.setTo(friend.getId());
             message2.setContent(String.format(ConstUtil.COIN_RECEIVE_TIP, user.getUserName(), sendCoinParam.getCoin()));
             message2.setMsgType(ConstUtil.MSG_TYPE_SYS);
@@ -341,7 +341,7 @@ public class FriendsService {
                 getMessagesParam.getFriendID(),
                 getMessagesParam.getAccountID(),
                 getMessagesParam.getFriendID(),
-                "sys",
+                "sys" + getMessagesParam.getAccountID(),
                 getMessagesParam.getAccountID(),
                 pageable);
 
