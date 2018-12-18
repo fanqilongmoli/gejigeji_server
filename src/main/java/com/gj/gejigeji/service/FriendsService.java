@@ -170,6 +170,7 @@ public class FriendsService {
         if (friends !=null){
             friends.setStatus(applyFriendVo.getAction());
             friends.setUpdateTime(new Date());
+            friends.setLastMsgTime(new Date());
             friendsRepository.save(friends);
             return new OkResult(true);
         }
