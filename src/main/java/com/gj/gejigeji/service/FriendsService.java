@@ -166,12 +166,16 @@ public class FriendsService {
     public OkResult applyFriend(ApplyFriendParam applyFriendVo) {
         // 申请好友  申请方为 userId  同意方为 friendId
 
-        Friends friends = friendsRepository.findByUserIdAndFriendId(applyFriendVo.getFriendId(), applyFriendVo.getAccountID()).get();
+        Friends friends = friendsRepository.findByUserIdAndFriendId(applyFriendVo.getFriendId(), applyFriendVo.getAccountID()).orElse(null);
+        if (friends !=null){
+            friends.setStatus(applyFriendVo.getAction());
+            friends.setUpdateTime(new Date());
+            friendsRepository.save(friends);
+            return new OkResult(true);
+        }
 
-        friends.setStatus(applyFriendVo.getAction());
-        friends.setUpdateTime(new Date());
-        friendsRepository.save(friends);
-        return new OkResult(true);
+        throw new NoUserException();
+
     }
 
     /**
