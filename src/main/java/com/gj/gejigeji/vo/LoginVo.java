@@ -11,7 +11,7 @@ public class LoginVo {
     @ApiModelProperty("金币")
     private Float coin;
     @ApiModelProperty("钻石")
-    private int jewel;
+    private float jewel;
     @ApiModelProperty("好感度总和")
     private int likeValue;
     private Boolean award;
@@ -78,11 +78,11 @@ public class LoginVo {
         this.coin = coin;
     }
 
-    public int getJewel() {
+    public float getJewel() {
         return jewel;
     }
 
-    public void setJewel(int jewel) {
+    public void setJewel(float jewel) {
         this.jewel = jewel;
     }
 

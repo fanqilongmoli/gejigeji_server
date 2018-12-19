@@ -16,7 +16,7 @@ public class User {
     // 金币数量
     private Float coin;
     // 钻石数量
-    private Integer jewel;
+    private Float jewel;
     // true可以领取奖励 false不能领取奖励
     private Boolean award;
     // 当前使用的皮肤ID
@@ -79,11 +79,11 @@ public class User {
         this.coin = coin;
     }
 
-    public Integer getJewel() {
+    public Float getJewel() {
         return jewel;
     }
 
-    public void setJewel(Integer jewel) {
+    public void setJewel(Float jewel) {
         this.jewel = jewel;
     }
 

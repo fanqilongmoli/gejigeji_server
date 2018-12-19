@@ -62,7 +62,7 @@ public class RegService {
                 User user = new User();
                 user.setPhone(regParam.getPhone());
                 user.setPassword(regParam.getPassword());
-                user.setJewel(0);
+                user.setJewel(0.0f);
                 user.setCoin(1000f);
                 user.setAward(false);
                 user.setSkinID(0);
