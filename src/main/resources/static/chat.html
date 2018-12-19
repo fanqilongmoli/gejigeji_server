@@ -686,6 +686,9 @@
             }
             websocket.onmessage = function(event){
                 var m = JSON.parse(event.data);
+                if (m.from.startsWith("sys")) {
+                    m.from = m.from.substring(3);
+                }
                 var mFriendId = m.from;
                 if (m.from == currentAccount()) {
                     mFriendId = m.to;
