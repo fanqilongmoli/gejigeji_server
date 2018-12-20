@@ -43,11 +43,11 @@ public class LuckVo {
         this.url = url;
     }
 
-    public float getNum() {
+    public Float getNum() {
         return num;
     }
 
-    public void setNum(float num) {
+    public void setNum(Float num) {
         this.num = num;
     }
 

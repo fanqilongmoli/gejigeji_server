@@ -14,9 +14,11 @@ import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.LuckParam;
 import com.gj.gejigeji.vo.LuckVo;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +45,17 @@ public class LuckService {
      * @return
      */
     public List<UserLuck> getLuckNum(String accountId) {
-        List<UserLuck> byUserIdAndDeleteFlag = userLuckRepository.findByUserIdAndDeleteFlag(accountId, ConstUtil.Delete_Flag_No);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date start = calendar.getTime();
+
+        List<UserLuck> byUserIdAndDeleteFlag = userLuckRepository.findByUserIdAndCreateTimeGreaterThan(accountId, start);
+
+
         return byUserIdAndDeleteFlag;
     }
 
@@ -61,8 +73,14 @@ public class LuckService {
             throw new NoUserException();
         }
         // 检查游戏次数
-        List<UserLuck> userLucks = userLuckRepository.findByUserIdAndDeleteFlag(luckParam.getAccountID(), ConstUtil.Delete_Flag_No);
-        if (userLucks.size() >= 3) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date start = calendar.getTime();
+        List<UserLuck> userLucks = userLuckRepository.findByUserIdAndCreateTimeGreaterThan(luckParam.getAccountID(), start);
+        if (userLucks.size() > 2) {
             throw new LuckNoNumException();
         }
 
@@ -91,18 +109,19 @@ public class LuckService {
                     user.setCoin(user.getCoin() + coin);
                     userRepository.save(user);
 
-                    luckVo.setNum(coin);
+                    luckVo.setNum((float) coin);
                     break;
                 case 2:
                     //钻石 暂时 0.1个
 
                     //随机产生钻石的个数 0.1-0.5
-                    int jewel = RandomUtils.nextInt(1, 6) / 10;
+                    int jewel = RandomUtils.nextInt(1, 6);
+                    float jewelTemp = jewel / 10;
                     //用户增加 钻石数量
-                    user.setJewel(user.getJewel() + jewel / 10);
+                    user.setJewel(user.getJewel() + jewelTemp);
                     userRepository.save(user);
 
-                    luckVo.setNum(jewel / 10);
+                    luckVo.setNum(jewelTemp);
                     break;
                 case 3:
                     //饲料 继续随机获取饲料的类型
@@ -127,7 +146,7 @@ public class LuckService {
                     userFeedRepository.save(userFeed);
 
 
-                    luckVo.setNum(feedNum);
+                    luckVo.setNum((float) feedNum);
                     luckVo.setUrl(feedSelect.getUrl());
                     luckVo.setName(feedSelect.getName());
                     break;
@@ -137,8 +156,8 @@ public class LuckService {
             userLuck.setLuck(false);
             luckVo.setLuck(false);
 
-            userLuckRepository.save(userLuck);
         }
+        userLuckRepository.save(userLuck);
 
 
         return luckVo;
