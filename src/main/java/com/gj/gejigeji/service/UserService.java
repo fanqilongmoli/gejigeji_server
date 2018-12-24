@@ -335,7 +335,7 @@ public class UserService {
             throw new BaseRuntimeException("login.user.null");
         }
         // 根据传的金币数量计算钻石数量 检查钻石数量够不够
-        float i = jewel2CoinParam.getCoinCount() / 10;
+        float i = jewel2CoinParam.getCoinCount() / 10f;
         Float jewel = user.getJewel();
         if (jewel<i){
             throw new NoJewelException();

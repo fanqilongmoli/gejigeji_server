@@ -115,7 +115,7 @@ public class LuckService {
 
                     //随机产生钻石的个数 0.1-0.5
                     int jewel = RandomUtils.nextInt(1, 6);
-                    float jewelTemp = jewel / 10;
+                    float jewelTemp = jewel / 10f;
                     //用户增加 钻石数量
                     user.setJewel(user.getJewel() + jewelTemp);
                     userRepository.save(user);
