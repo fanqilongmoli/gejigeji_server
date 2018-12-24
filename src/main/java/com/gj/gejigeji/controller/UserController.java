@@ -18,6 +18,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
     @ApiOperation("获取用户的金币余额")
     @PostMapping("getCoin")
     public GetCoinVo getCoin(@RequestBody ActionParam actionParam){
@@ -70,5 +71,24 @@ public class UserController {
     @PostMapping("userEggsAll")
     public UserEggsAllVo userEggsAll(@RequestBody ActionParam actionParam){
         return userService.userEggsAll(actionParam);
+    }
+    //获取余额
+    @ApiOperation("获取新的用户信息")
+    @PostMapping
+    public LoginVo refreshUserInfo(@RequestBody ActionParam actionParam){
+        return  userService.refreshUserInfo(actionParam);
+    }
+    //购买钻石
+    @ApiOperation("购买钻石")
+    @PostMapping("buyJewel")
+    public OkResult buyJewel(@RequestBody BuyJewelParam buyJewelParam){
+        return userService.buyJewel(buyJewelParam);
+    }
+
+    //钻石转换金币
+    @ApiOperation("钻石换金币")
+    @PostMapping("jewel2Coin")
+    public OkResult Jewel2Coin(@RequestBody Jewel2CoinParam jewel2CoinParam){
+        return userService.Jewel2Coin(jewel2CoinParam);
     }
 }

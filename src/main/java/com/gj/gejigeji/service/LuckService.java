@@ -14,7 +14,6 @@ import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.LuckParam;
 import com.gj.gejigeji.vo.LuckVo;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -116,7 +115,7 @@ public class LuckService {
 
                     //随机产生钻石的个数 0.1-0.5
                     int jewel = RandomUtils.nextInt(1, 6);
-                    float jewelTemp = jewel / 10;
+                    float jewelTemp = jewel / 10f;
                     //用户增加 钻石数量
                     user.setJewel(user.getJewel() + jewelTemp);
                     userRepository.save(user);

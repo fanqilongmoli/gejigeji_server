@@ -1,6 +1,7 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
+import com.gj.gejigeji.exception.NoJewelException;
 import com.gj.gejigeji.model.*;
 import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.util.ConstUtil;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +43,9 @@ public class UserService {
 
     @Autowired
     FeedRepository feedRepository;
+
+    @Autowired
+    LoginService loginService;
 
     /**
      * 获取金币数量  随机添加用户的金币数
@@ -243,6 +248,7 @@ public class UserService {
 
     /**
      * 用户获取金币--->随机添加  1-3
+     *
      * @param actionParam
      * @return
      */
@@ -255,7 +261,7 @@ public class UserService {
         }
         // 随机为用户添加 [1,3] 个金币
         int i = RandomUtils.nextInt(1, 4);
-        user.setCoin(user.getCoin()+i);
+        user.setCoin(user.getCoin() + i);
         User save = userRepository.save(user);
 
         GetCoinVo getCoinVo = new GetCoinVo();
@@ -265,6 +271,7 @@ public class UserService {
 
     /**
      * 获取用户的鸡蛋--全部
+     *
      * @param actionParam
      */
     public UserEggsAllVo userEggsAll(ActionParam actionParam) {
@@ -281,9 +288,69 @@ public class UserService {
         userEggEx.setUserId(actionParam.getAccountID());
         List<UserEgg> all = userEggRepository.findAll(Example.of(userEggEx));
         for (UserEgg userEgg : all) {
-            userEggsAllVo.setAmount(userEggsAllVo.getAmount()+userEgg.getAmount());
-            userEggsAllVo.setFreeze(userEggsAllVo.getFreeze()+userEgg.getFreeze());
+            userEggsAllVo.setAmount(userEggsAllVo.getAmount() + userEgg.getAmount());
+            userEggsAllVo.setFreeze(userEggsAllVo.getFreeze() + userEgg.getFreeze());
         }
         return userEggsAllVo;
+    }
+
+    public LoginVo refreshUserInfo(ActionParam actionParam) {
+        User ex = new User();
+        ex.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(ex)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+
+        return loginService.ret(user);
+    }
+
+    /**
+     * 购买钻石
+     *
+     * @param buyJewelParam
+     * @return
+     */
+    public OkResult buyJewel(BuyJewelParam buyJewelParam) {
+        User userEx = new User();
+        userEx.setId(buyJewelParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+        // 增加钻石数量
+
+        user.setJewel(user.getJewel() + buyJewelParam.getJewelCount());
+        userRepository.save(user);
+        return new OkResult(true);
+    }
+
+
+    /**
+     * 钻石换金币
+     *
+     * @param jewel2CoinParam
+     * @return
+     */
+    public OkResult Jewel2Coin(Jewel2CoinParam jewel2CoinParam) {
+        User userEx = new User();
+        userEx.setId(jewel2CoinParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+        // 根据传的金币数量计算钻石数量 检查钻石数量够不够
+
+        int coin = jewel2CoinParam.getCoinCount();
+
+        int jewel = (int) (user.getJewel() * 10);
+        if (jewel < coin) {
+            throw new NoJewelException();
+        }
+        float jewel1 = (jewel - coin)/10f;
+        user.setJewel(jewel1);
+        user.setCoin(user.getCoin() + jewel2CoinParam.getCoinCount());
+        userRepository.save(user);
+        return new OkResult(true);
     }
 }
