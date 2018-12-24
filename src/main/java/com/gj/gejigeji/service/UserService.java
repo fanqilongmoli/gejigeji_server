@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -247,6 +248,7 @@ public class UserService {
 
     /**
      * 用户获取金币--->随机添加  1-3
+     *
      * @param actionParam
      * @return
      */
@@ -259,7 +261,7 @@ public class UserService {
         }
         // 随机为用户添加 [1,3] 个金币
         int i = RandomUtils.nextInt(1, 4);
-        user.setCoin(user.getCoin()+i);
+        user.setCoin(user.getCoin() + i);
         User save = userRepository.save(user);
 
         GetCoinVo getCoinVo = new GetCoinVo();
@@ -269,6 +271,7 @@ public class UserService {
 
     /**
      * 获取用户的鸡蛋--全部
+     *
      * @param actionParam
      */
     public UserEggsAllVo userEggsAll(ActionParam actionParam) {
@@ -285,8 +288,8 @@ public class UserService {
         userEggEx.setUserId(actionParam.getAccountID());
         List<UserEgg> all = userEggRepository.findAll(Example.of(userEggEx));
         for (UserEgg userEgg : all) {
-            userEggsAllVo.setAmount(userEggsAllVo.getAmount()+userEgg.getAmount());
-            userEggsAllVo.setFreeze(userEggsAllVo.getFreeze()+userEgg.getFreeze());
+            userEggsAllVo.setAmount(userEggsAllVo.getAmount() + userEgg.getAmount());
+            userEggsAllVo.setFreeze(userEggsAllVo.getFreeze() + userEgg.getFreeze());
         }
         return userEggsAllVo;
     }
@@ -304,6 +307,7 @@ public class UserService {
 
     /**
      * 购买钻石
+     *
      * @param buyJewelParam
      * @return
      */
@@ -316,7 +320,7 @@ public class UserService {
         }
         // 增加钻石数量
 
-        user.setJewel(user.getJewel()+buyJewelParam.getJewelCount());
+        user.setJewel(user.getJewel() + buyJewelParam.getJewelCount());
         userRepository.save(user);
         return new OkResult(true);
     }
@@ -324,6 +328,7 @@ public class UserService {
 
     /**
      * 钻石换金币
+     *
      * @param jewel2CoinParam
      * @return
      */
@@ -335,13 +340,16 @@ public class UserService {
             throw new BaseRuntimeException("login.user.null");
         }
         // 根据传的金币数量计算钻石数量 检查钻石数量够不够
-        float i = jewel2CoinParam.getCoinCount() / 10f;
-        Float jewel = user.getJewel();
-        if (jewel<i){
+
+        int coin = jewel2CoinParam.getCoinCount();
+
+        int jewel = (int) (user.getJewel() * 10);
+        if (jewel < coin) {
             throw new NoJewelException();
         }
-        user.setJewel(jewel-i);
-        user.setCoin(user.getCoin()+jewel2CoinParam.getCoinCount());
+        float jewel1 = (jewel - coin)/10f;
+        user.setJewel(jewel1);
+        user.setCoin(user.getCoin() + jewel2CoinParam.getCoinCount());
         userRepository.save(user);
         return new OkResult(true);
     }
