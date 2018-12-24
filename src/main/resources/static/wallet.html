@@ -173,7 +173,7 @@
         .message-dialog-body-message {
             color: #401F0B;
             font-size: 0.16rem;
-            height: 0.7rem;
+            height: 1.1rem;
             line-height: 0.7rem;
         }
         .friends-dialog-btn {
@@ -296,10 +296,16 @@
             font-weight: bold;
             margin-right: 0.16rem;
         }
+        .green {
+            color: #097E00;
+        }
+        .red {
+            color: #C70808;
+        }
     </style>
     <script src="js/angular.js"></script>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl">
+<body ng-app="myApp" ng-controller="myCtrl" ng-init="init()">
     <div class="auction-name-div">
         <img src="img/wallet_title.png" class="auction-name">
     </div>
@@ -307,40 +313,42 @@
         <div class="wallet-padding"></div>
         <div class="wallet-balance-item wallet-diamond">
             <img class="wallet-balance-item-img" src="img/diamond.png">
-            <div class="wallet-diamond-detail">钻石：9870</div>
+            <div class="wallet-diamond-detail">钻石：<span>{{jewel}}</span></div>
         </div>
         <div class="wallet-balance-item wallet-coin">
             <img class="wallet-balance-item-img" src="img/coin.png">
-            <div class="wallet-diamond-detail">金币：9870</div>
+            <div class="wallet-diamond-detail">金币：<span>{{coin}}</span></div>
         </div>
     </div>
     <div class="wallet-exchange">
         <div class="wallet-exchange-item wallet-exchange-item1">
             <div class="wallet-rate">1钻石=￥1.00</div>
             <div class="wallet-buy">
-                购买钻石<input class="wallet-input" type="number">枚
+                购买钻石<input class="wallet-input" ng-model="diamondNumber" type="number">枚
             </div>
-            <div class="wallet-button">购买</div>
+            <div class="wallet-button" ng-click="buyDiamond()" ng-class="{'gray': !canBuyDiamond()}">购买</div>
         </div>
         <div class="wallet-exchange-item wallet-exchange-item2">
             <div class="wallet-rate">1钻石=10金币</div>
             <div class="wallet-buy">
-                购买金币<input class="wallet-input" type="number">枚
+                兑换金币<input class="wallet-input" ng-model="coinNumber" type="number">枚
             </div>
-            <div class="wallet-button">购买</div>
+            <div class="wallet-button" ng-click="exchangeCoin()" ng-class="{'gray': !canExchangeCoin()}">兑换</div>
         </div>
     </div>
-    <div class="hide">
-        <mask class="mask" style="z-index: 11;"></mask>
-        <div class="dialog" style="z-index: 12;">
-            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeMessageDialog()">
+
+    <div ng-show="showResultDialog">
+        <mask class="mask" style="z-index: 21;"></mask>
+        <div class="dialog" style="z-index: 22;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 23;" ng-click="closeMessageDialog()">
             <div class="message-dialog-content">
                 <div class="message-dialog-title">
-                    兑换金币
+                    {{title}}
                 </div>
                 <div class="message-dialog-body">
                     <div class="message-dialog-body-message">
-                        即将使用10颗钻石兑换100枚金币
+                        <span class="green">{{info}}！</span>
+                        <!--<span class="red hide">兑换失败！</span>-->
                     </div>
                     <div class="friends-dialog-btn" ng-click="closeMessageDialog()">
                         确定
@@ -350,7 +358,7 @@
         </div>
     </div>
 
-    <div >
+    <div ng-show="showBuyDialog">
         <mask class="mask" style="z-index: 11;"></mask>
         <div class="dialog" style="z-index: 12;">
             <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeMessageDialog()">
@@ -363,25 +371,25 @@
                 <div class="message-dialog-body">
                     <div class="message-buy-info">
                         <div class="message-buy-item">
-                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">订单流水号：123124124135425325</div>
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">订单流水号：{{timestamp}}</div>
                         </div>
                         <div class="message-buy-item">
-                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">钻石：10颗</div>
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">钻石：{{diamondNumber}}颗</div>
                         </div>
                         <div class="message-buy-item">
-                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">价格：￥10.00</div>
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">价格：￥{{diamondNumber}}.00</div>
                         </div>
                     </div>
                     <div class="message-buy-info message-pay-info">
-                        <div class="message-pay-item">
-                            <div class="message-pay-item-circle-unselected"></div>
+                        <div class="message-pay-item" ng-click="changePayType(1)">
+                            <div class="message-pay-item-circle-unselected" ng-class="{'message-pay-item-circle-selected': payType == 1}"></div>
                             <img class="message-pay-item-img" src="img/wechat.png">
                             微信支付
                         </div>
                     </div>
                     <div class="message-buy-info message-pay-info">
-                        <div class="message-pay-item">
-                            <div class="message-pay-item-circle-unselected message-pay-item-circle-selected"></div>
+                        <div class="message-pay-item" ng-click="changePayType(2)">
+                            <div class="message-pay-item-circle-unselected" ng-class="{'message-pay-item-circle-selected': payType == 2}"></div>
                             <img class="message-pay-item-img" src="img/alipay.png">
                             支付宝支付
                         </div>
@@ -390,8 +398,8 @@
                         <img class="message-my-wallet-img" src="img/my_wallet.png">
                     </div>
                     <div class="message-button-div">
-                        <div class="message-button-info">总价:￥10.00</div>
-                        <div class="message-button">
+                        <div class="message-button-info">总价:￥{{diamondNumber}}.00</div>
+                        <div class="message-button" ng-click="pay()" ng-class="{'gray': !canPay()}">
                             支付
                         </div>
                     </div>
@@ -400,11 +408,111 @@
         </div>
     </div>
 
+    <div ng-show="showExchangeDialog">
+        <mask class="mask" style="z-index: 11;"></mask>
+        <div class="dialog" style="z-index: 12;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeMessageDialog()">
+            <div class="message-dialog-content">
+                <div class="message-dialog-title message-dialog-title2">
+                    <img class="message-buy-diamond-img1" src="img/coin.png"><img class="message-buy-diamond-img2" src="img/coin.png">
+                    兑换金币
+                    <img class="message-buy-diamond-img3" src="img/coin.png"><img class="message-buy-diamond-img4" src="img/coin.png">
+                </div>
+                <div class="message-dialog-body">
+                    <div class="message-buy-info">
+                        <div class="message-buy-item">
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">金币：{{coinNumber}}枚</div>
+                        </div>
+                        <div class="message-buy-item">
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">价格：{{coinNumber/10}}钻石</div>
+                        </div>
+                    </div>
+                    <div class="message-my-wallet">
+                        <img class="message-my-wallet-img" src="img/my_wallet.png">
+                    </div>
+                    <div class="message-button-div">
+                        <div class="message-button-info">总价:{{coinNumber/10}}钻石</div>
+                        <div class="message-button" ng-click="exchange()">
+                            兑换
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="application/javascript">
     var app = angular.module('myApp', []);
     addHttpInterceptor(app);
     app.controller('myCtrl', function($scope, $http) {
+        $scope.init = function () {
+            $http.post("/user", {
+                "accountID": currentAccount()
+            }).then(function (response) {
+                $scope.coin = response.data.coin;
+                $scope.jewel = response.data.jewel;
+            })
+        }
+        $scope.canBuyDiamond = function() {
+            if (!$scope.diamondNumber) return false;
+            $scope.diamondNumber = parseInt($scope.diamondNumber);
+            return $scope.diamondNumber > 0;
+        }
+        $scope.buyDiamond = function () {
+            if (!$scope.canBuyDiamond()) return;
+            $scope.showBuyDialog = true;
+            $scope.timestamp = new Date().getTime();
+        }
+        $scope.changePayType = function (type) {
+            $scope.payType = type;
+        }
+        $scope.canPay = function () {
+            return $scope.payType > 0;
+        }
+        $scope.pay = function() {
+            if ($scope.canPay()) {
+                $http.post("/user/buyJewel", {
+                    "accountID": currentAccount(),
+                    "jewelCount": $scope.diamondNumber
+                }).then(function (response) {
+                    $scope.title = "购买钻石";
+                    $scope.info = "购买钻石成功";
+                    $scope.showResultDialog = true;
+                    $scope.init();
+                })
+            }
+        }
+
+        $scope.canExchangeCoin = function() {
+            if (!$scope.coinNumber) return false;
+            $scope.coinNumber = parseInt($scope.coinNumber);
+            return $scope.coinNumber > 0 && $scope.coinNumber <= $scope.jewel * 10;
+        }
+        $scope.exchangeCoin = function() {
+            if (!$scope.canExchangeCoin()) return;
+            $scope.showExchangeDialog = true;
+        }
+        $scope.exchange = function() {
+            $http.post("/user/jewel2Coin", {
+                "accountID": currentAccount(),
+                "coinCount": $scope.coinNumber
+            }).then(function (response) {
+                $scope.title = "兑换金币";
+                $scope.info = "兑换金币成功";
+                $scope.showResultDialog = true;
+                $scope.init();
+            })
+        }
+        $scope.closeMessageDialog = function () {
+            delete $scope.showBuyDialog;
+            delete $scope.payType;
+            delete $scope.showExchangeDialog;
+            delete $scope.title;
+            delete $scope.info;
+            delete $scope.showResultDialog;
+            delete $scope.coinNumber;
+            delete $scope.diamondNumber;
+        }
     })
 </script>
 </html>
