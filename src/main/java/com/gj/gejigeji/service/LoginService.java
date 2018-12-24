@@ -106,7 +106,7 @@ public class LoginService {
     }
 
 
-    private LoginVo ret(User user) {
+    public LoginVo ret(User user) {
         //====拼装返回的vo====
         Mail mailEx = new Mail();
         mailEx.setUserId(user.getId());

@@ -1,6 +1,7 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
+import com.gj.gejigeji.exception.NoJewelException;
 import com.gj.gejigeji.model.*;
 import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.util.ConstUtil;
@@ -41,6 +42,9 @@ public class UserService {
 
     @Autowired
     FeedRepository feedRepository;
+
+    @Autowired
+    LoginService loginService;
 
     /**
      * 获取金币数量  随机添加用户的金币数
@@ -285,5 +289,60 @@ public class UserService {
             userEggsAllVo.setFreeze(userEggsAllVo.getFreeze()+userEgg.getFreeze());
         }
         return userEggsAllVo;
+    }
+
+    public LoginVo refreshUserInfo(ActionParam actionParam) {
+        User ex = new User();
+        ex.setId(actionParam.getAccountID());
+        User user = userRepository.findOne(Example.of(ex)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+
+        return loginService.ret(user);
+    }
+
+    /**
+     * 购买钻石
+     * @param buyJewelParam
+     * @return
+     */
+    public OkResult buyJewel(BuyJewelParam buyJewelParam) {
+        User userEx = new User();
+        userEx.setId(buyJewelParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+        // 增加钻石数量
+
+        user.setJewel(user.getJewel()+buyJewelParam.getJewelCount());
+        userRepository.save(user);
+        return new OkResult(true);
+    }
+
+
+    /**
+     * 钻石换金币
+     * @param jewel2CoinParam
+     * @return
+     */
+    public OkResult Jewel2Coin(Jewel2CoinParam jewel2CoinParam) {
+        User userEx = new User();
+        userEx.setId(jewel2CoinParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new BaseRuntimeException("login.user.null");
+        }
+        // 根据传的金币数量计算钻石数量 检查钻石数量够不够
+        float i = jewel2CoinParam.getCoinCount() / 10;
+        Float jewel = user.getJewel();
+        if (jewel<i){
+            throw new NoJewelException();
+        }
+        user.setJewel(jewel-i);
+        user.setCoin(user.getCoin()+jewel2CoinParam.getCoinCount());
+        userRepository.save(user);
+        return new OkResult(true);
     }
 }

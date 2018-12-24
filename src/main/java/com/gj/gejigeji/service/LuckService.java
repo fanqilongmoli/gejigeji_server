@@ -14,7 +14,6 @@ import com.gj.gejigeji.util.ConstUtil;
 import com.gj.gejigeji.vo.LuckParam;
 import com.gj.gejigeji.vo.LuckVo;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
