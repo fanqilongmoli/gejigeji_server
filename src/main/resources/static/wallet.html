@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的钱包</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .wallet-balance {
+            background-image: url("img/wallet_balance.png");
+            background-size: 100% 100%;
+            width: 3.64rem;
+            height: 1.05rem;
+            margin: 0.04rem auto 0.036rem auto;
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+        }
+        .wallet-balance-item {
+            width: 1.68rem;
+            height: .48rem;
+            line-height: .48rem;
+            background-color: rgb(240, 230, 213);
+            border-radius: 0.04rem;
+            font-size: 0.14rem;
+            position: relative;
+        }
+        .wallet-balance-item-img {
+            width: 0.26rem;
+            position: absolute;
+            top: 0.1rem;
+            left: 0.1rem;
+        }
+        .wallet-diamond {
+            color: #004ED5;
+        }
+        .wallet-coin {
+            color: #FFA800;
+        }
+        .wallet-padding {
+            height: 0.38rem;
+            width: 100%;
+        }
+        .wallet-diamond-detail {
+            padding-left: 0.48rem;
+        }
+        .wallet-exchange {
+            background-image: url("img/wallet_exchange.png");
+            background-size: 100% 100%;
+            width: 3.64rem;
+            height: 2.22rem;
+            margin: 0 auto;
+        }
+        .wallet-exchange-item {
+            width: 3.46rem;
+            height: 0.74rem;
+            background-color: rgb(240, 230, 213);
+            margin: 0 auto;
+            border-radius: 0.04rem;
+        }
+        .wallet-exchange-item1 {
+            position: relative;
+            top: 0.45rem;
+        }
+        .wallet-exchange-item2 {
+            position: relative;
+            top: 0.515rem;
+        }
+        .wallet-rate {
+            color: #585858;
+            font-size: 0.17rem;
+            padding-left: 0.06rem;
+            padding-top: 0.08rem;
+        }
+        .wallet-input {
+            height: 0.2rem;
+            width: 0.6rem;
+            padding: 0 0.05rem;
+            background-color: #5b9b4c;
+            outline-width: 0;
+            line-height: 0.2rem;
+            border: 0.01rem solid #9ce59a;
+            color: #fffd32;
+            font-size: 0.15rem;
+        }
+        .wallet-buy {
+            color: #333333;
+            font-size: 0.2rem;
+            height: 0.2rem;
+            width: 2rem;
+            position: absolute;
+            bottom: 0.1rem;
+            left: 0.06rem;
+        }
+        .wallet-button {
+            background-color: rgb(224, 72, 47);
+            border: 0.02rem solid rgb(179, 55, 34);
+            width: 1rem;
+            height: 0.35rem;
+            border-radius: 0.02rem;
+            font-size: 0.18rem;
+            line-height: 0.35rem;
+            text-align: center;
+            position: absolute;
+            right: 0.1rem;
+            bottom: 0.05rem;
+        }
+        .dialog-close2 {
+            top: 0.01rem;
+            right: 0.05rem;
+        }
+        .message-dialog-content {
+            background-color: rgb(86, 58, 38);
+            border-radius: 0.08rem;
+            text-align: center;
+            padding: 0 0.05rem 0.05rem 0.05rem;
+        }
+        .message-dialog-title {
+            height: 0.42rem;
+            line-height: 0.42rem;
+            font-size: 0.27rem;
+            color: #C8B79B;
+            -webkit-text-stroke: 0.01rem #402005;
+            font-weight: bold;
+        }
+        .message-dialog-title2 {
+            color: #ffff00;
+        }
+        .message-dialog-body {
+            background-color: rgb(200, 183, 155);
+            margin-top: 0.04rem;
+            position: relative;
+            overflow-y: auto;
+            padding: 0.06rem 0;
+        }
+        .message-dialog-body-message {
+            color: #401F0B;
+            font-size: 0.16rem;
+            height: 0.7rem;
+            line-height: 0.7rem;
+        }
+        .friends-dialog-btn {
+            background-color: rgb(224, 72, 47);
+            border: 0.02rem solid rgb(179, 55, 34);
+            width: 1rem;
+            height: 0.35rem;
+            border-radius: 0.02rem;
+            font-size: 0.18rem;
+            line-height: 0.35rem;
+            position: absolute;
+            bottom: 0.1rem;
+            margin-left: 1.13rem;
+        }
+        .message-buy-diamond-img1 {
+            width: 0.1rem;
+            margin-right: 0.04rem;
+        }
+        .message-buy-diamond-img2 {
+            width: 0.21rem;
+        }
+        .message-buy-diamond-img3 {
+            width: 0.21rem;
+            transform: rotate(270deg);
+        }
+        .message-buy-diamond-img4 {
+            width: 0.1rem;
+            transform: rotate(270deg);
+            margin-left: 0.04rem;
+        }
+        .message-buy-info {
+            width: 3.1rem;
+            background-color: rgb(240, 230, 213);
+            margin: 0 auto;
+            border-radius: 0.04rem;
+            padding: 0.04rem 0;
+        }
+        .message-buy-item {
+            height: 0.24rem;
+            line-height: 0.24rem;
+            color: #171515;
+            font-size: 0.14rem;
+            text-align: left;
+            display: flex;
+            justify-content: left;
+        }
+        .message-buy-item-circle {
+            width: 0.04rem;
+            height: 0.04rem;
+            border-radius: 0.03rem;
+            border: 0.02rem solid #C8B79B;
+            background-color: #333333;
+            position: relative;
+            left: 0.05rem;
+            top: 0.09rem;
+        }
+        .message-buy-item-content {
+            padding-left: 0.1rem;
+        }
+        .message-pay-info {
+            margin: 0.04rem auto;
+        }
+        .message-pay-item-circle-unselected {
+            width: 0.16rem;
+            height: 0.16rem;
+            background: -webkit-radial-gradient(rgb(228, 216, 196), #C8B79B);
+            border-radius:50%;
+            position: relative;
+            left: 0.1rem;
+            top: 0.07rem;
+        }
+        .message-pay-item-circle-selected {
+            background: -webkit-radial-gradient(rgb(252, 20, 20), rgb(201, 4, 3))
+        }
+        .message-pay-item {
+            display: flex;
+            justify-content: left;
+            font-size: 0.13rem;
+            color: #171515;
+            height: 0.31rem;
+            line-height: 0.31rem;
+            padding: 0.04rem 0;
+            font-weight: bold;
+        }
+        .message-pay-item-img {
+            width: 0.31rem;
+            height: 0.31rem;
+            margin: 0 0.06rem 0 0.2rem;
+        }
+        .message-my-wallet {
+            border-bottom: 0.03rem solid rgb(157, 137, 104);
+            text-align: left;
+            padding: 0.1rem 0 0.06rem 0.09rem;
+        }
+        .message-my-wallet-img {
+            width: 0.84rem;
+        }
+        .message-button-div {
+            height: 0.56rem;
+            text-align: right;
+            font-size: 0.18rem;
+            color: #CE2020;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .message-button {
+            width: 1.01rem;
+            height: 0.46rem;
+            background-image: url("img/wallet_buy_button.png");
+            background-size: 100% 100%;
+            margin-top: 0.1rem;
+            margin-right: 0.08rem;
+            font-size: 0.2rem;
+            color: white;
+            text-align: center;
+            line-height: 0.46rem;
+        }
+        .message-button-info {
+            line-height: 0.8rem;
+            font-weight: bold;
+            margin-right: 0.16rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/wallet_title.png" class="auction-name">
+    </div>
+    <div class="wallet-balance">
+        <div class="wallet-padding"></div>
+        <div class="wallet-balance-item wallet-diamond">
+            <img class="wallet-balance-item-img" src="img/diamond.png">
+            <div class="wallet-diamond-detail">钻石：9870</div>
+        </div>
+        <div class="wallet-balance-item wallet-coin">
+            <img class="wallet-balance-item-img" src="img/coin.png">
+            <div class="wallet-diamond-detail">金币：9870</div>
+        </div>
+    </div>
+    <div class="wallet-exchange">
+        <div class="wallet-exchange-item wallet-exchange-item1">
+            <div class="wallet-rate">1钻石=￥1.00</div>
+            <div class="wallet-buy">
+                购买钻石<input class="wallet-input" type="number">枚
+            </div>
+            <div class="wallet-button">购买</div>
+        </div>
+        <div class="wallet-exchange-item wallet-exchange-item2">
+            <div class="wallet-rate">1钻石=10金币</div>
+            <div class="wallet-buy">
+                购买金币<input class="wallet-input" type="number">枚
+            </div>
+            <div class="wallet-button">购买</div>
+        </div>
+    </div>
+    <div class="hide">
+        <mask class="mask" style="z-index: 11;"></mask>
+        <div class="dialog" style="z-index: 12;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeMessageDialog()">
+            <div class="message-dialog-content">
+                <div class="message-dialog-title">
+                    兑换金币
+                </div>
+                <div class="message-dialog-body">
+                    <div class="message-dialog-body-message">
+                        即将使用10颗钻石兑换100枚金币
+                    </div>
+                    <div class="friends-dialog-btn" ng-click="closeMessageDialog()">
+                        确定
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div >
+        <mask class="mask" style="z-index: 11;"></mask>
+        <div class="dialog" style="z-index: 12;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeMessageDialog()">
+            <div class="message-dialog-content">
+                <div class="message-dialog-title message-dialog-title2">
+                    <img class="message-buy-diamond-img1" src="img/diamond.png"><img class="message-buy-diamond-img2" src="img/diamond.png">
+                    购买钻石
+                    <img class="message-buy-diamond-img3" src="img/diamond.png"><img class="message-buy-diamond-img4" src="img/diamond.png">
+                </div>
+                <div class="message-dialog-body">
+                    <div class="message-buy-info">
+                        <div class="message-buy-item">
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">订单流水号：123124124135425325</div>
+                        </div>
+                        <div class="message-buy-item">
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">钻石：10颗</div>
+                        </div>
+                        <div class="message-buy-item">
+                            <div class="message-buy-item-circle"></div><div class="message-buy-item-content">价格：￥10.00</div>
+                        </div>
+                    </div>
+                    <div class="message-buy-info message-pay-info">
+                        <div class="message-pay-item">
+                            <div class="message-pay-item-circle-unselected"></div>
+                            <img class="message-pay-item-img" src="img/wechat.png">
+                            微信支付
+                        </div>
+                    </div>
+                    <div class="message-buy-info message-pay-info">
+                        <div class="message-pay-item">
+                            <div class="message-pay-item-circle-unselected message-pay-item-circle-selected"></div>
+                            <img class="message-pay-item-img" src="img/alipay.png">
+                            支付宝支付
+                        </div>
+                    </div>
+                    <div class="message-my-wallet">
+                        <img class="message-my-wallet-img" src="img/my_wallet.png">
+                    </div>
+                    <div class="message-button-div">
+                        <div class="message-button-info">总价:￥10.00</div>
+                        <div class="message-button">
+                            支付
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="application/javascript">
+    var app = angular.module('myApp', []);
+    addHttpInterceptor(app);
+    app.controller('myCtrl', function($scope, $http) {
+    })
+</script>
+</html>

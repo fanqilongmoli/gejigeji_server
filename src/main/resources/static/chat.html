@@ -789,7 +789,7 @@
                 "accountID": currentAccount(),
                 "friendID": item.friendId,
                 "page": $scope.friendPage,
-                "size": 20
+                "size": 1000
             }).then(function (response) {
                 $scope.$on('repeatFinishCallback',function(){
                     var _el = document.getElementById('message-content');
