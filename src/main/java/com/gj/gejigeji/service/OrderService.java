@@ -3,15 +3,10 @@ package com.gj.gejigeji.service;
 import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.exception.NoEggException;
 import com.gj.gejigeji.exception.NoOrderException;
-import com.gj.gejigeji.model.Feed;
-import com.gj.gejigeji.model.Order;
-import com.gj.gejigeji.model.User;
-import com.gj.gejigeji.model.UserEgg;
-import com.gj.gejigeji.repository.FeedRepository;
-import com.gj.gejigeji.repository.OrderRepository;
-import com.gj.gejigeji.repository.UserEggRepository;
-import com.gj.gejigeji.repository.UserRepository;
+import com.gj.gejigeji.model.*;
+import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.util.ConstUtil;
+import com.gj.gejigeji.vo.GetChartParam;
 import com.gj.gejigeji.vo.OkResult;
 import com.gj.gejigeji.vo.PageParam;
 import com.gj.gejigeji.vo.PlaceParam;
@@ -20,6 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +33,9 @@ public class OrderService {
 
     @Autowired
     FeedRepository feedRepository;
+
+    @Autowired
+    AuctionChartRepository auctionChartRepository;
 
     /**
      * 下订单
@@ -67,7 +66,7 @@ public class OrderService {
         Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
         //保存订单
         Order order = new Order();
-        if (feed!=null) {
+        if (feed != null) {
             order.setEggName(feed.getEggName());
         }
         order.setAmount(placeParam.getAmount());
@@ -94,17 +93,17 @@ public class OrderService {
      * @param orderId
      * @return
      */
-    public OkResult submitCancel(String accountID,String orderId) {
+    public OkResult submitCancel(String accountID, String orderId) {
 
         //检查订单是否存在
         Order order = orderRepository.findById(orderId).orElse(null);
-        if (order == null){
+        if (order == null) {
             throw new NoOrderException();
         }
 
         //检查用户鸡蛋 是否存在
         UserEgg userEgg = userEggRepository.findUserEggByUserIdAndFeedId(accountID, order.getFeedId()).orElse(null);
-        if (userEgg == null){
+        if (userEgg == null) {
 
             throw new NoEggException();
         }
@@ -113,13 +112,13 @@ public class OrderService {
         //修改取消状态
         if (order.getOrderState().equals(ConstUtil.Order_Open)) {
             order.setOrderState(ConstUtil.Order_Close);
-        }else {
+        } else {
             order.setOrderState(ConstUtil.Order_Close_Finish_Part);
         }
 
         orderRepository.save(order);
         //减去用户冻结的鸡蛋数
-        userEgg.setFreeze(userEgg.getFreeze()-order.getAmount());
+        userEgg.setFreeze(userEgg.getFreeze() - order.getAmount());
         userEggRepository.save(userEgg);
 
         return new OkResult(true);
@@ -137,12 +136,11 @@ public class OrderService {
         List<Byte> bytes = new ArrayList<>();
         bytes.add(ConstUtil.Order_Open);
         bytes.add(ConstUtil.Order_Open_Finish_Part);
-        Page<Order> all = orderRepository.findByUserIdAndOrderStateInOrderByCreateTimeDesc(pageable,accountID,bytes);
+        Page<Order> all = orderRepository.findByUserIdAndOrderStateInOrderByCreateTimeDesc(pageable, accountID, bytes);
         return all;
     }
 
     /**
-     *
      * @param pageParam
      * @return
      */
@@ -152,12 +150,13 @@ public class OrderService {
         bytes.add(ConstUtil.Order_Open);
         bytes.add(ConstUtil.Order_Open_Finish_Part);
 
-        Page<Order> all = orderRepository.findByOrderStateIn(pageable,bytes);
+        Page<Order> all = orderRepository.findByOrderStateIn(pageable, bytes);
         return all;
     }
 
     /**
      * 获取用户已完成点单
+     *
      * @param accountID
      * @param pageParam
      * @return
@@ -168,7 +167,39 @@ public class OrderService {
         bytes.add(ConstUtil.Order_Close);
         bytes.add(ConstUtil.Order_Close_Finish_Part);
         bytes.add(ConstUtil.Order_Close_Finish_All);
-        Page<Order> all = orderRepository.findByUserIdAndOrderStateInOrderByCreateTimeDesc(pageable,accountID,bytes);
+        Page<Order> all = orderRepository.findByUserIdAndOrderStateInOrderByCreateTimeDesc(pageable, accountID, bytes);
         return all;
+    }
+
+    /**
+     * 获取对应的 月 周 图表
+     *
+     * @param getChartParam
+     * @return
+     */
+    public List<AuctionChart> getChart(GetChartParam getChartParam) {
+        Calendar endTime = Calendar.getInstance();
+        Calendar startTime = Calendar.getInstance();
+        // 不传递时间 默认服务器当前时间 为结束时间
+        if (getChartParam.getTime() == null) {
+            endTime.setTime(new Date());
+            startTime.setTime(new Date());
+        } else {
+            endTime.setTime(getChartParam.getTime());
+            startTime.setTime(getChartParam.getTime());
+        }
+
+        if (getChartParam.getChartType() == 0) {
+            startTime.set(Calendar.DAY_OF_WEEK, startTime.getFirstDayOfWeek());
+        } else {
+            startTime.set(Calendar.DAY_OF_MONTH, 1);
+        }
+        startTime.set(Calendar.HOUR_OF_DAY, 0);
+        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.SECOND, 0);
+
+
+        List<AuctionChart> allByDateBetween = auctionChartRepository.findAllByFeedIdAndDateBetween(getChartParam.getFeedId(), startTime.getTime(), endTime.getTime());
+        return allByDateBetween;
     }
 }

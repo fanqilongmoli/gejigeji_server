@@ -94,8 +94,10 @@ public class UserController {
         return userService.Jewel2Coin(jewel2CoinParam);
     }
 
-    @GetMapping("test")
-    public void test(){
-        orderJob.recycle();
-    }
+//    @GetMapping("test")
+//    public void test(){
+//        orderJob.recycle();
+//    }
+
+
 }
