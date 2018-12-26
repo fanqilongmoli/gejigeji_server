@@ -53,7 +53,7 @@ public class OrderController {
         return orderService.orders(pageParam);
     }
 
-    @ApiOperation("获取对应的 月 日 图表")
+    @ApiOperation("获取对应的 月 周 图表")
     @PostMapping("getChart")
     public List<AuctionChart> getChart(@RequestBody GetChartParam getChartParam){
         return orderService.getChart(getChartParam);
