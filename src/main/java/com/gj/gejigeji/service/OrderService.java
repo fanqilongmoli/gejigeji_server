@@ -6,18 +6,12 @@ import com.gj.gejigeji.exception.NoOrderException;
 import com.gj.gejigeji.model.*;
 import com.gj.gejigeji.repository.*;
 import com.gj.gejigeji.util.ConstUtil;
-import com.gj.gejigeji.vo.GetChartParam;
-import com.gj.gejigeji.vo.OkResult;
-import com.gj.gejigeji.vo.PageParam;
-import com.gj.gejigeji.vo.PlaceParam;
+import com.gj.gejigeji.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -201,5 +195,31 @@ public class OrderService {
 
         List<AuctionChart> allByDateBetween = auctionChartRepository.findAllByFeedIdAndDateBetween(getChartParam.getFeedId(), startTime.getTime(), endTime.getTime());
         return allByDateBetween;
+    }
+
+    /**
+     * 获取鸡蛋的最新价格
+     *
+     * @return
+     */
+    public List<EggPriceVo> eggPrice() {
+        List<EggPriceVo> eggPriceVos = new ArrayList<>();
+        List<Feed> feeds = feedRepository.findAll();
+        EggPriceVo eggPriceVo;
+        for (Feed feed : feeds) {
+            AuctionChart auctionChart = auctionChartRepository.findFirstByFeedIdOrderByDateDesc(feed.getId()).orElse(null);
+            eggPriceVo = new EggPriceVo();
+            if (auctionChart != null) {
+                Integer close = auctionChart.getClose();
+                eggPriceVo.setPrice(close);
+            }else {
+                eggPriceVo.setPrice(0);
+            }
+            eggPriceVo.setFeedId(feed.getId());
+            eggPriceVo.setEggName(feed.getEggName());
+
+            eggPriceVos.add(eggPriceVo);
+        }
+        return eggPriceVos;
     }
 }

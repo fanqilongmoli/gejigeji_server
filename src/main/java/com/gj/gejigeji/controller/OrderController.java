@@ -3,10 +3,7 @@ package com.gj.gejigeji.controller;
 import com.gj.gejigeji.model.AuctionChart;
 import com.gj.gejigeji.model.Order;
 import com.gj.gejigeji.service.OrderService;
-import com.gj.gejigeji.vo.GetChartParam;
-import com.gj.gejigeji.vo.OkResult;
-import com.gj.gejigeji.vo.PageParam;
-import com.gj.gejigeji.vo.PlaceParam;
+import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +54,12 @@ public class OrderController {
     @PostMapping("getChart")
     public List<AuctionChart> getChart(@RequestBody GetChartParam getChartParam){
         return orderService.getChart(getChartParam);
+    }
+
+    @ApiOperation("获取鸡蛋的最新价格")
+    @GetMapping("eggPrice")
+    public List<EggPriceVo> eggPrice(){
+        return orderService.eggPrice();
     }
 
 }
