@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface AuctionChartRepository extends MongoRepository<AuctionChart,String> {
 
 
-    Optional<AuctionChart> findFirstByOrderByDateDesc();
+    Optional<AuctionChart> findFirstByFeedIdOrderByDateDesc(String feedId);
 }

@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,9 @@ public class OrderJob {
 
     @Autowired
     AuctionChartRepository auctionChartRepository;
+
+    @Autowired
+    FeedRepository feedRepository;
 
     @Transactional
     @Scheduled(fixedDelay = 1000 * 60 * 5)
@@ -64,52 +69,64 @@ public class OrderJob {
     @Transactional
     public void startRecycle() {
 
-        // 查询出所有的挂单
-        List<Order> orders = orderRepository.findAllByOrderByPriceAsc();
-        logger.warn("查询到的当前的挂单的数量=====" + orders.size());
+        //获取鸡蛋的类型 根据不同的鸡蛋的类型 每种回收五十个
+        final List<Feed> feeds = feedRepository.findAll();
 
-        //可回收数量
-        int allAmount = 50;
-        for (Order order : orders) {
-            //检查是否回收数量够了
-            //if (allAmount <= 0) {
-            //    break;
-            //}
 
-            //当前订单 需要回收的交易量
-            int vol = order.getAmount() - order.getVolume();
+        for (Feed feed : feeds) {
+            // 查询对应的鸡蛋类型 查询所有的挂单
+            List<Byte> bytes = new ArrayList<>();
+            bytes.add(ConstUtil.Order_Open);
+            bytes.add(ConstUtil.Order_Open_Finish_Part);
+            List<Order> orders = orderRepository.findAllByFeedIdAndOrderStateInOrderByPriceAsc(feed.getId(),bytes);
+            logger.warn("查询到的当前的挂单的数量=====" + orders.size());
 
-            // 可回收数量 大于 需要回收的数量
-            if (allAmount >= vol) {
-                allAmount = allAmount - vol;
-                // 更新用户-鸡蛋 信息 和 用户的金币数量
-                updateUserEgg(order, vol);
-                // 更新订单信息 全部完成
-                order.setOrderState(ConstUtil.Order_Close_Finish_All);
-                order.setVolume(vol);
-                orderRepository.save(order);
-                // 添加回收记录
-                addRecord(order, vol);
+            //可回收数量
+            int allAmount = 50;
+            for (Order order : orders) {
 
-            } else {
-                // 可回收数量 小于 需要回收的数量
-                // 可回收的数量
-                int realVol = vol - allAmount;
 
-                // 更新用户-鸡蛋 信息 和 用户的金币数量
-                updateUserEgg(order, realVol);
-                // 更新订单信息 部分完成
-                order.setOrderState(ConstUtil.Order_Open_Finish_Part);
-                order.setVolume(realVol);
-                orderRepository.save(order);
-                // 添加回收记录
-                addRecord(order, realVol);
+                //当前订单 需要回收的交易量
+                int vol = order.getAmount() - order.getVolume();
 
-                break;
+
+                // 单个订单的鸡蛋数量 小于 50（需要多个订单才能回收完成）
+                if (allAmount >= vol) {
+                    allAmount = allAmount - vol;
+                    // 更新用户-鸡蛋 信息 和 用户的金币数量
+                    updateUserEgg(order, vol);
+                    // 更新订单信息 全部完成
+                    order.setOrderState(ConstUtil.Order_Close_Finish_All);
+                    //成交量
+                    int tempV = order.getVolume()==null?0:order.getVolume();
+                    order.setVolume(tempV+vol);
+                    orderRepository.save(order);
+                    // 添加回收记录
+                    addRecord(order, vol);
+
+                } else {
+                    // 单个订单的数量 大于 allAmount(一个订单可以一次性回收完成)
+                    // 可回收的数量
+
+                    // 更新用户-鸡蛋 信息 和 用户的金币数量
+                    updateUserEgg(order, allAmount);
+                    // 更新订单信息 部分完成
+                    order.setOrderState(ConstUtil.Order_Open_Finish_Part);
+                    //成交量
+                    int tempV = order.getVolume()==null?0:order.getVolume();
+                    order.setVolume(tempV+allAmount);
+                    orderRepository.save(order);
+                    // 添加回收记录
+                    addRecord(order, allAmount);
+
+                    break;
+                }
+
+
             }
-
-
         }
+
+
     }
 
     /**
@@ -143,9 +160,10 @@ public class OrderJob {
         recycleRecord.setVol(vol);
         recycleRecord.setCreateTime(new Date());
         recycleRecord.setPrice(order.getPrice());
+        recycleRecord.setFeedId(order.getFeedId());
         recycleRecordRepository.save(recycleRecord);
 
-        AuctionChart auctionChart = auctionChartRepository.findFirstByOrderByDateDesc().orElse(null);
+        AuctionChart auctionChart = auctionChartRepository.findFirstByFeedIdOrderByDateDesc(order.getFeedId()).orElse(null);
 
         if (auctionChart != null && DateUtils.isSameDay(auctionChart.getDate(), new Date())){
             //不为空 是同一天  更新当前记录
@@ -185,6 +203,9 @@ public class OrderJob {
             auctionChart.setClose(order.getPrice());
             // d
             auctionChart.setDate(new Date());
+            // feedId
+            auctionChart.setFeedId(order.getFeedId());
+
         }
         auctionChartRepository.save(auctionChart);
 

@@ -13,5 +13,5 @@ public interface OrderRepository extends MongoRepository<Order,String> {
 
     Page<Order> findByUserIdAndOrderStateInOrderByCreateTimeDesc(Pageable pageable,String userId ,List<Byte> OrderState);
 
-    List<Order> findAllByOrderByPriceAsc();
+    List<Order> findAllByFeedIdAndOrderStateInOrderByPriceAsc(String feedId,List<Byte> OrderState);
 }

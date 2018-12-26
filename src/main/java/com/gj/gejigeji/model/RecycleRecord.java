@@ -1,5 +1,6 @@
 package com.gj.gejigeji.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -17,6 +18,8 @@ public class RecycleRecord {
     private Integer price;
 
     private Integer vol;
+    @ApiModelProperty("鸡蛋的类型")
+    private String feedId;
 
     private Date createTime;
 
@@ -58,5 +61,13 @@ public class RecycleRecord {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
     }
 }

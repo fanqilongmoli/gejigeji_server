@@ -1,13 +1,12 @@
 package com.gj.gejigeji.controller;
 
+import com.gj.gejigeji.schedule.OrderJob;
+import com.gj.gejigeji.schedule.UserJobs;
 import com.gj.gejigeji.service.UserService;
 import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +16,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OrderJob orderJob;
 
 
     @ApiOperation("获取用户的金币余额 U3D使用")
@@ -90,5 +92,10 @@ public class UserController {
     @PostMapping("jewel2Coin")
     public OkResult Jewel2Coin(@RequestBody Jewel2CoinParam jewel2CoinParam){
         return userService.Jewel2Coin(jewel2CoinParam);
+    }
+
+    @GetMapping("test")
+    public void test(){
+        orderJob.recycle();
     }
 }

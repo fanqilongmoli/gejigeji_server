@@ -27,6 +27,8 @@ public class AuctionChart {
 
     private Integer vol;
 
+    private String feedId;
+
     public String getId() {
         return Id;
     }
@@ -81,5 +83,13 @@ public class AuctionChart {
 
     public void setVol(Integer vol) {
         this.vol = vol;
+    }
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
     }
 }
