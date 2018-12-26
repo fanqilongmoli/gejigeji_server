@@ -19,26 +19,26 @@ public class MailController {
     MailService mailService;
 
     @PostMapping("mailDetail")
-    @ApiOperation(value = "获取邮件详情（点击邮件详情时，设置邮件为已读")
+    @ApiOperation(value = "获取邮件详情（点击邮件详情时，设置邮件为已读 U3D使用")
     public MailDetailVo mailDetail(@RequestBody MailDetailParam mailDetailParam){
         return mailService.mailDetail(mailDetailParam);
     }
 
     @PostMapping("mailGet")
-    @ApiOperation("获取邮件奖励---参数和返回暂定")
+    @ApiOperation("获取邮件奖励---参数和返回暂定 U3D使用")
     public OkResult mailGet(@RequestBody MailDetailParam mailDetailParam){
         return mailService.mailGet(mailDetailParam);
     }
 
 
     @PostMapping("mailAll")
-    @ApiOperation(value = "获取用户的全部邮件")
+    @ApiOperation(value = "获取用户的全部邮件 U3D使用")
     public List<Mail> mailAll(@RequestBody MailReadParam mailReadParam){
         return mailService.mailAll(mailReadParam);
     }
 
     @PostMapping("mailRead")
-    @ApiOperation(value = "标记邮件为全读")
+    @ApiOperation(value = "标记邮件为全读 U3D使用")
     public OkResult mailRead(@RequestBody MailReadParam mailReadParam){
         return mailService.mailRead(mailReadParam);
     }

@@ -4,6 +4,8 @@ import com.gj.gejigeji.model.Address;
 import com.gj.gejigeji.repository.AddressRepository;
 import com.gj.gejigeji.vo.AddressParam;
 import com.gj.gejigeji.vo.OkResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,7 @@ public class LiveController {
         return new OkResult(true);
     }
 
+    @ApiOperation("获取直播流地址 U3D使用")
     @GetMapping
     public Address getLiveAddress() {
         final List<Address> all = addressRepository.findAll();

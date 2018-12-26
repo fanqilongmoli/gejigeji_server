@@ -16,7 +16,7 @@ public class SmsController {
     SmsServices smsServices;
 
     @PostMapping("reg")
-    @ApiOperation(value = "注册获取验证码")
+    @ApiOperation(value = "注册获取验证码 U3D使用")
     public @ResponseBody OkResult register(@RequestBody SmsParam smsParam) {
         return smsServices.register(smsParam);
     }

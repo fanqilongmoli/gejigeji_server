@@ -19,7 +19,7 @@ public class UserController {
     UserService userService;
 
 
-    @ApiOperation("获取用户的金币余额")
+    @ApiOperation("获取用户的金币余额 U3D使用")
     @PostMapping("getCoin")
     public GetCoinVo getCoin(@RequestBody ActionParam actionParam){
         return  userService.getCoin(actionParam);
@@ -36,44 +36,44 @@ public class UserController {
         return userService.updateUserName(updateUserNameParam);
     }
 
-    @ApiOperation("修改配送信息")
+    @ApiOperation("修改配送信息 U3D使用")
     @PostMapping("updateSite")
     public OkResult updateSite(@RequestBody UpdateSiteParam updateSiteParam){
         return userService.updateSite(updateSiteParam);
     }
 
-    @ApiOperation("修改密码")
+    @ApiOperation("修改密码 U3D使用")
     @PostMapping("updatePassword")
     public OkResult updatePassword(@RequestBody UpdatePasswordParam updatePasswordParam){
         return userService.updatePassword(updatePasswordParam);
     }
 
 
-    @ApiOperation("用户认证")
+    @ApiOperation("用户认证 U3D使用")
     @PostMapping("authentication")
     public OkResult authentication(@RequestBody AuthenticationParam authenticationParam){
         return userService.authentication(authenticationParam);
     }
 
-    @ApiOperation("下蛋")
+    @ApiOperation("下蛋 U3D使用")
     @PostMapping("egg")
     public EggCountVo egg(@RequestBody ActionParam actionParam){
         return userService.egg(actionParam);
     }
 
-    @ApiOperation("获取用户的鸡蛋--分类")
+    @ApiOperation("获取用户的鸡蛋--分类 U3D使用")
     @PostMapping("userEggs")
     public List<UserEggVo> userEggs(@RequestBody ActionParam actionParam){
         return userService.userEggs(actionParam);
     }
 
-    @ApiOperation("获取用户的鸡蛋--全部")
+    @ApiOperation("获取用户的鸡蛋--全部 U3D使用")
     @PostMapping("userEggsAll")
     public UserEggsAllVo userEggsAll(@RequestBody ActionParam actionParam){
         return userService.userEggsAll(actionParam);
     }
     //获取余额
-    @ApiOperation("获取新的用户信息")
+    @ApiOperation("获取新的用户信息 U3D使用")
     @PostMapping
     public LoginVo refreshUserInfo(@RequestBody ActionParam actionParam){
         return  userService.refreshUserInfo(actionParam);

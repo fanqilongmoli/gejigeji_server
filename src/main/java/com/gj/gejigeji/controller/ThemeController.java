@@ -20,7 +20,7 @@ public class ThemeController {
     ThemeService themeService;
 
 
-    @ApiOperation(value = "获取所有的主题(鸡舍就是主题)")
+    @ApiOperation(value = "获取所有的主题(鸡舍就是主题) U3D使用")
     @PostMapping("getAll")
     public List<ThemeVo> getAll(@RequestBody ActionParam actionParam){
         return themeService.getAll(actionParam);

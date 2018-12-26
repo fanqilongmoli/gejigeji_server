@@ -15,7 +15,7 @@ public class SwitchSkinController {
     @Autowired
     SwitchSkinService switchSkinService;
 
-    @ApiOperation(value = "切换皮肤")
+    @ApiOperation(value = "切换皮肤 U3D使用")
     @PostMapping("switchSkin")
     public OkResult switchSkin(@RequestBody SwitchSkinParam switchSkinParam){
         return switchSkinService.switchSkin(switchSkinParam);

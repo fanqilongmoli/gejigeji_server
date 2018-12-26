@@ -21,7 +21,7 @@ public class RegController {
     @Autowired
     RegService regService;
 
-    @ApiOperation(value = "用户注册")
+    @ApiOperation(value = "用户注册 U3D使用")
     @PostMapping
     public OkResult register(@RequestBody @Valid RegParam regParam) {
         return regService.register(regParam);

@@ -40,7 +40,7 @@ public class FeedController {
         return feedService.feedTest(userId);
     }
 
-    @ApiOperation(value = "喂食")
+    @ApiOperation(value = "喂食 U3D使用")
     @PostMapping("feeding")
     public FeedingVo feeding(@RequestBody FeedingParam feedingParam){
         return feedService.feeding(feedingParam);

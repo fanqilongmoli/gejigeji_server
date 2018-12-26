@@ -17,7 +17,7 @@ public class ResourceController {
     @Autowired
     ResourceService resourceService;
 
-    @ApiOperation("获取H5资源配置")
+    @ApiOperation("获取H5资源配置 U3D使用")
     @GetMapping
     public List<ResourceConf> getResource(){
         return resourceService.getResource();

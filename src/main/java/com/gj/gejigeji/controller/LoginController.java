@@ -17,19 +17,19 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @ApiOperation(value = "登录")
+    @ApiOperation(value = "登录 U3D使用")
     @PostMapping("login")
     public LoginVo login(@RequestBody LoginParam loginParam){
         return loginService.login(loginParam);
     }
 
-    @ApiOperation(value = "第三方登录")
+    @ApiOperation(value = "第三方登录 U3D使用")
     @PostMapping("login3rd")
     public LoginVo loginForOther(@RequestBody Login3rdParam login3rdParam){
         return loginService.login3rd(login3rdParam);
     }
 
-    @ApiOperation(value = "第三方登录绑定手机")
+    @ApiOperation(value = "第三方登录绑定手机 U3D使用")
     @PostMapping("bindPhone")
     public LoginVo bindPhone(@RequestBody BindPhoneParam bindPhoneParam){
         return loginService.bindPhone(bindPhoneParam);

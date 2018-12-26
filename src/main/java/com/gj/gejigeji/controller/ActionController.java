@@ -3,6 +3,7 @@ package com.gj.gejigeji.controller;
 import com.gj.gejigeji.service.ActionService;
 import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.ActionVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class ActionController {
     @Autowired
     ActionService actionService;
 
-    @ApiOperation(value = "抚摸")
+    @ApiOperation(value = "抚摸 U3D使用")
     @PostMapping("stroke")
     public ActionVo stroke(@RequestBody ActionParam actionParam){
 
@@ -25,14 +26,14 @@ public class ActionController {
     }
 
 
-    @ApiOperation(value = "洗澡")
+    @ApiOperation(value = "洗澡 U3D使用")
     @PostMapping("bathe")
     public ActionVo bathe(@RequestBody ActionParam actionParam){
 
         return actionService.bathe(actionParam);
     }
 
-    @ApiOperation(value = "打扫")
+    @ApiOperation(value = "打扫 U3D使用")
     @PostMapping("clean")
     public ActionVo clean(@RequestBody ActionParam actionParam){
 
