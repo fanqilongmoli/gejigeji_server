@@ -217,6 +217,7 @@ public class OrderService {
             }
             eggPriceVo.setFeedId(feed.getId());
             eggPriceVo.setEggName(feed.getEggName());
+            eggPriceVo.setUrl(feed.getEggUrl());
 
             eggPriceVos.add(eggPriceVo);
         }

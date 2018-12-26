@@ -5,6 +5,7 @@ public class EggPriceVo {
     private String feedId;
     private String eggName;
     private int price;
+    private String url;
 
     public String getFeedId() {
         return feedId;
@@ -28,5 +29,13 @@ public class EggPriceVo {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
