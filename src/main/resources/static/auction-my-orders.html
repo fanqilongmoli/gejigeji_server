@@ -301,7 +301,7 @@
 <body ng-app="myApp" ng-init="loadMore()" ng-controller="myCtrl" ng-class="{'show': showBody}" class="hide">
     <div class="auction-name-div">
         <img src="img/auction_name.png" class="auction-name">
-        <img src="img/shop_return.png" class="auction-return">
+        <img src="img/shop_return.png" ng-click="back()" class="auction-return">
     </div>
     <div class="auction-banner">
         我的挂单
@@ -518,6 +518,9 @@
             // 总页数
             $scope.totalPages = 1;
             $scope.loadMore();
+        }
+        $scope.back = function () {
+            window.history.back(true)
         }
     });
 </script>
