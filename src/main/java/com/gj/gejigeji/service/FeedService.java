@@ -90,7 +90,7 @@ public class FeedService {
         } else {
 
             userFeed.setAmount(userFeed.getAmount() + feedBuyParam.getAmount());
-            userFeed.setAllPrice(userFeed.getAllPrice() + feed.getPrice() * feedBuyParam.getAmount());
+            userFeed.setAllPrice(userFeed.getAllPrice() == null ? 0 : userFeed.getAllPrice() + feed.getPrice() * feedBuyParam.getAmount());
 
             userFeedRepository.save(userFeed);
         }
