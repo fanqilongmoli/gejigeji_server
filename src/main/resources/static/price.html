@@ -82,27 +82,201 @@
         .price-name {
             width: 1rem;
         }
-        </style>
+        .chart {
+            width: 3.56rem;
+            margin: 0 auto;
+            height: 4rem;
+            background-color: rgb(243, 237, 231);
+        }
+        .price-trend {
+            width: 1.14rem;
+            height: 0.26rem;
+            background-image: url("img/price_trend.png");
+            background-size: 100% 100%;
+            margin-left: 0.075rem;
+            margin-top: 0.03rem;
+            line-height: 0.26rem;
+            color: white;
+            font-size: 0.18rem;
+            text-indent: 0.05rem;
+        }
+        .price-eggs {
+            height: 0.86rem;
+            width: 3.54rem;
+            margin: 0.05rem auto 0 auto;
+            text-align: center;
+            background-color: rgb(98, 66, 43);
+            border: 0.01rem solid #472119;
+            border-radius: 0.06rem;
+            display: flex;
+            justify-content: center;
+        }
+        .price-egg {
+            width: 0.77rem;
+            height: 0.76rem;
+            background-color: #9f8660;
+            margin: 0.05rem 0.03rem 0 0.03rem;
+        }
+        .price-egg-selected {
+            background-color: #cb5835;
+        }
+        .price-egg-img {
+            width: 0.69rem;
+        }
+        .price-egg-name {
+            color: white;
+            font-size: 0.2rem;
+            height: 0.2rem;
+            line-height: 0.2rem;
+            text-align: center;
+        }
+        .price-date {
+            display: flex;
+            height: 0.32rem;
+            width: 3.56rem;
+            background-color: rgb(218, 194, 154);
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .price-date-item {
+            background-color: #9698A6;
+            text-align: center;
+            color: #333;
+            font-size: 0.19rem;
+            width: 0.72rem;
+            height: 0.23rem;
+            line-height: 0.23rem;
+            margin: 0.04rem;
+        }
+        .price-date-item-selected {
+            background-color: #F98013;
+        }
+    </style>
+    <script src="js/angular.js"></script>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl">
+<body ng-app="myApp" ng-controller="myCtrl" ng-init="init()">
     <div class="auction-name-div">
         <img src="img/price_name.png" class="auction-name">
     </div>
     <div class="auction-banner">
     </div>
     <div class="price-list">
-        <div class="price-item">
-            <span class="price-name">富omega3鸡蛋：</span><span class="price-number">9999</span>金币
-        </div>
-        <div class="price-item">
-            <span class="price-name">普通鸡蛋：</span><span class="price-number">999</span>金币
-        </div>
-        <div class="price-item">
-            <span class="price-name">普通鸡蛋：</span><span class="price-number">99</span>金币
-        </div>
-        <div class="price-item">
-            <span class="price-name">普通鸡蛋：</span><span class="price-number">9</span>金币
+        <div class="price-item" ng-repeat="item in eggs" ng-click="selectEgg(item)">
+            <span class="price-name">{{item.eggName}}</span><span class="price-number">{{item.price}}</span>金币
         </div>
     </div>
+    <div class="price-trend">
+        价格趋势
+    </div>
+    <div class="price-egg-name" ng-show="egg">{{egg.eggName}}</div>
+    <div class="price-eggs">
+        <div class="price-egg" ng-repeat="item in eggs" ng-click="selectEgg(item)" ng-class="{'price-egg-selected': item == egg}">
+            <img class="price-egg-img" ng-src="{{item.url}}" >
+        </div>
+    </div>
+    <div class="price-date">
+        <div class="price-date-item" ng-class="{'price-date-item-selected': 0 == dateType}" ng-click="changeDateType(0)">当周</div>
+        <div class="price-date-item" ng-class="{'price-date-item-selected': 1 == dateType}" ng-click="changeDateType(1)">当月</div>
+    </div>
+    <div class="chart" id="chart">
+
+    </div>
+    <script type="application/javascript" src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+    <script type="application/javascript">
+        var myChart = echarts.init(document.getElementById('chart'));
+        var option = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                // data:['邮件营销']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: false},
+                    dataView : {show: false, readOnly: false},
+                    magicType : {show: false, type: ['line']},
+                    restore : {show: false},
+                    saveAsImage : {show: false}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : true,
+                    data : []
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'',
+                    type:'line',
+                    data:[]
+                }
+            ]
+        };
+        myChart.setOption(option);
+        myChart.showLoading();
+    </script>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function($scope, $http) {
+            /**
+             * 载入chart数据
+             * @param feedId
+             */
+            function loadData() {
+                myChart.showLoading();
+                $http.post("/order/getChart", {
+                    "chartType": $scope.dateType,
+                    "feedId": $scope.egg.feedId
+                }).then(function (response) {
+                    myChart.hideLoading();
+                    myChart.setOption({
+                        xAxis: {
+                            data: response.data.map(function (e) {
+                                return e.date.substring(0, 10);
+                            })
+                        },
+                        series: [{
+                            name: '',
+                            data: response.data.map(function (e) {
+                                return e.close;
+                            })
+                        }]
+                    });
+                })
+            }
+            $scope.init = function () {
+                $scope.dateType = 0;
+                $http.get("/order/eggPrice").then(function (response) {
+                    $scope.eggs = response.data;
+                    $scope.egg = $scope.eggs[0];
+                    loadData($scope.egg.feedId);
+                })
+            }
+            $scope.selectEgg = function (item) {
+                if ($scope.egg != item) {
+                    $scope.egg = item;
+                    loadData();
+                }
+            }
+            $scope.changeDateType = function (type) {
+                if ($scope.dateType != type) {
+                    $scope.dateType = type;
+                    loadData();
+                }
+            }
+        })
+    </script>
+
 </body>
 </html>
