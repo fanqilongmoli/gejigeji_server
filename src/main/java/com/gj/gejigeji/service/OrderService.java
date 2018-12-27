@@ -194,6 +194,7 @@ public class OrderService {
 
 
         List<AuctionChart> allByDateBetween = auctionChartRepository.findAllByFeedIdAndDateBetween(getChartParam.getFeedId(), startTime.getTime(), endTime.getTime());
+        Collections.reverse(allByDateBetween);
         return allByDateBetween;
     }
 
