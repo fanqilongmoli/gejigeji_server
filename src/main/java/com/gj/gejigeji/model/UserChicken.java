@@ -107,7 +107,7 @@ public class UserChicken {
         if (game > 45) {
             game = 45;
         }
-        if (game < 45) {
+        if (game < 0) {
             game = 0;
         }
         this.game = game;
