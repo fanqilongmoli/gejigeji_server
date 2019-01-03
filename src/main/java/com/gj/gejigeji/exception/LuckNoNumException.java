@@ -1,7 +1,7 @@
 package com.gj.gejigeji.exception;
 
 /**
- * 用户不存在
+ * 抽奖次数不足
  */
 public class LuckNoNumException extends BaseRuntimeException {
     public LuckNoNumException() {

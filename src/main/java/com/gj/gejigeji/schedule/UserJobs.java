@@ -46,7 +46,16 @@ public class UserJobs {
             user.setMiniGameCount4(10);
             userRepository.save(user);
         }
+        logger.info("=======刷新日下蛋个数========");
+
+        userChickenRepository.findAll().forEach(userChicken -> {
+            userChicken.setDayEgg(0);
+            userChickenRepository.save(userChicken);
+        });
+
         logger.info("=======刷新用户的游戏次数结束========");
+
+
     }
 
     /**

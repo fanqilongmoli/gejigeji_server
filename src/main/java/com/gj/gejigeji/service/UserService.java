@@ -1,6 +1,7 @@
 package com.gj.gejigeji.service;
 
 import com.gj.gejigeji.exception.BaseRuntimeException;
+import com.gj.gejigeji.exception.LayEggException;
 import com.gj.gejigeji.exception.NoJewelException;
 import com.gj.gejigeji.model.*;
 import com.gj.gejigeji.repository.*;
@@ -176,7 +177,7 @@ public class UserService {
         Integer maxEgg = chickenRepository.findAll().get(0).getMaxEgg();
         Integer dayEgg = userChicken.getDayEgg();
         if (dayEgg >= maxEgg) {
-            // TODO: 2018/11/18 抛出一个不能下蛋的异常 好像么有必要
+            throw new LayEggException();
         }
 
         //查询喂食记录表  获取最后一次喂食的饲料
@@ -201,9 +202,11 @@ public class UserService {
             userEgg.setFeedId(userFeedRecord.getFeedId());
             userEgg.setUpdateTime(new Date());
             userEgg.setDeleteFlag(ConstUtil.Delete_Flag_No);
+        }else{
+            userEgg.setUpdateTime(new Date());
+            userEgg.setAmount(userEgg.getAmount() + 1);
         }
-        userEgg.setUpdateTime(new Date());
-        userEgg.setAmount(userEgg.getAmount() + 1);
+
         UserEgg save = userEggRepository.save(userEgg);
 
         //更新UserChicken 表
