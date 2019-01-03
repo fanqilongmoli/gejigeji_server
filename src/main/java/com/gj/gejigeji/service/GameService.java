@@ -268,7 +268,7 @@ public class GameService {
 //        ActionVo actionVo = new ActionVo();
         if (UserChicken != null) {
             Date lastTime = new Date();
-            UserChicken.setStroke(UserChicken.getGame() + 3);
+            UserChicken.setGame(UserChicken.getGame() + 3);
             UserChicken.setGameLastTime(lastTime);
             UserChickenRepository.save(UserChicken);
             //actionVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
