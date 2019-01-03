@@ -161,7 +161,14 @@ public class LoginService {
         loginVo.setAccountID(user.getId());
         loginVo.setAward(false);
         loginVo.setCoin(user.getCoin());
+
         //用户鸡蛋的数量
+        UserEgg userEggEx = new UserEgg();
+        userEggEx.setUserId(user.getId());
+        List<UserEgg> all = userEggRepository.findAll(Example.of(userEggEx));
+        for (UserEgg userEgg : all) {
+            loginVo.setEggCount(loginVo.getEggCount() + userEgg.getAmount());
+        }
         //loginVo.setEggCount(user.getEggCount());
         loginVo.setJewel(user.getJewel());
         loginVo.setPhone(user.getPhone());

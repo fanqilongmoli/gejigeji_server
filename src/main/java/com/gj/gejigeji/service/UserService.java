@@ -294,6 +294,11 @@ public class UserService {
         return userEggsAllVo;
     }
 
+    /**
+     * 刷新用户信息
+     * @param actionParam
+     * @return
+     */
     public LoginVo refreshUserInfo(ActionParam actionParam) {
         User ex = new User();
         ex.setId(actionParam.getAccountID());
