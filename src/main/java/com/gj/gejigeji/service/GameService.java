@@ -65,9 +65,9 @@ public class GameService {
         if (miniGameCount1 > 0) {
             user.setMiniGameCount1(miniGameCount1 - 1);
             //每天各有3次免费的机会，超过免费机会，每次10个金币
-            if (user.getMiniGameCount1()<7){
+            if (user.getMiniGameCount1() < 7) {
                 float newCoin = user.getCoin() - 10;
-                if (newCoin <0){
+                if (newCoin < 0) {
                     throw new NoCoinException();
                 }
                 user.setCoin(newCoin);
@@ -88,7 +88,20 @@ public class GameService {
      */
     public GameResultVo ddsEnd(DDSEndParam ddsEndParam) {
 
-        updateGameLikeValue(ddsEndParam.getAccountID());
+        User userEx = new User();
+        userEx.setId(ddsEndParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new NoUserException();
+        }
+        final Integer miniGameCount1 = user.getMiniGameCount1();
+
+        if (miniGameCount1 > 0) {
+            updateGameLikeValue(ddsEndParam.getAccountID());
+        }
+        // 保存用户获取五个金币
+        user.setCoin(user.getCoin() + 5);
+        userRepository.save(user);
 
         GameResultVo okResult = new GameResultVo();
         okResult.setAllow(true);
@@ -112,31 +125,30 @@ public class GameService {
         }
         // 减少游戏次数
         Integer miniGameCount3 = user.getMiniGameCount3();
-        if (miniGameCount3 > 0) {
-            user.setMiniGameCount3(miniGameCount3 - 1);
-            //每天各有3次免费的机会，超过免费机会，每次10个金币
-            if (user.getMiniGameCount3()<7){
-                float newCoin = user.getCoin() - 10;
-                if (newCoin <0){
-                    throw new NoCoinException();
-                }
-                user.setCoin(newCoin);
+
+        user.setMiniGameCount3(miniGameCount3 - 1);
+        //每天各有3次免费的机会，超过免费机会，每次10个金币
+        if (user.getMiniGameCount3() < 7) {
+            float newCoin = user.getCoin() - 10;
+            if (newCoin < 0) {
+                throw new NoCoinException();
             }
-
-            userRepository.save(user);
-
-            // 添加游戏的好感度
-            updateGameLikeValue(actionParam.getAccountID());
-
-            GameResultVo okResult = new GameResultVo();
-            okResult.setAllow(true);
-            okResult.setAwardId(111);
-            return okResult;
-
+            user.setCoin(newCoin);
         }
+
+        userRepository.save(user);
+
+        // 添加游戏的好感度
+        if (miniGameCount3 > 0) {
+            updateGameLikeValue(actionParam.getAccountID());
+        }
+
         GameResultVo gameResultVo = new GameResultVo();
         gameResultVo.setAllow(true);
+        gameResultVo.setAwardId(111);
         return gameResultVo;
+
+
     }
 
     /**
@@ -155,32 +167,30 @@ public class GameService {
         }
         // 减少游戏次数
         Integer miniGameCount2 = user.getMiniGameCount2();
-        if (miniGameCount2 > 0) {
-            user.setMiniGameCount2(miniGameCount2 - 1);
 
-            //每天各有3次免费的机会，超过免费机会，每次10个金币
-            if (user.getMiniGameCount2()<7){
-                float newCoin = user.getCoin() - 10;
-                if (newCoin <0){
-                    throw new NoCoinException();
-                }
-                user.setCoin(newCoin);
+        user.setMiniGameCount2(miniGameCount2 - 1);
+
+        //每天各有3次免费的机会，超过免费机会，每次10个金币
+        if (user.getMiniGameCount2() < 7) {
+            float newCoin = user.getCoin() - 10;
+            if (newCoin < 0) {
+                throw new NoCoinException();
             }
-            userRepository.save(user);
+            user.setCoin(newCoin);
+        }
+        userRepository.save(user);
 
-            // 添加游戏的好感度
+        // 添加游戏的好感度
+        if (user.getMiniGameCount2() > 0) {
             updateGameLikeValue(actionParam.getAccountID());
-
-            GameResultVo gameResultVo = new GameResultVo();
-            gameResultVo.setAllow(true);
-            gameResultVo.setAllowID(12312);
-            gameResultVo.setCount(5);
-            return gameResultVo;
         }
 
         GameResultVo gameResultVo = new GameResultVo();
-        gameResultVo.setAllow(false);
+        gameResultVo.setAllow(true);
+        gameResultVo.setAllowID(12312);
+        gameResultVo.setCount(user.getMiniGameCount2());
         return gameResultVo;
+
     }
 
     /**
@@ -198,25 +208,23 @@ public class GameService {
         }
         GameResultVo gameResultVo = new GameResultVo();
         Integer miniGameCount4 = user.getMiniGameCount4();
-        if (miniGameCount4 > 0) {
-            user.setMiniGameCount4(miniGameCount4 - 1);
 
-            //每天各有3次免费的机会，超过免费机会，每次10个金币
-            if (user.getMiniGameCount4()<7){
-                float newCoin = user.getCoin() - 10;
-                if (newCoin <0){
-                    throw new NoCoinException();
-                }
-                user.setCoin(newCoin);
+        user.setMiniGameCount4(miniGameCount4 - 1);
+
+        //每天各有3次免费的机会，超过免费机会，每次10个金币
+        if (user.getMiniGameCount4() < 7) {
+            float newCoin = user.getCoin() - 10;
+            if (newCoin < 0) {
+                throw new NoCoinException();
             }
-
-            userRepository.save(user);
-            gameResultVo.setAllow(true);
-            return gameResultVo;
-
+            user.setCoin(newCoin);
         }
-        gameResultVo.setAllow(false);
+
+        userRepository.save(user);
+        gameResultVo.setAllow(true);
         return gameResultVo;
+
+
     }
 
     /**
@@ -227,12 +235,23 @@ public class GameService {
      */
     public GameResultVo dgsEnd(DGSEndParam dgsEndParam) {
 
+        User userEx = new User();
+        userEx.setId(dgsEndParam.getAccountID());
+        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+        if (user == null) {
+            throw new NoUserException();
+        }
+
         // 添加游戏的好感度
-        updateGameLikeValue(dgsEndParam.getAccountID());
+        Integer miniGameCount4 = user.getMiniGameCount4();
+
+        if (miniGameCount4>0){
+            updateGameLikeValue(dgsEndParam.getAccountID());
+        }
 
         GameResultVo gameResultVo = new GameResultVo();
         gameResultVo.setAllow(true);
-        gameResultVo.setCount(123);
+        gameResultVo.setCount(miniGameCount4);
         return gameResultVo;
     }
 
