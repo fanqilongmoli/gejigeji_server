@@ -87,6 +87,9 @@ public class GameService {
      * @return
      */
     public GameResultVo ddsEnd(DDSEndParam ddsEndParam) {
+
+        updateGameLikeValue(ddsEndParam.getAccountID());
+
         GameResultVo okResult = new GameResultVo();
         okResult.setAllow(true);
         okResult.setCoin(5);
@@ -223,6 +226,10 @@ public class GameService {
      * @return
      */
     public GameResultVo dgsEnd(DGSEndParam dgsEndParam) {
+
+        // 添加游戏的好感度
+        updateGameLikeValue(dgsEndParam.getAccountID());
+
         GameResultVo gameResultVo = new GameResultVo();
         gameResultVo.setAllow(true);
         gameResultVo.setCount(123);
@@ -239,13 +246,13 @@ public class GameService {
         UserChicken UserChickenEx = new UserChicken();
         UserChickenEx.setUserId(accountID);
         UserChicken UserChicken = UserChickenRepository.findOne(Example.of(UserChickenEx)).orElse(null);
-        ActionVo actionVo = new ActionVo();
+//        ActionVo actionVo = new ActionVo();
         if (UserChicken != null) {
             Date lastTime = new Date();
             UserChicken.setStroke(UserChicken.getGame() + 3);
             UserChicken.setGameLastTime(lastTime);
             UserChickenRepository.save(UserChicken);
-            actionVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
+            //actionVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
 
         }
     }
