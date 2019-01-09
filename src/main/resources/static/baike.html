@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>养鸡百科</title>
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .content {
+            width: 3.66rem;
+            height: 5.95rem;
+            background-image: url("img/baike_bg.png");
+            background-size: 100% 100%;
+            margin: 0 auto;
+        }
+        .content-dict {
+            width: 0.4rem;
+            height: 0.2rem;
+            display: block;
+            margin: 0 auto 0.2rem auto;
+            position: relative;
+            top: 0.1rem;
+        }
+        .content-item {
+            width: 3.4rem;
+            height: 0.28rem;
+            line-height: 0.28rem;
+            background-image: url("img/baike_dict_bg.png");
+            background-size: 100% 100%;
+            border-radius: 0.07rem;
+            margin: 0.03rem auto 0.03rem auto;
+            color: #2e2e2e;
+            text-indent: 0.05rem;
+        }
+        .content-item-label {
+            font-size: 0.2rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/baike_name.png" class="auction-name">
+    </div>
+    <div class="content">
+        <img src="img/baike_dict.png" class="content-dict">
+        <div class="content-item" ng-click="toDetail(1)">
+            <label class="content-item-label">1.</label>欧米伽3鲜鸡蛋
+        </div>
+        <div class="content-item" ng-click="toDetail(2)">
+            <label class="content-item-label">2.</label>富硒鸡蛋
+        </div>
+        <div class="content-item" ng-click="toDetail(3)">
+            <label class="content-item-label">3.</label>有机鸡蛋
+        </div>
+        <div class="content-item" ng-click="toDetail(4)">
+            <label class="content-item-label">4.</label>鸡饲料中营养物质间的相互关系
+        </div>
+        <div class="content-item" ng-click="toDetail(5)">
+            <label class="content-item-label">5.</label>鸡饲料应加哪些添加剂
+        </div>
+    </div>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function ($scope) {
+            $scope.toDetail = function (index) {
+                window.location.href = "baike-" + index + ".html" + window.location.search;
+            }
+        })
+    </script>
+</body>
+</html>

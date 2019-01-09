@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>养鸡百科</title>
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .content {
+            width: 3.66rem;
+            height: 5.95rem;
+            background-image: url("img/baike_bg.png");
+            background-size: 100% 100%;
+            margin: 0 auto;
+            position: relative;
+            color: #3A2415;
+            font-size: 0.14rem;
+        }
+        .content-btn {
+            background-size: 100% 100%;
+            height: 0.37rem;
+            font-size: 0.23rem;
+            line-height: 0.37rem;
+            text-align: center;
+        }
+        .content-btn-dict {
+            background-image: url("img/baike_btn_dict.png");
+            width: 1.01rem;
+            position: absolute;
+            bottom: 0.13rem;
+            left: 0.21rem;
+            color: white;
+        }
+        .content-btn-next {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 0.22rem;
+            color: #333333;
+        }
+        .content-btn-previous {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 1.24rem;
+            color: #333333;
+        }
+        .content p {
+            padding: 0 0.12rem 0 0.12rem;
+            text-align: justify;
+            text-indent: 0.28rem;
+        }
+        .content-title {
+            font-size: 0.22rem;
+            height: 0.22rem;
+            color: #4D3201;
+            padding: 0.1rem 0 0.05rem 0.14rem;
+        }
+        .content-content {
+            height: 5.2rem;
+            overflow: auto;
+            padding-bottom: 0.6rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/baike_name.png" class="auction-name">
+    </div>
+    <div class="content">
+        <div class="content-content">
+            <div class="content-title">鸡饲料中营养物质间的相互关系</div>
+            <p>为了保证鸡能更好的茁壮成长，饲料在生产过程中会添加各种营养物质，有的是为了给鸡补充营养元素，有的是为了增强鸡的抵抗力，提高抗病能力。但鸡饲料在制作过程中，各种添加的营养物质之间会有一系列的化学反应，各种营养物质之间是种怎样的相互关系呢，这种关系在鸡饲料的制作过程和鸡的生长过程中会有什么作用呢，研究鸡饲料中各种营养物质的相互关系就显得尤为重要。</p>
+            <p>1 概念及鸡饲料的作用</p>
+            <p>      1.1鸡饲料概念：鸡饲料是将玉米粉、麦麸、米糠、菜籽饼粉等各种农作物废料，按一定的比例搭配，充分搅拌均匀后，利用先进的专用设备搅拌均匀，密封发酵后产生的用于喂养鸡的营养物料。虽然鸡饲料的配置物料多为农作物废料，但这些废料中同样是营养物质丰富，再加上后期的密封发酵，不同营养元素之间相互作用，能够有效的促进鸡对多种不同营养元素的吸收。</p>
+            <p>      1.2鸡饲料的作用：鸡饲料是鸡禽在生长过程中所需营养物质的载体，鸡禽所需的营养物质（包括碳水化合物、脂肪、蛋白质、矿物质、维生素、等微量元素）都必须通过饲料来提供。饲料不仅可以为鸡的生长提供所需的营养物质，还能提供鸡的抵抗力，增强鸡的抗病能力。</p>
+            <p>2 鸡饲料在制作过程中营养物质的处理。</p>
+            <p>      2.1鸡饲料中营养物质间的相互关系。鸡饲料营养丰富，富含多种营养物质，但是各类不同的营养物质在体内代谢过程中不是孤立地起作用，而是不同的成分在鸡食用过后会相互协调、转化等，从而促进鸡对不同营养元素的吸收。微量元素间相互作用的性质会在鸡饲料中一些元素缺乏或过多的情况下发生变化。</p>
+            <p>      2.2蛋白质与能量之间的关系。蛋白质即氨基酸能改善饲料中代谢能的利用。鸡不能采食过多的蛋白，若采食过多，不仅是蛋白饲料的浪费，而且过量的蛋白质还会增加鸡肝脏和肾脏的负担，还会发生脂肪代谢病。因此，鸡饲料要求蛋白质和能量必须有一定的比例，即蛋白能量比，如法国有研究表明，肉仔鸡前3周的饲含粗蛋白为20～22%，代谢能为12.35 ～13.06mj/kg，即蛋白能量比为68～70.7时饲料蛋白转化率最高，能量利用叶最好。</p>
+            <p>      2.3维生素在鸡饲料的各种营养物质中起着至关重要的作用，不仅影响鸡的生长速度也影响鸡的生产质量。维生素与其他各类营养元素之间有着相辅相成又相互制约的紧密关系。大部分 的维生素都会在酶活动时进行作用，有效的辅助酶的分解，促进鸡对这类营养元素的吸收，如维生素B1，B2。</p>
+            <p>3 鸡饲料中营养物质的相互关系</p>
+            <p>      3.1鸡饲料中的营养元素较多，彼此之间相互作用，相互转化，有效的促进鸡对营养物质的吸收，蛋白质、维生素、脂肪、碳水化合物是鸡饲料中含量最多营养要素。</p>
+            <p>      3.2鸡饲料中很多营养物质在鸡食用之后，不同的营养元素能够相互代替。因此在配置鸡饲料时，应当确保饲料成分多种多样，因为养殖的鸡不同于野生放养的鸡，养殖的鸡所能食用的食料只有鸡饲料，而野生放养的鸡则是食料丰富，营养元素众多，因此在配置过程中，只有多用几种农作物废料进行配制，才能保障饲料营养丰富，从而充分发挥各原料之间的营养互补作用，有效提高鸡对饲料的消化率和营养物质的利用率</p>
+            <p>总结:</p>
+            <p>鸡饲料中营养物质丰富，各营养物质之间相互促进、转化、辅助。除了蛋白质、氨基酸、脂肪以及维生素等基本的营养物质，钙和磷也是鸡需要量较多的矿物质元素，二者约占体内矿物质元素总量的70％左右。钙是骨骼、蛋壳的主要成分，而且在维护肌肉、心脏、神经的正常生理机能，同时调节酸碱平衡、促进血液凝固等方面均起重要作用。鸡的种类不同对鸡对钙的需要量是不同的，一般生长鸡饲料中的需要量为：0.8～1.0％，成年鸡开始产蛋后对钙的需要量为3.0～4.0％。 钙与饲粮中能量浓度叶有一定关系，一般饲粮中能量高时，含钙量也适当增加，但是，不是含钙量愈多愈好，如超过需要量，则影响鸡对镁、锰、锌 对镁、锰、锌等元素的吸收，对鸡的生长发育和生产也不利。因此，在配制饲料时，要注意合理全面的添加各种营养物质的用量。</p>
+        </div>
+        <div class="content-btn content-btn-dict" ng-click="toDict()">目录</div>
+        <div class="content-btn content-btn-previous" ng-click="toDetail(3)">上一页</div>
+        <div class="content-btn content-btn-next" ng-click="toDetail(5)">下一页</div>
+    </div>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function ($scope) {
+            $scope.toDict = function () {
+                window.location.href = "baike.html" + window.location.search;
+            }
+            $scope.toDetail = function (index) {
+                window.location.href = "baike-" + index + ".html" + window.location.search;
+            }
+        })
+    </script>
+</body>
+</html>

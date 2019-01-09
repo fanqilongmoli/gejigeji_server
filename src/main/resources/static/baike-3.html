@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>养鸡百科</title>
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .content {
+            width: 3.66rem;
+            height: 5.95rem;
+            background-image: url("img/baike_bg.png");
+            background-size: 100% 100%;
+            margin: 0 auto;
+            position: relative;
+            color: #3A2415;
+            font-size: 0.14rem;
+        }
+        .content-btn {
+            background-size: 100% 100%;
+            height: 0.37rem;
+            font-size: 0.23rem;
+            line-height: 0.37rem;
+            text-align: center;
+        }
+        .content-btn-dict {
+            background-image: url("img/baike_btn_dict.png");
+            width: 1.01rem;
+            position: absolute;
+            bottom: 0.13rem;
+            left: 0.21rem;
+            color: white;
+        }
+        .content-btn-next {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 0.22rem;
+            color: #333333;
+        }
+        .content-btn-previous {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 1.24rem;
+            color: #333333;
+        }
+        .content p {
+            padding: 0 0.12rem 0 0.12rem;
+            text-align: justify;
+            text-indent: 0.28rem;
+        }
+        .content-title {
+            font-size: 0.22rem;
+            height: 0.22rem;
+            color: #4D3201;
+            padding: 0.1rem 0 0.05rem 0.14rem;
+        }
+        .content-content {
+            height: 5.2rem;
+            overflow: auto;
+            padding-bottom: 0.6rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/baike_name.png" class="auction-name">
+    </div>
+    <div class="content">
+        <div class="content-content">
+            <div class="content-title">有机鸡蛋</div>
+            <p>有机鸡蛋，是指符合国际或国家有机食品要求和标准，并通过国家有机食品认证机构认证的鸡蛋。国家国家对于有机食品有着明确的定义，有机食品是指按照这种方式生产和加工的；产品符合国际或国家有机食品要求和标准。</p>
+            <p>不少营养专家都表示，不同的鸡蛋其营养成分都是差不多，不同的可能就是大小或者蛋黄颜色等，连口感都基本差不多。只是由于蛋鸡的喂养方式、饲料、生长环境的不同，存在安全级别上的差异。</p>
+            <p>每百克鸡蛋含蛋白质14.7克，主要为卵白蛋白和卵球蛋白，其中含有人体必需的8种氨基酸，并与人体蛋白的组成极为近似，人体对鸡蛋蛋白质的吸收率可高达98%。每百克鸡蛋含脂肪11～15克，主要集中在蛋黄里，也极易被人体消化吸收，蛋黄中含有丰富的卵磷脂、固醇类、蛋黄素以及钙、磷、铁、维生素A、维生素D及B族维生素。这些成分对增进神经系统的功能大有裨益，因此，鸡蛋又是较好的健脑食品。</p>
+            <p>鸡蛋黄中含有较多的胆固醇，每百克可高达1705毫克，因此，不少人，特别是老年人对吃鸡蛋怀有戒心，怕吃鸡蛋引起胆固醇增高而导致动脉粥样硬化。科学家们研究发现，鸡蛋中虽含有较多的胆固醇，但同时也含有丰富的卵磷脂。卵磷脂进入血液后，会使胆固醇和脂肪的颗粒变小，并使之保持悬浮状态，从而阻止胆固醇和脂肪在血管壁的沉积。因此，科学家们认为，对胆固醇正常的老年人，每天吃2个鸡蛋，其100毫升血液中的胆固醇最高增加2毫克，不会造成血管硬化。但也不应多吃，吃得太多，不利胃肠的消化，造成浪费，还会增加肝、肾负担。每人每天以吃1～2个鸡蛋为宜，这样既有利于消化吸收，又能满足机体的需要。</p>
+        </div>
+        <div class="content-btn content-btn-dict" ng-click="toDict()">目录</div>
+        <div class="content-btn content-btn-previous" ng-click="toDetail(2)">上一页</div>
+        <div class="content-btn content-btn-next" ng-click="toDetail(4)">下一页</div>
+    </div>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function ($scope) {
+            $scope.toDict = function () {
+                window.location.href = "baike.html" + window.location.search;
+            }
+            $scope.toDetail = function (index) {
+                window.location.href = "baike-" + index + ".html" + window.location.search;
+            }
+        })
+    </script>
+</body>
+</html>
