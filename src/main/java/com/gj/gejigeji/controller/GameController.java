@@ -1,5 +1,6 @@
 package com.gj.gejigeji.controller;
 
+import com.gj.gejigeji.annotation.SysLog;
 import com.gj.gejigeji.service.GameService;
 import com.gj.gejigeji.vo.*;
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +56,7 @@ public class GameController {
         return gameService.dgsEnd(dgsEndParam);
     }
 
+    @SysLog
     @ApiOperation("每个游戏每天各有3次免费的机会，超过免费机会，每次10个金币（game：游戏类型 1打地鼠 2大转盘 3老虎机 4打怪兽）U3D使用")
     @PostMapping("checkGame4Free/{game}")
     public OkResult checkGame4Free(@RequestBody ActionParam actionParam, @PathVariable String game){

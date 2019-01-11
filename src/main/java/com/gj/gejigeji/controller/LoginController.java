@@ -1,5 +1,6 @@
 package com.gj.gejigeji.controller;
 
+import com.gj.gejigeji.annotation.SysLog;
 import com.gj.gejigeji.service.LoginService;
 import com.gj.gejigeji.vo.BindPhoneParam;
 import com.gj.gejigeji.vo.Login3rdParam;
@@ -17,6 +18,7 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
+    @SysLog
     @ApiOperation(value = "登录 U3D使用")
     @PostMapping("login")
     public LoginVo login(@RequestBody LoginParam loginParam){

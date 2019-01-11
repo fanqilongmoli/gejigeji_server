@@ -1,13 +1,17 @@
 package com.gj.gejigeji.service;
 
-import com.gj.gejigeji.exception.BaseRuntimeException;
 import com.gj.gejigeji.exception.NoCoinException;
 import com.gj.gejigeji.exception.NoUserException;
+import com.gj.gejigeji.model.Feed;
 import com.gj.gejigeji.model.User;
 import com.gj.gejigeji.model.UserChicken;
+import com.gj.gejigeji.model.UserFeed;
+import com.gj.gejigeji.repository.FeedRepository;
 import com.gj.gejigeji.repository.UserChickenRepository;
+import com.gj.gejigeji.repository.UserFeedRepository;
 import com.gj.gejigeji.repository.UserRepository;
 import com.gj.gejigeji.vo.*;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,12 @@ public class GameService {
 
     @Autowired
     UserChickenRepository UserChickenRepository;
+
+    @Autowired
+    UserFeedRepository userFeedRepository;
+
+    @Autowired
+    FeedRepository feedRepository;
 
     /**
      * 获取用户的游戏次数
@@ -88,6 +98,13 @@ public class GameService {
      */
     public GameResultVo ddsEnd(DDSEndParam ddsEndParam) {
 
+//        //打中狼的个数
+//        private Integer wolfCount;
+//        //打中炸弹个数
+//        private Integer bombCount;
+//        //打中地鼠个数
+//        private Integer diglettCount ;
+
         User userEx = new User();
         userEx.setId(ddsEndParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
@@ -100,12 +117,12 @@ public class GameService {
             updateGameLikeValue(ddsEndParam.getAccountID());
         }
         // 保存用户获取五个金币
-        user.setCoin(user.getCoin() + 5);
+        user.setCoin(user.getCoin() + 10);
         userRepository.save(user);
 
         GameResultVo okResult = new GameResultVo();
         okResult.setAllow(true);
-        okResult.setCoin(5);
+        okResult.setAwardId(6);
         return okResult;
     }
 
@@ -142,10 +159,62 @@ public class GameService {
         if (miniGameCount3 > 0) {
             updateGameLikeValue(actionParam.getAccountID());
         }
-
         GameResultVo gameResultVo = new GameResultVo();
+
+        // 随机生成奖励
+        int i = RandomUtils.nextInt(1, 101);
         gameResultVo.setAllow(true);
-        gameResultVo.setAwardId(111);
+        if (i <= 1) {
+            //有机饲料10包
+            gameResultVo.setAwardId(1);
+            Feed feedEx = new Feed();
+            feedEx.setName("有机饲料");
+            Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+            if (feed != null) {
+                final UserFeed userFeed = userFeedRepository.findByUserIdAndFeedId(user.getId(), feed.getId()).orElse(null);
+                if (userFeed != null) {
+                    userFeed.setAmount(userFeed.getAmount() + 10);
+                    userFeedRepository.save(userFeed);
+                } else {
+                    UserFeed userFeed1 = new UserFeed();
+                    userFeed1.setAmount(10);
+                    userFeed1.setPrice(0f);
+                    userFeed1.setUserId(user.getId());
+                    userFeed1.setAllPrice(0f);
+                    userFeed1.setFeedId(feed.getId());
+                    userFeedRepository.save(userFeed1);
+                }
+            }
+        } else if (i <= 2) {
+            // 免费游戏1次
+            gameResultVo.setAwardId(2);
+            user.setMiniGameCount3(user.getMiniGameCount3() + 1);
+            userRepository.save(user);
+        } else if (i <= 3) {
+            //金币20
+            updateUserCoin(user.getId(), 20f);
+            gameResultVo.setAwardId(3);
+        } else if (i <= 5) {
+            //金币15
+            updateUserCoin(user.getId(), 15f);
+            gameResultVo.setAwardId(4);
+        } else if (i <= 8) {
+            //金币10
+            updateUserCoin(user.getId(), 10f);
+            gameResultVo.setAwardId(5);
+        } else if (i <= 12) {
+            //金币5
+            updateUserCoin(user.getId(), 5f);
+            gameResultVo.setAwardId(6);
+        } else if (i <= 32) {
+            //金币1
+            updateUserCoin(user.getId(), 1f);
+            gameResultVo.setAwardId(7);
+        } else {
+
+            gameResultVo.setAllow(false);
+        }
+        gameResultVo.setCount(user.getMiniGameCount3());
         return gameResultVo;
 
 
@@ -186,8 +255,51 @@ public class GameService {
         }
 
         GameResultVo gameResultVo = new GameResultVo();
+        // 随机生成奖励
+        int i = RandomUtils.nextInt(1, 101);
         gameResultVo.setAllow(true);
-        gameResultVo.setAllowID(12312);
+        if (i <= 1) {
+            //  有机饲料10包
+            gameResultVo.setAwardId(1);
+            Feed feedEx = new Feed();
+            feedEx.setName("有机饲料");
+            Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+            if (feed != null) {
+                final UserFeed userFeed = userFeedRepository.findByUserIdAndFeedId(user.getId(), feed.getId()).orElse(null);
+                if (userFeed != null) {
+                    userFeed.setAmount(userFeed.getAmount() + 10);
+                    userFeedRepository.save(userFeed);
+                } else {
+                    UserFeed userFeed1 = new UserFeed();
+                    userFeed1.setAmount(10);
+                    userFeed1.setPrice(0f);
+                    userFeed1.setUserId(user.getId());
+                    userFeed1.setAllPrice(0f);
+                    userFeed1.setFeedId(feed.getId());
+                    userFeedRepository.save(userFeed1);
+                }
+            }
+        } else if (i <= 2) {
+            // 免费游戏1次
+            gameResultVo.setAwardId(2);
+            user.setMiniGameCount3(user.getMiniGameCount3() + 1);
+            userRepository.save(user);
+        } else if (i <= 22) {
+            //金币5
+            updateUserCoin(user.getId(), 5f);
+            gameResultVo.setAwardId(3);
+        } else if (i <= 32) {
+            //金币20
+            updateUserCoin(user.getId(), 20f);
+            gameResultVo.setAwardId(4);
+        } else if (i <= 33) {
+            //金币50
+            updateUserCoin(user.getId(), 50f);
+            gameResultVo.setAwardId(5);
+        } else {
+            gameResultVo.setAwardId(6);
+            gameResultVo.setAllow(false);
+        }
         gameResultVo.setCount(user.getMiniGameCount2());
         return gameResultVo;
 
@@ -245,12 +357,67 @@ public class GameService {
         // 添加游戏的好感度
         Integer miniGameCount4 = user.getMiniGameCount4();
 
-        if (miniGameCount4>0){
+        if (miniGameCount4 > 0) {
             updateGameLikeValue(dgsEndParam.getAccountID());
         }
 
+//        @ApiModelProperty("最后剩余生命")
+//        private Integer lifeCount;
+//        @ApiModelProperty("是否胜利")
+//        private Boolean isWin;
         GameResultVo gameResultVo = new GameResultVo();
-        gameResultVo.setAllow(true);
+        Boolean win = dgsEndParam.getWin();
+        if (win) {
+            gameResultVo.setAllow(true);
+            int lifeCount = dgsEndParam.getLifeCount();
+            if (lifeCount >= 5) {
+
+                //  有机饲料10包
+                gameResultVo.setAwardId(1);
+                Feed feedEx = new Feed();
+                feedEx.setName("有机饲料");
+                Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+                if (feed != null) {
+                    final UserFeed userFeed = userFeedRepository.findByUserIdAndFeedId(user.getId(), feed.getId()).orElse(null);
+                    if (userFeed != null) {
+                        userFeed.setAmount(userFeed.getAmount() + 10);
+                        userFeedRepository.save(userFeed);
+                    } else {
+                        UserFeed userFeed1 = new UserFeed();
+                        userFeed1.setAmount(10);
+                        userFeed1.setPrice(0f);
+                        userFeed1.setUserId(user.getId());
+                        userFeed1.setAllPrice(0f);
+                        userFeed1.setFeedId(feed.getId());
+                        userFeedRepository.save(userFeed1);
+                    }
+                }
+
+                gameResultVo.setAwardId(5);
+            } else if (lifeCount >= 4) {
+
+                // 免费游戏1次
+                gameResultVo.setAwardId(2);
+                user.setMiniGameCount3(user.getMiniGameCount4() + 1);
+                userRepository.save(user);
+
+                gameResultVo.setAwardId(4);
+            } else if (lifeCount >= 3) {
+                updateUserCoin(user.getId(), 30f);
+                gameResultVo.setAwardId(3);
+            } else if (lifeCount >= 2) {
+                updateUserCoin(user.getId(), 20f);
+                gameResultVo.setAwardId(2);
+            } else {
+                updateUserCoin(user.getId(), 10f);
+                gameResultVo.setAwardId(1);
+            }
+        } else {
+            gameResultVo.setAwardId(0);
+            gameResultVo.setAllow(false);
+        }
+
+
         gameResultVo.setCount(miniGameCount4);
         return gameResultVo;
     }
@@ -309,5 +476,13 @@ public class GameService {
 
         }
         return new OkResult(false);
+    }
+
+
+    private void updateUserCoin(String userId, float coin) {
+        final User user = userRepository.findById(userId).get();
+        final float v = user.getCoin() + coin;
+        user.setCoin(v);
+        userRepository.save(user);
     }
 }
