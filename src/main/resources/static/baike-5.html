@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>养鸡百科</title>
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .content {
+            width: 3.66rem;
+            height: 5.95rem;
+            background-image: url("img/baike_bg.png");
+            background-size: 100% 100%;
+            margin: 0 auto;
+            position: relative;
+            color: #3A2415;
+            font-size: 0.14rem;
+        }
+        .content-btn {
+            background-size: 100% 100%;
+            height: 0.37rem;
+            font-size: 0.23rem;
+            line-height: 0.37rem;
+            text-align: center;
+        }
+        .content-btn-dict {
+            background-image: url("img/baike_btn_dict.png");
+            width: 1.01rem;
+            position: absolute;
+            bottom: 0.13rem;
+            left: 0.21rem;
+            color: white;
+        }
+        .content-btn-next {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 0.22rem;
+            color: #333333;
+        }
+        .content-btn-previous {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 1.24rem;
+            color: #333333;
+        }
+        .content p {
+            padding: 0 0.12rem 0 0.12rem;
+            text-align: justify;
+            text-indent: 0.28rem;
+        }
+        .content-title {
+            font-size: 0.22rem;
+            height: 0.22rem;
+            color: #4D3201;
+            padding: 0.1rem 0 0.05rem 0.14rem;
+        }
+        .content-content {
+            height: 5.2rem;
+            overflow: auto;
+            padding-bottom: 0.6rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/baike_name.png" class="auction-name">
+    </div>
+    <div class="content">
+        <div class="content-content">
+            <div class="content-title">鸡饲料应加哪些添加剂</div>
+            <p>鸡喜温怕冷， 每逢寒冷低温季节， 体质及生产性能下降， 耗料增加， 产蛋减少， 容易患感冒等呼吸道传染病。春寒料峭， 如果在饲料中加入适当的添加剂， 可增强鸡体的免疫力。</p>
+            <p>鱼肝油。主要含维生素 A 和维生素 D， 有增强体质、 改善蛋壳质量， 增强抗寒应激能力等作用。鱼肝油最好选用油剂或水剂，这样可与其他药物同时使用。</p>
+            <p>维生素 E。低温会导致鸡卵巢性能下降，产蛋量减少。维生素 E 平时添加量为每千克日粮中 10mg，初春需加大用量 2～6 倍， 可提高免疫力和产蛋率。</p>
+            <p>维生素 C。具有抗感染、 解毒与抗应激等作用， 能增加鸡对低温和疾病的抵抗力， 预防传染病， 提高产蛋率。每 100 kg 鸡饲料中添加 5 g 维生素 C，饲料消耗可降低， 产蛋率提高。</p>
+            <p>钙。鸡体缺钙轻者下软壳蛋， 严重时会足趾抽搐， 危及生命，初春时节鸡对钙质的需求量相应增加。</p>
+            <p>辣椒粉。含有丰富的胡萝卜素和多种维生素。初春在鸡日粮中添加 1%的辣椒粉， 可提高鸡的免疫力和产蛋率。</p>
+            <p>碘。补碘可增强抗寒保暖作用。可供给含碘食盐， 用量与普通食盐相同； 或在饲料中添加海带， 添加量占日粮的 2%～6%， 海带性寒， 可配适量生姜缓和其寒性。</p>
+            <p>铁。动物缺铁， 抗寒能力降低， 怕冷。蛋鸡补铁很重要， 需要量为每千克日粮 35～45 mg。</p>
+        </div>
+        <div class="content-btn content-btn-dict" ng-click="toDict()">目录</div>
+        <div class="content-btn content-btn-previous" ng-click="toDetail(4)">上一页</div>
+    </div>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function ($scope) {
+            $scope.toDict = function () {
+                window.location.href = "baike.html" + window.location.search;
+            }
+            $scope.toDetail = function (index) {
+                window.location.href = "baike-" + index + ".html" + window.location.search;
+            }
+        })
+    </script>
+</body>
+</html>

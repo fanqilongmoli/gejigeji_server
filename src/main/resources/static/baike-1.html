@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>养鸡百科</title>
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .content {
+            width: 3.66rem;
+            height: 5.95rem;
+            background-image: url("img/baike_bg.png");
+            background-size: 100% 100%;
+            margin: 0 auto;
+            position: relative;
+            color: #3A2415;
+            font-size: 0.14rem;
+        }
+        .content-btn {
+            background-size: 100% 100%;
+            height: 0.37rem;
+            font-size: 0.23rem;
+            line-height: 0.37rem;
+            text-align: center;
+        }
+        .content-btn-dict {
+            background-image: url("img/baike_btn_dict.png");
+            width: 1.01rem;
+            position: absolute;
+            bottom: 0.13rem;
+            left: 0.21rem;
+            color: white;
+        }
+        .content-btn-next {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 0.22rem;
+            color: #333333;
+        }
+        .content-btn-previous {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 1.24rem;
+            color: #333333;
+        }
+        .content p {
+            padding: 0 0.12rem 0 0.12rem;
+            text-align: justify;
+            text-indent: 0.28rem;
+        }
+        .content-title {
+            font-size: 0.22rem;
+            height: 0.22rem;
+            color: #4D3201;
+            padding: 0.1rem 0 0.05rem 0.14rem;
+        }
+        .content-content {
+            height: 5.2rem;
+            overflow: auto;
+            padding-bottom: 0.6rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/baike_name.png" class="auction-name">
+    </div>
+    <div class="content">
+        <div class="content-content">
+            <div class="content-title">欧米伽3鲜鸡蛋</div>
+            <p>
+                我国鸡蛋品牌建设严重滞后，92.46%的蛋鸡养殖场没有自己的品牌和进行认证，有机、无公害、绿色以及品牌在不同规模中所占比例均不到10%。调查表明，市面上所出售的所谓“土鸡蛋”中，90%以上都是洋鸡蛋！而对于人们越来越关注的食品安全，更是无法得到保障。鸡蛋的营养成分来源于鸡食用的饲料，因此可以说在很大程度上饲料决定了鸡蛋的品质。
+            </p>
+            <p>
+                omega-3鸡蛋是现代农业技术和传统饲养方式有机结合的成果，是现代遗传学原理的现实应用。通过给鸡喂养绿色、健康和特殊营养的饲料，和鸡的吸收、转移与富集，使鸡蛋中含大量有益人体健康的氨基酸、维生素、铁、锌等及胆碱等营养物质，而且不但消除了蛋腥味，胆固醇含量更是降低了40%以上。当然最关键的便是其中的omega-3含量。
+            </p>
+        </div>
+        <div class="content-btn content-btn-dict" ng-click="toDict()">目录</div>
+        <div class="content-btn content-btn-next" ng-click="toDetail(2)">下一页</div>
+    </div>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function ($scope) {
+            $scope.toDict = function () {
+                window.location.href = "baike.html" + window.location.search;
+            }
+            $scope.toDetail = function (index) {
+                window.location.href = "baike-" + index + ".html" + window.location.search;
+            }
+        })
+    </script>
+</body>
+</html>

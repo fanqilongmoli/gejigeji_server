@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>养鸡百科</title>
+    <script type="application/javascript">
+        ! function(e, t) {
+            var n = t.documentElement,
+                d = e.devicePixelRatio || 1;
+            function i() {
+                var e = n.clientWidth / 3.75;
+                n.style.fontSize = e.toFixed(0) + "px"
+            }
+            if ( function e() {
+                t.body ? t.body.style.fontSize = "16px" : t.addEventListener("DOMContentLoaded", e)
+            }(), i(), e.addEventListener("resize", i), e.addEventListener("pageshow", function(e) { e.persisted && i() }), d >= 2) { var o = t.createElement("body"),
+                a = t.createElement("div");
+                a.style.border = ".5px solid transparent", o.appendChild(a), n.appendChild(o), 1 === a.offsetHeight && n.classList.add("hairlines"), n.removeChild(o) } }(window, document)
+    </script>
+    <link href="css/main.css" type="text/css" media="screen" rel="stylesheet">
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        body {
+            background-image: url("img/auction_bg.png");
+            background-size: 100% 100%;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-family: 黑体;
+        }
+        .auction-name-div {
+            background-image: url("img/auction_bg_1.png");
+            background-size: 100% 100%;
+            height: 0.6rem;
+        }
+        .auction-name {
+            height: 0.36rem;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 0.15rem;
+        }
+        .content {
+            width: 3.66rem;
+            height: 5.95rem;
+            background-image: url("img/baike_bg.png");
+            background-size: 100% 100%;
+            margin: 0 auto;
+            position: relative;
+            color: #3A2415;
+            font-size: 0.14rem;
+        }
+        .content-btn {
+            background-size: 100% 100%;
+            height: 0.37rem;
+            font-size: 0.23rem;
+            line-height: 0.37rem;
+            text-align: center;
+        }
+        .content-btn-dict {
+            background-image: url("img/baike_btn_dict.png");
+            width: 1.01rem;
+            position: absolute;
+            bottom: 0.13rem;
+            left: 0.21rem;
+            color: white;
+        }
+        .content-btn-next {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 0.22rem;
+            color: #333333;
+        }
+        .content-btn-previous {
+            background-image: url("img/baike_btn_page.png");
+            background-size: 100% 100%;
+            width: 0.88rem;
+            position: absolute;
+            bottom: 0.13rem;
+            right: 1.24rem;
+            color: #333333;
+        }
+        .content p {
+            padding: 0 0.12rem 0 0.12rem;
+            text-align: justify;
+            text-indent: 0.28rem;
+        }
+        .content-title {
+            font-size: 0.22rem;
+            height: 0.22rem;
+            color: #4D3201;
+            padding: 0.1rem 0 0.05rem 0.14rem;
+        }
+        .content-content {
+            height: 5.2rem;
+            overflow: auto;
+            padding-bottom: 0.6rem;
+        }
+    </style>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="auction-name-div">
+        <img src="img/baike_name.png" class="auction-name">
+    </div>
+    <div class="content">
+        <div class="content-content">
+            <div class="content-title">富硒鸡蛋</div>
+            <p>
+                富硒鸡蛋是指含硒量为0.2~0.5mg/kg的鸡蛋。它可以为洋鸡蛋、杂交鸡蛋、土（草）鸡蛋，也可以为特色鸡蛋，（如绿壳鸡蛋等），通过在鸡饲料中添加亚硒酸钠复合剂、含硒酵母和有机硒（如蛋氨酸硒）产生。
+            </p>
+            <p>
+                富硒鸡蛋含的硒元素，是普通鸡蛋、包括土鸡蛋的40-60倍，胆固醇低1倍多，具有延缓衰老，提高免疫力，防治心绞痛、心肌梗塞、脑血栓、抗癌等作用。 硒在身体中的作用主要是抗氧化，它在一种消灭人体内自由基的酶当中担当重要任务。缺乏它的时候可能导致心脏疾病和癌症高发，不过如果吃得过多也会导致毒性。科学补硒也要注意适量，过多地摄入硒也对人体有害。
+            </p>
+            <p>
+                硒是人和动物一种必需的微量元素，是谷胱甘肽过氧化物酶的组成成分，可以消除体内存在的自由基，保护细胞膜的正常功能。近年来研究表明，硒有抗癌、防癌、保护心脏、防治白内障、防治克汀病和大骨节病、延缓衰老等功能。人体每天摄入硒量的标准为50~200ug。据中国科学院调查发现，中国缺硒省份高达22个，其中28%的县市严重缺硒，现在中国大部分人口生活在严重缺硒环境中。联合国卫生组织指出：“膳食摄取硒是最理想的补硒方式。”
+            </p>
+            <p>
+                许多专家称缺硒是青少年视力下降的主要原因。近视、弱视等眼疾的生成，主要是眼内自由基攻击晶状体，使蛋白质凝固，蛋白质在晶状体内堆积沉淀，最终导致晶状体混浊，引发各种眼疾。硒是“抗氧化营养剂”，能清除晶状体内的自由基，使晶状体保持透明状态。 此外，血硒指标偏低还可能使儿童反复感染呼吸道或消化道疾病，说明补硒能大大提高儿童的免疫力。由于人体对硒的要求甚少，如中国营养学1998年修订的标准中，提出每天膳食中硒的供给量为：1～3岁20微克。4～6岁40微克，7岁以上50微克。
+            </p>
+            <p>
+                补硒，很难用单纯的药物供给。用各种安全的做法在食物中加强硒元素的供给，是可行的，如给蛋鸡喂的饲料中添加硒元素后，产下的鸡蛋更有利于儿童安全补硒。
+            </p>
+        </div>
+        <div class="content-btn content-btn-dict" ng-click="toDict()">目录</div>
+        <div class="content-btn content-btn-previous" ng-click="toDetail(1)">上一页</div>
+        <div class="content-btn content-btn-next" ng-click="toDetail(3)">下一页</div>
+    </div>
+    <script type="application/javascript">
+        var app = angular.module('myApp', []);
+        addHttpInterceptor(app);
+        app.controller('myCtrl', function ($scope) {
+            $scope.toDict = function () {
+                window.location.href = "baike.html" + window.location.search;
+            }
+            $scope.toDetail = function (index) {
+                window.location.href = "baike-" + index + ".html" + window.location.search;
+            }
+        })
+    </script>
+</body>
+</html>
