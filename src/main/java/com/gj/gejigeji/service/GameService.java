@@ -116,14 +116,63 @@ public class GameService {
         if (miniGameCount1 > 0) {
             updateGameLikeValue(ddsEndParam.getAccountID());
         }
-        // 保存用户获取五个金币
-        user.setCoin(user.getCoin() + 10);
-        userRepository.save(user);
 
-        GameResultVo okResult = new GameResultVo();
-        okResult.setAllow(true);
-        okResult.setAwardId(6);
-        return okResult;
+
+        GameResultVo gameResultVo = new GameResultVo();
+        gameResultVo.setAllow(true);
+        //计算奖励 生命数
+        int sm = 3 - ddsEndParam.getBombCount();
+        if (sm > 1) {
+            int allFenshu = sm * 50 + ddsEndParam.getWolfCount() * 2 + ddsEndParam.getDiglettCount();
+            if (allFenshu >= 200) {
+                //有机饲料10包
+                gameResultVo.setAwardId(1);
+                Feed feedEx = new Feed();
+                feedEx.setName("有机饲料");
+                Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+                if (feed != null) {
+                    final UserFeed userFeed = userFeedRepository.findByUserIdAndFeedId(user.getId(), feed.getId()).orElse(null);
+                    if (userFeed != null) {
+                        userFeed.setAmount(userFeed.getAmount() + 10);
+                        userFeedRepository.save(userFeed);
+                    } else {
+                        UserFeed userFeed1 = new UserFeed();
+                        userFeed1.setAmount(10);
+                        userFeed1.setPrice(0f);
+                        userFeed1.setUserId(user.getId());
+                        userFeed1.setAllPrice(0f);
+                        userFeed1.setFeedId(feed.getId());
+                        userFeedRepository.save(userFeed1);
+                    }
+                }
+            } else if (allFenshu >= 100) {
+                //免费游戏1次
+                gameResultVo.setAwardId(2);
+                user.setMiniGameCount3(user.getMiniGameCount1() + 1);
+                userRepository.save(user);
+            } else if (allFenshu >= 50) {
+                //金币40
+                updateUserCoin(user.getId(), 40f);
+                gameResultVo.setAwardId(3);
+            } else if (allFenshu >= 30) {
+                //金币30
+                updateUserCoin(user.getId(), 30f);
+                gameResultVo.setAwardId(4);
+            } else if (allFenshu >= 10) {
+                //金币20
+                updateUserCoin(user.getId(), 20f);
+                gameResultVo.setAwardId(5);
+            } else {
+                //金币10
+                updateUserCoin(user.getId(), 10f);
+                gameResultVo.setAwardId(6);
+            }
+
+        } else {
+            gameResultVo.setAllow(false);
+        }
+        gameResultVo.setCount(user.getMiniGameCount1());
+        return gameResultVo;
     }
 
     /**
