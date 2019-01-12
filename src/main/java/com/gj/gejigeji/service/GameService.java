@@ -60,39 +60,39 @@ public class GameService {
         return gameCountVo;
     }
 
-    /**
-     * 打地鼠开始
-     *
-     * @param actionParam
-     * @return
-     */
-    public GameResultVo ddsStart(ActionParam actionParam) {
-        User userEx = new User();
-        userEx.setId(actionParam.getAccountID());
-        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null) {
-            throw new NoUserException();
-        }
-        GameResultVo gameResultVo = new GameResultVo();
-        Integer miniGameCount1 = user.getMiniGameCount1();
-        // 减少游戏次数
-        if (miniGameCount1 > 0) {
-            user.setMiniGameCount1(miniGameCount1 - 1);
-            //每天各有3次免费的机会，超过免费机会，每次10个金币
-            if (user.getMiniGameCount1() < 7) {
-                float newCoin = user.getCoin() - gejiProperties.getGameFree();
-                if (newCoin < 0) {
-                    throw new NoCoinException();
-                }
-                user.setCoin(newCoin);
-            }
-            userRepository.save(user);
-            gameResultVo.setAllow(true);
-            return gameResultVo;
-        }
-        gameResultVo.setAllow(false);
-        return gameResultVo;
-    }
+//    /**
+//     * 打地鼠开始
+//     *
+//     * @param actionParam
+//     * @return
+//     */
+//    public GameResultVo ddsStart(ActionParam actionParam) {
+//        User userEx = new User();
+//        userEx.setId(actionParam.getAccountID());
+//        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+//        if (user == null) {
+//            throw new NoUserException();
+//        }
+//        GameResultVo gameResultVo = new GameResultVo();
+//        Integer miniGameCount1 = user.getMiniGameCount1();
+//        // 减少游戏次数
+//        if (miniGameCount1 > 0) {
+//            user.setMiniGameCount1(miniGameCount1 - 1);
+//            //每天各有3次免费的机会，超过免费机会，每次10个金币
+//            if (user.getMiniGameCount1() < 7) {
+//                float newCoin = user.getCoin() - gejiProperties.getGameFree();
+//                if (newCoin < 0) {
+//                    throw new NoCoinException();
+//                }
+//                user.setCoin(newCoin);
+//            }
+//            userRepository.save(user);
+//            gameResultVo.setAllow(true);
+//            return gameResultVo;
+//        }
+//        gameResultVo.setAllow(false);
+//        return gameResultVo;
+//    }
 
     /**
      * 打地鼠结束
@@ -225,7 +225,9 @@ public class GameService {
         // 减少游戏次数
         Integer miniGameCount3 = user.getMiniGameCount3();
 
-        user.setMiniGameCount3(miniGameCount3 - 1);
+        if (miniGameCount3>0){
+            user.setMiniGameCount3(miniGameCount3 - 1);
+        }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
         if (user.getMiniGameCount3() < 7) {
             float newCoin = user.getCoin() - gejiProperties.getGameFree();
@@ -352,9 +354,9 @@ public class GameService {
         }
         // 减少游戏次数
         Integer miniGameCount2 = user.getMiniGameCount2();
-
-        user.setMiniGameCount2(miniGameCount2 - 1);
-
+        if (miniGameCount2>0){
+            user.setMiniGameCount2(miniGameCount2 - 1);
+        }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
         if (user.getMiniGameCount2() < 7) {
             float newCoin = user.getCoin() - gejiProperties.getGameFree();
@@ -449,39 +451,39 @@ public class GameService {
 
     }
 
-    /**
-     * 打怪兽开始
-     *
-     * @param actionParam
-     * @return
-     */
-    public GameResultVo dgsStart(ActionParam actionParam) {
-        User userEx = new User();
-        userEx.setId(actionParam.getAccountID());
-        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-        if (user == null) {
-            throw new NoUserException();
-        }
-        GameResultVo gameResultVo = new GameResultVo();
-        Integer miniGameCount4 = user.getMiniGameCount4();
-
-        user.setMiniGameCount4(miniGameCount4 - 1);
-
-        //每天各有3次免费的机会，超过免费机会，每次10个金币
-        if (user.getMiniGameCount4() < 7) {
-            float newCoin = user.getCoin() - gejiProperties.getGameFree();
-            if (newCoin < 0) {
-                throw new NoCoinException();
-            }
-            user.setCoin(newCoin);
-        }
-
-        userRepository.save(user);
-        gameResultVo.setAllow(true);
-        return gameResultVo;
-
-
-    }
+//    /**
+//     * 打怪兽开始
+//     *
+//     * @param actionParam
+//     * @return
+//     */
+//    public GameResultVo dgsStart(ActionParam actionParam) {
+//        User userEx = new User();
+//        userEx.setId(actionParam.getAccountID());
+//        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
+//        if (user == null) {
+//            throw new NoUserException();
+//        }
+//        GameResultVo gameResultVo = new GameResultVo();
+//        Integer miniGameCount4 = user.getMiniGameCount4();
+//
+//        user.setMiniGameCount4(miniGameCount4 - 1);
+//
+//        //每天各有3次免费的机会，超过免费机会，每次10个金币
+//        if (user.getMiniGameCount4() < 7) {
+//            float newCoin = user.getCoin() - gejiProperties.getGameFree();
+//            if (newCoin < 0) {
+//                throw new NoCoinException();
+//            }
+//            user.setCoin(newCoin);
+//        }
+//
+//        userRepository.save(user);
+//        gameResultVo.setAllow(true);
+//        return gameResultVo;
+//
+//
+//    }
 
     /**
      * 打怪兽结束
@@ -630,6 +632,23 @@ public class GameService {
         GameFreeResult gameFreeResult = new GameFreeResult();
         switch (game) {
             case "1":
+                // 打地鼠
+
+                Integer miniGameCount1 = user.getMiniGameCount1();
+                // 减少游戏次数
+                if (miniGameCount1 > 0) {
+                    user.setMiniGameCount1(miniGameCount1 - 1);
+                }
+
+                //每天各有3次免费的机会，超过免费机会，每次10个金币
+                if (user.getMiniGameCount1() < 7) {
+                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
+                    if (newCoin > 0) {
+                        user.setCoin(newCoin);
+                        userRepository.save(user);
+                    }
+                }
+
                 if (user.getMiniGameCount1() > 7) {
                     gameFreeResult.setOk(true);
                     gameFreeResult.setEnough(true);
@@ -642,6 +661,7 @@ public class GameService {
                 return gameFreeResult;
 
             case "2":
+                // 大转盘
                 if (user.getMiniGameCount2() > 7) {
                     gameFreeResult.setOk(true);
                     gameFreeResult.setEnough(true);
@@ -654,7 +674,7 @@ public class GameService {
                 return gameFreeResult;
 
             case "3":
-
+                // 老虎机
                 if (user.getMiniGameCount3() > 7) {
                     gameFreeResult.setOk(true);
                     gameFreeResult.setEnough(true);
@@ -667,6 +687,22 @@ public class GameService {
                 return gameFreeResult;
 
             case "4":
+                // 打怪兽
+                Integer miniGameCount4 = user.getMiniGameCount4();
+                // 减少游戏次数
+                if (miniGameCount4 > 0) {
+                    user.setMiniGameCount4(miniGameCount4 - 1);
+                }
+
+                //每天各有3次免费的机会，超过免费机会，每次50个金币
+                if (user.getMiniGameCount4() < 7) {
+                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
+                    if (newCoin > 0) {
+                        user.setCoin(newCoin);
+                        userRepository.save(user);
+                    }
+                }
+
 
                 if (user.getMiniGameCount4() > 7) {
                     gameFreeResult.setOk(true);
