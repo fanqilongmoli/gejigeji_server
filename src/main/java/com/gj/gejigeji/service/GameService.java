@@ -10,6 +10,7 @@ import com.gj.gejigeji.repository.FeedRepository;
 import com.gj.gejigeji.repository.UserChickenRepository;
 import com.gj.gejigeji.repository.UserFeedRepository;
 import com.gj.gejigeji.repository.UserRepository;
+import com.gj.gejigeji.util.GejiProperties;
 import com.gj.gejigeji.vo.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class GameService {
 
     @Autowired
     FeedRepository feedRepository;
+
+    @Autowired
+    GejiProperties gejiProperties;
 
     /**
      * 获取用户的游戏次数
@@ -481,13 +485,12 @@ public class GameService {
         UserChicken UserChickenEx = new UserChicken();
         UserChickenEx.setUserId(accountID);
         UserChicken UserChicken = UserChickenRepository.findOne(Example.of(UserChickenEx)).orElse(null);
-//        ActionVo actionVo = new ActionVo();
         if (UserChicken != null) {
             Date lastTime = new Date();
             UserChicken.setGame(UserChicken.getGame() + 3);
             UserChicken.setGameLastTime(lastTime);
             UserChickenRepository.save(UserChicken);
-            //actionVo.setLikeValue(UserChicken.getFeed() + UserChicken.getStroke() + UserChicken.getBathe() + UserChicken.getGame() + UserChicken.getTv());
+
 
         }
     }
@@ -499,32 +502,69 @@ public class GameService {
      * @param game        游戏类型 1打地鼠 2大转盘 3老虎机 4打怪兽
      * @return
      */
-    public OkResult checkGame4Free(ActionParam actionParam, String game) {
+    public GameFreeResult checkGame4Free(ActionParam actionParam, String game) {
         User userEx = new User();
         userEx.setId(actionParam.getAccountID());
         User user = userRepository.findOne(Example.of(userEx)).orElse(null);
         if (user == null) {
             throw new NoUserException();
         }
+        GameFreeResult gameFreeResult = new GameFreeResult();
         switch (game) {
             case "1":
-
-                return new OkResult(user.getMiniGameCount1() > 7);
+                if (user.getMiniGameCount1() > 7) {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
+                } else {
+                    gameFreeResult.setOk(false);
+                    gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
+                    gameFreeResult.setFee(gejiProperties.getGameFree());
+                }
+                return gameFreeResult;
 
             case "2":
-
-                return new OkResult(user.getMiniGameCount2() > 7);
+                if (user.getMiniGameCount2() > 7) {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
+                } else {
+                    gameFreeResult.setOk(false);
+                    gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
+                    gameFreeResult.setFee(gejiProperties.getGameFree());
+                }
+                return gameFreeResult;
 
             case "3":
 
-                return new OkResult(user.getMiniGameCount3() > 7);
+                if (user.getMiniGameCount3() > 7) {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
+                } else {
+                    gameFreeResult.setOk(false);
+                    gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
+                    gameFreeResult.setFee(gejiProperties.getGameFree());
+                }
+                return gameFreeResult;
 
             case "4":
 
-                return new OkResult(user.getMiniGameCount4() > 7);
+                if (user.getMiniGameCount4() > 7) {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
+                } else {
+                    gameFreeResult.setOk(false);
+                    gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
+                    gameFreeResult.setFee(gejiProperties.getGameFree());
+
+                }
+                return gameFreeResult;
 
         }
-        return new OkResult(false);
+        gameFreeResult.setOk(false);
+        return gameFreeResult;
     }
 
 

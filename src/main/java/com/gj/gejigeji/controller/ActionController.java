@@ -1,6 +1,7 @@
 package com.gj.gejigeji.controller;
 
 import com.gj.gejigeji.service.ActionService;
+import com.gj.gejigeji.util.GejiProperties;
 import com.gj.gejigeji.vo.ActionParam;
 import com.gj.gejigeji.vo.ActionVo;
 import io.swagger.annotations.Api;
@@ -20,7 +21,7 @@ public class ActionController {
 
     @ApiOperation(value = "抚摸 U3D使用")
     @PostMapping("stroke")
-    public ActionVo stroke(@RequestBody ActionParam actionParam){
+    public ActionVo stroke(@RequestBody ActionParam actionParam) {
 
         return actionService.stroke(actionParam);
     }
@@ -28,14 +29,14 @@ public class ActionController {
 
     @ApiOperation(value = "洗澡 U3D使用")
     @PostMapping("bathe")
-    public ActionVo bathe(@RequestBody ActionParam actionParam){
+    public ActionVo bathe(@RequestBody ActionParam actionParam) {
 
         return actionService.bathe(actionParam);
     }
 
     @ApiOperation(value = "打扫 U3D使用")
     @PostMapping("clean")
-    public ActionVo clean(@RequestBody ActionParam actionParam){
+    public ActionVo clean(@RequestBody ActionParam actionParam) {
 
         return actionService.clean(actionParam);
     }
