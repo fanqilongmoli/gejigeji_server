@@ -356,6 +356,7 @@ public class GameService {
         Integer miniGameCount2 = user.getMiniGameCount2();
         if (miniGameCount2>0){
             user.setMiniGameCount2(miniGameCount2 - 1);
+            userRepository.save(user);
         }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
         if (user.getMiniGameCount2() < 7) {
@@ -640,42 +641,42 @@ public class GameService {
                     user.setMiniGameCount1(miniGameCount1 - 1);
                 }
 
-                //每天各有3次免费的机会，超过免费机会，每次10个金币
+                userRepository.save(user);
                 if (user.getMiniGameCount1() < 7) {
-                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
-                    if (newCoin > 0) {
-                        user.setCoin(newCoin);
-                        userRepository.save(user);
-                    }
-                }
 
-                if (user.getMiniGameCount1() > 7) {
-                    gameFreeResult.setOk(true);
-                    gameFreeResult.setEnough(true);
-                    gameFreeResult.setFee(0);
-                } else {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
+
+                    //每天各有3次免费的机会，超过免费机会，每次10个金币
+                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
+                    if (newCoin > 0) {
+                        user.setCoin(newCoin);
+                    }
+                } else {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
                 }
                 return gameFreeResult;
 
             case "2":
                 // 大转盘
-                if (user.getMiniGameCount2() > 7) {
-                    gameFreeResult.setOk(true);
-                    gameFreeResult.setEnough(true);
-                    gameFreeResult.setFee(0);
-                } else {
+                if (user.getMiniGameCount2() < 7) {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
+                } else {
+
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
                 }
                 return gameFreeResult;
 
             case "3":
                 // 老虎机
-                if (user.getMiniGameCount3() > 7) {
+                if (user.getMiniGameCount3() < 7) {
                     gameFreeResult.setOk(true);
                     gameFreeResult.setEnough(true);
                     gameFreeResult.setFee(0);
@@ -694,25 +695,23 @@ public class GameService {
                     user.setMiniGameCount4(miniGameCount4 - 1);
                 }
 
-                //每天各有3次免费的机会，超过免费机会，每次50个金币
+                userRepository.save(user);
+
                 if (user.getMiniGameCount4() < 7) {
-                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
-                    if (newCoin > 0) {
-                        user.setCoin(newCoin);
-                        userRepository.save(user);
-                    }
-                }
-
-
-                if (user.getMiniGameCount4() > 7) {
-                    gameFreeResult.setOk(true);
-                    gameFreeResult.setEnough(true);
-                    gameFreeResult.setFee(0);
-                } else {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
 
+                    //每天各有3次免费的机会，超过免费机会，每次50个金币
+                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
+                    if (newCoin > 0) {
+                        user.setCoin(newCoin);
+                    }
+
+                } else {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
                 }
                 return gameFreeResult;
 
