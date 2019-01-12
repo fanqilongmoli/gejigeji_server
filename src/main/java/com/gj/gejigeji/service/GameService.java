@@ -80,7 +80,7 @@ public class GameService {
             user.setMiniGameCount1(miniGameCount1 - 1);
             //每天各有3次免费的机会，超过免费机会，每次10个金币
             if (user.getMiniGameCount1() < 7) {
-                float newCoin = user.getCoin() - 10;
+                float newCoin = user.getCoin() - gejiProperties.getGameFree();
                 if (newCoin < 0) {
                     throw new NoCoinException();
                 }
@@ -130,7 +130,12 @@ public class GameService {
             int allFenshu = sm * 50 + ddsEndParam.getWolfCount() * 2 + ddsEndParam.getDiglettCount();
             if (allFenshu >= 200) {
                 //有机饲料10包
+                // 奖励ID
                 gameResultVo.setAwardId(1);
+                // 道具ID
+                gameResultVo.setItemId(3);
+                // 道具数量
+                gameResultVo.setCount(10);
                 Feed feedEx = new Feed();
                 feedEx.setName("有机饲料");
                 Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
@@ -151,31 +156,55 @@ public class GameService {
                 }
             } else if (allFenshu >= 100) {
                 //免费游戏1次
+                // 奖励ID
                 gameResultVo.setAwardId(2);
+                // 道具ID
+                gameResultVo.setItemId(0);
+                // 道具数量
+                gameResultVo.setCount(1);
                 user.setMiniGameCount3(user.getMiniGameCount1() + 1);
                 userRepository.save(user);
             } else if (allFenshu >= 50) {
                 //金币40
                 updateUserCoin(user.getId(), 40f);
+                // 奖励ID
                 gameResultVo.setAwardId(3);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(40);
             } else if (allFenshu >= 30) {
                 //金币30
                 updateUserCoin(user.getId(), 30f);
+                // 奖励ID
                 gameResultVo.setAwardId(4);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(30);
             } else if (allFenshu >= 10) {
                 //金币20
                 updateUserCoin(user.getId(), 20f);
+                // 奖励ID
                 gameResultVo.setAwardId(5);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(20);
             } else {
                 //金币10
                 updateUserCoin(user.getId(), 10f);
+                // 奖励ID
                 gameResultVo.setAwardId(6);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(10);
             }
 
         } else {
             gameResultVo.setAllow(false);
         }
-        gameResultVo.setCount(user.getMiniGameCount1());
         return gameResultVo;
     }
 
@@ -199,7 +228,7 @@ public class GameService {
         user.setMiniGameCount3(miniGameCount3 - 1);
         //每天各有3次免费的机会，超过免费机会，每次10个金币
         if (user.getMiniGameCount3() < 7) {
-            float newCoin = user.getCoin() - 10;
+            float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
             }
@@ -219,7 +248,12 @@ public class GameService {
         gameResultVo.setAllow(true);
         if (i <= 1) {
             //有机饲料10包
+            // 奖励ID
             gameResultVo.setAwardId(1);
+            // 道具ID
+            gameResultVo.setItemId(3);
+            // 道具数量
+            gameResultVo.setCount(10);
             Feed feedEx = new Feed();
             feedEx.setName("有机饲料");
             Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
@@ -240,34 +274,63 @@ public class GameService {
             }
         } else if (i <= 2) {
             // 免费游戏1次
+            // 奖励ID
             gameResultVo.setAwardId(2);
+            // 道具ID
+            gameResultVo.setItemId(0);
+            // 道具数量
+            gameResultVo.setCount(1);
             user.setMiniGameCount3(user.getMiniGameCount3() + 1);
             userRepository.save(user);
         } else if (i <= 3) {
             //金币20
             updateUserCoin(user.getId(), 20f);
+            // 奖励ID
             gameResultVo.setAwardId(3);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(20);
         } else if (i <= 5) {
             //金币15
             updateUserCoin(user.getId(), 15f);
+            // 奖励ID
             gameResultVo.setAwardId(4);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(15);
         } else if (i <= 8) {
             //金币10
             updateUserCoin(user.getId(), 10f);
+            // 奖励ID
             gameResultVo.setAwardId(5);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(10);
         } else if (i <= 12) {
             //金币5
             updateUserCoin(user.getId(), 5f);
+            // 奖励ID
             gameResultVo.setAwardId(6);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(5);
         } else if (i <= 32) {
             //金币1
             updateUserCoin(user.getId(), 1f);
+            // 奖励ID
             gameResultVo.setAwardId(7);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(1);
         } else {
 
             gameResultVo.setAllow(false);
         }
-        gameResultVo.setCount(user.getMiniGameCount3());
         return gameResultVo;
 
 
@@ -294,7 +357,7 @@ public class GameService {
 
         //每天各有3次免费的机会，超过免费机会，每次10个金币
         if (user.getMiniGameCount2() < 7) {
-            float newCoin = user.getCoin() - 10;
+            float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
             }
@@ -313,7 +376,12 @@ public class GameService {
         gameResultVo.setAllow(true);
         if (i <= 1) {
             //  有机饲料10包
+            // 奖励ID
             gameResultVo.setAwardId(1);
+            // 道具ID
+            gameResultVo.setItemId(3);
+            // 道具数量
+            gameResultVo.setCount(10);
             Feed feedEx = new Feed();
             feedEx.setName("有机饲料");
             Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
@@ -334,26 +402,49 @@ public class GameService {
             }
         } else if (i <= 2) {
             // 免费游戏1次
+            // 奖励ID
             gameResultVo.setAwardId(2);
+            // 道具ID
+            gameResultVo.setItemId(0);
+            // 道具数量
+            gameResultVo.setCount(1);
             user.setMiniGameCount3(user.getMiniGameCount3() + 1);
             userRepository.save(user);
         } else if (i <= 22) {
             //金币5
             updateUserCoin(user.getId(), 5f);
+            // 奖励ID
             gameResultVo.setAwardId(3);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(5);
         } else if (i <= 32) {
             //金币20
             updateUserCoin(user.getId(), 20f);
+            // 奖励ID
             gameResultVo.setAwardId(4);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(20);
         } else if (i <= 33) {
             //金币50
             updateUserCoin(user.getId(), 50f);
+            // 奖励ID
             gameResultVo.setAwardId(5);
+            // 道具ID
+            gameResultVo.setItemId(1);
+            // 道具数量
+            gameResultVo.setCount(50);
         } else {
+            // 奖励ID
             gameResultVo.setAwardId(6);
-            gameResultVo.setAllow(false);
+            // 道具ID
+            gameResultVo.setItemId(-1);
+            // 道具数量
+            gameResultVo.setCount(0);
         }
-        gameResultVo.setCount(user.getMiniGameCount2());
         return gameResultVo;
 
     }
@@ -378,7 +469,7 @@ public class GameService {
 
         //每天各有3次免费的机会，超过免费机会，每次10个金币
         if (user.getMiniGameCount4() < 7) {
-            float newCoin = user.getCoin() - 10;
+            float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
             }
@@ -426,7 +517,7 @@ public class GameService {
             if (lifeCount >= 5) {
 
                 //  有机饲料10包
-                gameResultVo.setAwardId(1);
+
                 Feed feedEx = new Feed();
                 feedEx.setName("有机饲料");
                 Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
@@ -446,32 +537,59 @@ public class GameService {
                     }
                 }
 
-                gameResultVo.setAwardId(5);
+                // 奖励ID
+                gameResultVo.setAwardId(1);
+                // 道具ID
+                gameResultVo.setItemId(3);
+                // 道具数量
+                gameResultVo.setCount(10);
+
             } else if (lifeCount >= 4) {
 
                 // 免费游戏1次
+                // 奖励ID
                 gameResultVo.setAwardId(2);
+                // 道具ID
+                gameResultVo.setItemId(0);
+                // 道具数量
+                gameResultVo.setCount(1);
+
                 user.setMiniGameCount3(user.getMiniGameCount4() + 1);
                 userRepository.save(user);
 
-                gameResultVo.setAwardId(4);
             } else if (lifeCount >= 3) {
                 updateUserCoin(user.getId(), 30f);
+                // 奖励ID
                 gameResultVo.setAwardId(3);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(30);
             } else if (lifeCount >= 2) {
                 updateUserCoin(user.getId(), 20f);
-                gameResultVo.setAwardId(2);
+                // 奖励ID
+                gameResultVo.setAwardId(4);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(20);
             } else {
                 updateUserCoin(user.getId(), 10f);
-                gameResultVo.setAwardId(1);
+                // 奖励ID
+                gameResultVo.setAwardId(5);
+                // 道具ID
+                gameResultVo.setItemId(1);
+                // 道具数量
+                gameResultVo.setCount(10);
             }
         } else {
-            gameResultVo.setAwardId(0);
-            gameResultVo.setAllow(false);
+            // 奖励ID
+            gameResultVo.setAwardId(6);
+            // 道具ID
+            gameResultVo.setItemId(-1);
+            // 道具数量
+            gameResultVo.setCount(0);
         }
-
-
-        gameResultVo.setCount(miniGameCount4);
         return gameResultVo;
     }
 
