@@ -59,7 +59,7 @@ public class GameController {
     @SysLog
     @ApiOperation("每个游戏每天各有3次免费的机会，超过免费机会，每次10个金币（game：游戏类型 1打地鼠 2大转盘 3老虎机 4打怪兽）U3D使用")
     @PostMapping("checkGame4Free/{game}")
-    public OkResult checkGame4Free(@RequestBody ActionParam actionParam, @PathVariable String game){
+    public GameFreeResult checkGame4Free(@RequestBody ActionParam actionParam, @PathVariable String game){
         return gameService.checkGame4Free(actionParam,game);
     }
 
