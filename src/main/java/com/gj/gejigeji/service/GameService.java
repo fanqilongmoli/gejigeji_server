@@ -677,13 +677,13 @@ public class GameService {
             case "3":
                 // 老虎机
                 if (user.getMiniGameCount3() < 7) {
-                    gameFreeResult.setOk(true);
-                    gameFreeResult.setEnough(true);
-                    gameFreeResult.setFee(0);
-                } else {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
+                } else {
+                    gameFreeResult.setOk(true);
+                    gameFreeResult.setEnough(true);
+                    gameFreeResult.setFee(0);
                 }
                 return gameFreeResult;
 
