@@ -52,10 +52,11 @@ public class GameService {
         }
 
         GameCountVo gameCountVo = new GameCountVo();
-        gameCountVo.setMiniGameCount1(user.getMiniGameCount1());
-        gameCountVo.setMiniGameCount2(user.getMiniGameCount2());
-        gameCountVo.setMiniGameCount3(user.getMiniGameCount3());
-        gameCountVo.setMiniGameCount4(user.getMiniGameCount4());
+
+        gameCountVo.setMiniGameCount1(user.getMiniGameCount1() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
+        gameCountVo.setMiniGameCount2(user.getMiniGameCount2() - 7 >= 0 ? user.getMiniGameCount2() - 7 : 0);
+        gameCountVo.setMiniGameCount3(user.getMiniGameCount3() - 7 >= 0 ? user.getMiniGameCount3() - 7 : 0);
+        gameCountVo.setMiniGameCount4(user.getMiniGameCount4() - 7 >= 0 ? user.getMiniGameCount4() - 7 : 0);
 
         return gameCountVo;
     }
@@ -225,7 +226,7 @@ public class GameService {
         // 减少游戏次数
         Integer miniGameCount3 = user.getMiniGameCount3();
 
-        if (miniGameCount3>0){
+        if (miniGameCount3 > 0) {
             user.setMiniGameCount3(miniGameCount3 - 1);
         }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
@@ -354,7 +355,7 @@ public class GameService {
         }
         // 减少游戏次数
         Integer miniGameCount2 = user.getMiniGameCount2();
-        if (miniGameCount2>0){
+        if (miniGameCount2 > 0) {
             user.setMiniGameCount2(miniGameCount2 - 1);
             userRepository.save(user);
         }
