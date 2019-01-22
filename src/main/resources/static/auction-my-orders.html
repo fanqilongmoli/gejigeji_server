@@ -36,6 +36,7 @@
             background-image: url("img/auction_bg_1.png");
             background-size: 100% 100%;
             height: 0.6rem;
+            display: none;
         }
         .auction-name {
             width: 1.16rem;
@@ -47,8 +48,8 @@
         .auction-return {
             width: 0.45rem;
             position: absolute;
-            right: 0.03rem;
-            top: 0.03rem;
+            top: 0.1rem;
+            left: 0.7rem;
         }
         .auction-banner {
             background-image: url("img/auction_banner.png");
@@ -301,10 +302,11 @@
 <body ng-app="myApp" ng-init="loadMore()" ng-controller="myCtrl" ng-class="{'show': showBody}" class="hide">
     <div class="auction-name-div">
         <img src="img/auction_name.png" class="auction-name">
-        <img src="img/shop_return.png" ng-click="back()" class="auction-return">
+
     </div>
     <div class="auction-banner">
         我的挂单
+        <img src="img/shop_return.png" ng-click="back()" class="auction-return">
     </div>
     <div class="auction-table">
         <div class="auction-header">
@@ -467,6 +469,8 @@
                 $scope.eggs = response.data;
                 if ($scope.eggs && $scope.eggs.length > 0) {
                     $scope.showOn = true;
+                } else {
+                    alert("暂时没有鸡蛋！");
                 }
             });
         }

@@ -35,6 +35,7 @@
             background-image: url("img/auction_bg_1.png");
             background-size: 100% 100%;
             height: 0.6rem;
+            display: none;
         }
         .auction-name {
             height: 0.36rem;
@@ -329,7 +330,7 @@
             <div class="wallet-button" ng-click="buyDiamond()" ng-class="{'gray': !canBuyDiamond()}">购买</div>
         </div>
         <div class="wallet-exchange-item wallet-exchange-item2">
-            <div class="wallet-rate">1钻石=10金币</div>
+            <div class="wallet-rate">1钻石=100金币</div>
             <div class="wallet-buy">
                 兑换金币<input class="wallet-input" ng-model="coinNumber" type="number">枚
             </div>
