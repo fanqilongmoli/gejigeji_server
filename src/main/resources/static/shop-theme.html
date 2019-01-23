@@ -386,7 +386,7 @@
         <img class="dialog-close" src="img/dialog_close.png" style="z-index: 333;" ng-click="closeCharge()">
         <div class="dialog-charge-div">
             <div class="dialog-fail-desc">余额不足，请充值！</div>
-            <div class="dialog-charge-button">充值</div>
+            <div class="dialog-charge-button" ng-click="toCharge()">充值</div>
         </div>
     </div>
 </div>
@@ -463,6 +463,9 @@
             $scope.showCharge = false;
             $scope.closeBuyTheme();
             $scope.closeBuyProp();
+        }
+        $scope.toCharge = function () {
+            window.location.href = "wallet.html" + window.location.search;
         }
     });
 </script>
