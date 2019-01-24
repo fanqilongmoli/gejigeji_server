@@ -139,6 +139,15 @@
             -webkit-text-stroke: 0.01rem rgb(20, 35, 1);
             font-weight: bold;
         }
+        .no-chance {
+            height: 1.73rem;
+            line-height: 1.5rem;
+            font-size: 0.2rem;
+            position: relative;
+            top: 0.43rem;
+            margin: 0 0.06rem;
+            background-color: rgb(200,183,155);
+        }
     </style>
     <script src="js/angular.js"></script>
 </head>
@@ -189,6 +198,18 @@
             </div>
         </div>
     </div>
+
+    <div ng-show="noChance">
+        <mask class="mask" style="z-index: 11;"></mask>
+        <div class="dialog" style="z-index: 12;">
+            <img class="dialog-close dialog-close2" src="img/dialog_close.png" style="z-index: 13;" ng-click="closeNoChanceDialog()">
+            <div class="daily-dialog-win-content">
+                <div class="no-chance">
+                    已经没有抽奖机会了！
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="application/javascript">
     var app = angular.module('myApp', []);
@@ -211,6 +232,14 @@
             if (!$scope.results || $scope.results[index] != undefined) {
                 return;
             }
+            var l = 0;
+            for (var p in $scope.results) {
+                l ++;
+            }
+            if (l >=3) {
+                $scope.showNoChance();
+                return
+            }
             delete $scope.result;
             $http.post("/luck", {
                 "accountID": currentAccount(),
@@ -222,6 +251,12 @@
         }
         $scope.closeLoseDialog = function () {
             delete $scope.result;
+        }
+        $scope.showNoChance = function () {
+            $scope.noChance = true;
+        }
+        $scope.closeNoChanceDialog = function () {
+            delete $scope.noChance;
         }
     })
 </script>
