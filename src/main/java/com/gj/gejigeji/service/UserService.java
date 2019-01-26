@@ -351,11 +351,11 @@ public class UserService {
 
         int coin = jewel2CoinParam.getCoinCount();
 
-        int jewel = (int) (user.getJewel() * 10);
+        int jewel = (int) (user.getJewel() * 100);
         if (jewel < coin) {
             throw new NoJewelException();
         }
-        float jewel1 = (jewel - coin)/10f;
+        float jewel1 = (jewel - coin)/100f;
         user.setJewel(jewel1);
         user.setCoin(user.getCoin() + jewel2CoinParam.getCoinCount());
         userRepository.save(user);
