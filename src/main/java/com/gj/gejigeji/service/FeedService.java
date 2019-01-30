@@ -222,4 +222,12 @@ public class FeedService {
 
         return feedListVos;
     }
+
+    /**
+     * 直播界面点击喂食 U3D使用
+     * @return
+     */
+    public OkResult feeding4live() {
+        return new OkResult(true);
+    }
 }

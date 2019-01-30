@@ -46,4 +46,10 @@ public class FeedController {
         return feedService.feeding(feedingParam);
     }
 
+    @ApiOperation("直播界面点击喂食 U3D使用")
+    @PostMapping("feeding4live")
+    public OkResult feeding4live(){
+        return feedService.feeding4live();
+    }
+
 }
