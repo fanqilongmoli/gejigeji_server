@@ -125,9 +125,16 @@ public class FeedService {
      */
     public FeedingVo feeding(FeedingParam feedingParam) {
 
+        Feed feedEx = new Feed();
+        feedEx.setFeedUI(feedingParam.getFeedID());
+        Feed feed = feedRepository.findOne(Example.of(feedEx)).orElse(null);
+        if (feed == null){
+            throw new BaseRuntimeException();
+        }
+
         //查询用户饲料表
         UserFeed userFeedEx = new UserFeed();
-        userFeedEx.setFeedId(feedingParam.getFeedID());
+        userFeedEx.setFeedId(feed.getId());
         userFeedEx.setUserId(feedingParam.getAccountID());
 
         UserFeed userFeed = userFeedRepository.findOne(Example.of(userFeedEx)).orElse(null);
@@ -158,7 +165,7 @@ public class FeedService {
             userFeedRecord.setChickenId(feedingParam.getAccountID());
             userFeedRecord.setUserId(feedingParam.getAccountID());
             userFeedRecord.setCreateTime(new Date());
-            userFeedRecord.setFeedId(feedingParam.getFeedID());
+            userFeedRecord.setFeedId(feed.getId());
             userFeedRecord.setDeleteFlag(ConstUtil.Delete_Flag_No);
             userFeedRecordRepository.save(userFeedRecord);
 

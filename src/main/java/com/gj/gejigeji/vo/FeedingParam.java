@@ -6,7 +6,7 @@ public class FeedingParam {
     @ApiModelProperty("用户ID")
     private String accountID;
     @ApiModelProperty("饲料ID")
-    private String feedID;
+    private Integer feedID;
 
     public String getAccountID() {
         return accountID;
@@ -16,11 +16,11 @@ public class FeedingParam {
         this.accountID = accountID;
     }
 
-    public String getFeedID() {
+    public Integer getFeedID() {
         return feedID;
     }
 
-    public void setFeedID(String feedID) {
+    public void setFeedID(Integer feedID) {
         this.feedID = feedID;
     }
 }
