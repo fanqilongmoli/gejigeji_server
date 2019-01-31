@@ -195,6 +195,7 @@ public class GameService {
 
         if (miniGameCount3 > 0) {
             user.setMiniGameCount3(miniGameCount3 - 1);
+            userRepository.save(user);
         }
 
         if (miniGameCount3 <= 0 ) {
