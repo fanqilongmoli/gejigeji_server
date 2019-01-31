@@ -163,7 +163,7 @@ public class GameService {
                 gameResultVo.setItemId(0);
                 // 道具数量
                 gameResultVo.setCount(1);
-                user.setMiniGameCount3(user.getMiniGameCount1() + 1);
+                user.setMiniGameCount1(user.getMiniGameCount1() + 1);
                 userRepository.save(user);
             } else if (allFenshu >= 50) {
                 //金币40
@@ -412,7 +412,7 @@ public class GameService {
             gameResultVo.setItemId(0);
             // 道具数量
             gameResultVo.setCount(1);
-            user.setMiniGameCount3(user.getMiniGameCount3() + 1);
+            user.setMiniGameCount2(user.getMiniGameCount2() + 1);
             userRepository.save(user);
         } else if (i <= 22) {
             //金币5
