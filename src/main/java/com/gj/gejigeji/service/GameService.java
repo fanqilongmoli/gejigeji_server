@@ -53,10 +53,10 @@ public class GameService {
 
         GameCountVo gameCountVo = new GameCountVo();
 
-        gameCountVo.setMiniGameCount1(user.getMiniGameCount1() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
-        gameCountVo.setMiniGameCount2(user.getMiniGameCount2() - 7 >= 0 ? user.getMiniGameCount2() - 7 : 0);
-        gameCountVo.setMiniGameCount3(user.getMiniGameCount3() - 7 >= 0 ? user.getMiniGameCount3() - 7 : 0);
-        gameCountVo.setMiniGameCount4(user.getMiniGameCount4() - 7 >= 0 ? user.getMiniGameCount4() - 7 : 0);
+        gameCountVo.setMiniGameCount1(user.getMiniGameCount1());
+        gameCountVo.setMiniGameCount2(user.getMiniGameCount2());
+        gameCountVo.setMiniGameCount3(user.getMiniGameCount3());
+        gameCountVo.setMiniGameCount4(user.getMiniGameCount4());
 
         return gameCountVo;
     }
@@ -230,7 +230,7 @@ public class GameService {
             user.setMiniGameCount3(miniGameCount3 - 1);
         }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
-        if (user.getMiniGameCount3() < 7) {
+        if (user.getMiniGameCount3() > 0 ) {
             float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
@@ -360,7 +360,7 @@ public class GameService {
             userRepository.save(user);
         }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
-        if (user.getMiniGameCount2() < 7) {
+        if (user.getMiniGameCount2() > 0) {
             float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
@@ -643,7 +643,7 @@ public class GameService {
                 }
 
                 userRepository.save(user);
-                if (user.getMiniGameCount1() < 7) {
+                if (user.getMiniGameCount1() <= 0) {
 
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
@@ -663,7 +663,7 @@ public class GameService {
 
             case "2":
                 // 大转盘
-                if (user.getMiniGameCount2() < 7) {
+                if (user.getMiniGameCount2() <= 0) {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
@@ -677,7 +677,7 @@ public class GameService {
 
             case "3":
                 // 老虎机
-                if (user.getMiniGameCount3() < 7) {
+                if (user.getMiniGameCount3() <= 0) {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
@@ -698,7 +698,7 @@ public class GameService {
 
                 userRepository.save(user);
 
-                if (user.getMiniGameCount4() < 7) {
+                if (user.getMiniGameCount4() <= 0) {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());

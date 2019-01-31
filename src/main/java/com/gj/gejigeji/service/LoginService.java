@@ -196,14 +196,10 @@ public class LoginService {
 
         loginVo.setSkinID(user.getSkinID());
         loginVo.setUserName(user.getUserName());
-//        gameCountVo.setMiniGameCount1(user.getMiniGameCount1() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
-//        gameCountVo.setMiniGameCount2(user.getMiniGameCount2() - 7 >= 0 ? user.getMiniGameCount2() - 7 : 0);
-//        gameCountVo.setMiniGameCount3(user.getMiniGameCount3() - 7 >= 0 ? user.getMiniGameCount3() - 7 : 0);
-//        gameCountVo.setMiniGameCount4(user.getMiniGameCount4() - 7 >= 0 ? user.getMiniGameCount4() - 7 : 0);
-        loginVo.setMiniGameCount1(user.getMiniGameCount1() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
-        loginVo.setMiniGameCount2(user.getMiniGameCount2() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
-        loginVo.setMiniGameCount3(user.getMiniGameCount3() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
-        loginVo.setMiniGameCount4(user.getMiniGameCount4() - 7 >= 0 ? user.getMiniGameCount1() - 7 : 0);
+        loginVo.setMiniGameCount1(user.getMiniGameCount1());
+        loginVo.setMiniGameCount2(user.getMiniGameCount2());
+        loginVo.setMiniGameCount3(user.getMiniGameCount3());
+        loginVo.setMiniGameCount4(user.getMiniGameCount4());
         loginVo.setMailInfo(mailList);
         loginVo.setItemInfos(itemInfos);
 

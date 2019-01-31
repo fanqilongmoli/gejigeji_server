@@ -40,10 +40,10 @@ public class UserJobs {
         logger.info("=======刷新用户的游戏次数开始========");
         List<User> all = userRepository.findAll();
         for (User user : all) {
-            user.setMiniGameCount1(10);
-            user.setMiniGameCount2(10);
-            user.setMiniGameCount3(10);
-            user.setMiniGameCount4(10);
+            user.setMiniGameCount1(3);
+            user.setMiniGameCount2(3);
+            user.setMiniGameCount3(3);
+            user.setMiniGameCount4(3);
             userRepository.save(user);
         }
         logger.info("=======刷新日下蛋个数========");
