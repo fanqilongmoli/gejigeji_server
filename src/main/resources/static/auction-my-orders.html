@@ -336,7 +336,7 @@
             </div>
             <div class="auction-footer">
                 <div class="auction-footer-button auction-footer-button-off" ng-click="orderOff()">下架</div>
-                <div class="auction-footer-button auction-footer-button-on" ng-click="orderOn()">挂单</div>
+                <div class="auction-footer-button auction-footer-button-on" ng-show="eggs && eggs.length > 0" ng-click="orderOn()">挂单</div>
             </div>
         </div>
     </div>
