@@ -61,39 +61,6 @@ public class GameService {
         return gameCountVo;
     }
 
-//    /**
-//     * 打地鼠开始
-//     *
-//     * @param actionParam
-//     * @return
-//     */
-//    public GameResultVo ddsStart(ActionParam actionParam) {
-//        User userEx = new User();
-//        userEx.setId(actionParam.getAccountID());
-//        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-//        if (user == null) {
-//            throw new NoUserException();
-//        }
-//        GameResultVo gameResultVo = new GameResultVo();
-//        Integer miniGameCount1 = user.getMiniGameCount1();
-//        // 减少游戏次数
-//        if (miniGameCount1 > 0) {
-//            user.setMiniGameCount1(miniGameCount1 - 1);
-//            //每天各有3次免费的机会，超过免费机会，每次10个金币
-//            if (user.getMiniGameCount1() < 7) {
-//                float newCoin = user.getCoin() - gejiProperties.getGameFree();
-//                if (newCoin < 0) {
-//                    throw new NoCoinException();
-//                }
-//                user.setCoin(newCoin);
-//            }
-//            userRepository.save(user);
-//            gameResultVo.setAllow(true);
-//            return gameResultVo;
-//        }
-//        gameResultVo.setAllow(false);
-//        return gameResultVo;
-//    }
 
     /**
      * 打地鼠结束
@@ -229,8 +196,8 @@ public class GameService {
         if (miniGameCount3 > 0) {
             user.setMiniGameCount3(miniGameCount3 - 1);
         }
-        //每天各有3次免费的机会，超过免费机会，每次10个金币
-        if (user.getMiniGameCount3() > 0 ) {
+
+        if (miniGameCount3 <= 0 ) {
             float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
@@ -360,7 +327,7 @@ public class GameService {
             userRepository.save(user);
         }
         //每天各有3次免费的机会，超过免费机会，每次10个金币
-        if (user.getMiniGameCount2() > 0) {
+        if (user.getMiniGameCount2() <= 0) {
             float newCoin = user.getCoin() - gejiProperties.getGameFree();
             if (newCoin < 0) {
                 throw new NoCoinException();
@@ -452,40 +419,6 @@ public class GameService {
         return gameResultVo;
 
     }
-
-//    /**
-//     * 打怪兽开始
-//     *
-//     * @param actionParam
-//     * @return
-//     */
-//    public GameResultVo dgsStart(ActionParam actionParam) {
-//        User userEx = new User();
-//        userEx.setId(actionParam.getAccountID());
-//        User user = userRepository.findOne(Example.of(userEx)).orElse(null);
-//        if (user == null) {
-//            throw new NoUserException();
-//        }
-//        GameResultVo gameResultVo = new GameResultVo();
-//        Integer miniGameCount4 = user.getMiniGameCount4();
-//
-//        user.setMiniGameCount4(miniGameCount4 - 1);
-//
-//        //每天各有3次免费的机会，超过免费机会，每次10个金币
-//        if (user.getMiniGameCount4() < 7) {
-//            float newCoin = user.getCoin() - gejiProperties.getGameFree();
-//            if (newCoin < 0) {
-//                throw new NoCoinException();
-//            }
-//            user.setCoin(newCoin);
-//        }
-//
-//        userRepository.save(user);
-//        gameResultVo.setAllow(true);
-//        return gameResultVo;
-//
-//
-//    }
 
     /**
      * 打怪兽结束
@@ -671,14 +604,6 @@ public class GameService {
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
 
-                    //每天各有3次免费的机会，超过免费机会，每次10个金币
-                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
-                    if (newCoin > 0) {
-                        user.setCoin(newCoin);
-                        userRepository.save(user);
-                    }else {
-                        throw  new NoCoinException();
-                    }
                 } else {
 
                     gameFreeResult.setOk(true);
@@ -693,14 +618,6 @@ public class GameService {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
-                    //每天各有3次免费的机会，超过免费机会，每次10个金币
-                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
-                    if (newCoin > 0) {
-                        user.setCoin(newCoin);
-                        userRepository.save(user);
-                    } else {
-                        throw  new NoCoinException();
-                    }
                 } else {
                     gameFreeResult.setOk(true);
                     gameFreeResult.setEnough(true);

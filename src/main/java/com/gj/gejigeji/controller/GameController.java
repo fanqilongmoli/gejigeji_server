@@ -20,12 +20,6 @@ public class GameController {
        return gameService.gameCount(actionParam);
     }
 
-//    @ApiOperation(value = "打地鼠进入 进入游戏后扣除次数 U3D使用")
-//    @PostMapping("ddsStart")
-//    public GameResultVo ddsStart(@RequestBody ActionParam actionParam){
-//        return gameService.ddsStart(actionParam);
-//    }
-
     @ApiOperation(value = "打地鼠结算 打地鼠完成时结算 U3D使用")
     @PostMapping("ddsEnd")
     public GameResultVo ddsEnd(@RequestBody DDSEndParam ddsEndParam){
@@ -43,12 +37,6 @@ public class GameController {
     public GameResultVo dzbStart(@RequestBody ActionParam actionParam){
         return gameService.dzbStart(actionParam);
     }
-
-//    @ApiOperation(value = "打怪兽进入(允许时扣除次数) U3D使用")
-//    @PostMapping("dgsStart")
-//    public GameResultVo dgsStart(@RequestBody ActionParam actionParam){
-//        return gameService.dgsStart(actionParam);
-//    }
 
     @ApiOperation(value = "打怪兽结束 U3D使用")
     @PostMapping("dgsEnd")
