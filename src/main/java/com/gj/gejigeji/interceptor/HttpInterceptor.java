@@ -53,7 +53,7 @@ public class HttpInterceptor implements HandlerInterceptor {
 //                Runtime.getRuntime().freeMemory() / 1024 / 1024,
 //                (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime().freeMemory()) / 1024 / 1024);
 
-        logger.warn("耗时时间统计==========》url" + request.getRequestURI() + ";耗时" + DateFormatUtils.format(endTime - beginTime, "mm:ss.SSS"));
+        logger.warn("耗时时间统计=======（）（）======》url" + request.getRequestURI() + ";耗时" + DateFormatUtils.format(endTime - beginTime, "mm:ss.SSS"));
 
     }
 }
