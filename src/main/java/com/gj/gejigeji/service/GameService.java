@@ -558,7 +558,7 @@ public class GameService {
                 // 道具数量
                 gameResultVo.setCount(1);
 
-                user.setMiniGameCount3(user.getMiniGameCount4() + 1);
+                user.setMiniGameCount4(user.getMiniGameCount4() + 1);
                 userRepository.save(user);
 
             } else if (lifeCount >= 3) {
@@ -653,6 +653,9 @@ public class GameService {
                     float newCoin = user.getCoin() - gejiProperties.getGameFree();
                     if (newCoin > 0) {
                         user.setCoin(newCoin);
+                        userRepository.save(user);
+                    }else {
+                        throw  new NoCoinException();
                     }
                 } else {
                     gameFreeResult.setOk(true);
@@ -667,6 +670,15 @@ public class GameService {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
+
+                    //每天各有3次免费的机会，超过免费机会，每次10个金币
+                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
+                    if (newCoin > 0) {
+                        user.setCoin(newCoin);
+                        userRepository.save(user);
+                    }else {
+                        throw  new NoCoinException();
+                    }
                 } else {
 
                     gameFreeResult.setOk(true);
@@ -681,6 +693,14 @@ public class GameService {
                     gameFreeResult.setOk(false);
                     gameFreeResult.setEnough(user.getCoin() > gejiProperties.getGameFree());
                     gameFreeResult.setFee(gejiProperties.getGameFree());
+                    //每天各有3次免费的机会，超过免费机会，每次10个金币
+                    float newCoin = user.getCoin() - gejiProperties.getGameFree();
+                    if (newCoin > 0) {
+                        user.setCoin(newCoin);
+                        userRepository.save(user);
+                    } else {
+                        throw  new NoCoinException();
+                    }
                 } else {
                     gameFreeResult.setOk(true);
                     gameFreeResult.setEnough(true);
@@ -707,7 +727,11 @@ public class GameService {
                     float newCoin = user.getCoin() - gejiProperties.getGameFree();
                     if (newCoin > 0) {
                         user.setCoin(newCoin);
+                        userRepository.save(user);
+                    }else {
+                        throw  new NoCoinException();
                     }
+
 
                 } else {
                     gameFreeResult.setOk(true);
